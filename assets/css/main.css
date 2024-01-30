@@ -1,0 +1,9 @@
+@import url('https://use.typekit.net/htv0whb.css');
+
+@font-face {
+    font-family: 'Inter';
+    src: url('~/assets/fonts/Inter/Inter-VariableFont_slnt,wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
