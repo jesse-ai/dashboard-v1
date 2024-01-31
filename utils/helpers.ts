@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import { useDateFormat } from '@vueuse/core'
 
 const helpers = {
     timestampToTime(timestamp: number) {
@@ -25,18 +24,6 @@ const helpers = {
 
     currentTime() {
         return new Date().toISOString().slice(11, 19)
-    },
-
-    localStorageSet(key: string, value: any) {
-        localStorage.setItem(key, JSON.stringify(value))
-    },
-
-    localStorageGet(key: string) {
-        return JSON.parse(localStorage.getItem(key) as string)
-    },
-
-    getDefaultFromLocalStorage(key: string, defaultForm: any) {
-        return _.merge(defaultForm, helpers.localStorageGet(key))
     },
 
     secondsToHumanReadable(seconds: number) {
@@ -105,15 +92,7 @@ const helpers = {
         } else {
             return 'text-gray-900 dark:text-gray-200'
         }
-    },
-
-    currentTheme() {
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            return 'dark'
-        } else {
-            return 'light'
-        }
-    },
+    }
 }
 
 export default helpers
