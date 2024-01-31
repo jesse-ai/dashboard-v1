@@ -117,3 +117,19 @@ interface GetConfigResponse {
 interface AuthResponse {
     auth_token: string;
 }
+// ==================== FAQ Response ====================
+interface FAQResponse {
+    data?: FAQ[];
+}
+
+interface FAQ {
+    id: number;
+    title: string;
+    slug: string;
+    description: string;
+    faq_category_id: number;
+    published: boolean;
+    created_at: Date;
+    updated_at: Date;
+    views: number;
+}
