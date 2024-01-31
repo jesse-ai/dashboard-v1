@@ -62,12 +62,12 @@
 <script setup lang="ts">
 import _ from 'lodash'
 
-const showResults = ref<boolean>(false)
-const loading = ref<boolean>(false)
-const error = ref<boolean>(false)
+const showResults = ref(false)
+const loading = ref(false)
+const error = ref(false)
 const results = ref<any>([])
-const typing = ref<boolean>(false)
-const query = ref<string>('')
+const typing = ref(false)
+const query = ref('')
 
 watch(query, _.debounce(() => {
     typing.value = false;
@@ -87,18 +87,20 @@ const searchProducts = async (item: string) => {
     loading.value = true;
 
     let { data: reqData, error: reqError } = await useFetchApi(`https://jesse.trade/api/help/search?item=${item}`)
-    const resConfig = reqData.value as any
-
-    showResults.value = true;
-    results.value = resConfig.data;
-    loading.value = false;
-
+    // error handling
     if (reqError.value && reqError.value.statusCode !== 200) {
-        showNotification('error', reqError.value.data.message)
+        showNotification('error', reqError.value.message)
         showResults.value = true;
         loading.value = false;
         error.value = true;
+        return;
     }
+
+    const resConfig = reqData.value as FAQResponse
+
+    showResults.value = true;
+    results.value = resConfig;
+    loading.value = false;
 };
 </script>
   
