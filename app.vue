@@ -1,30 +1,32 @@
 <template>
-  <NuxtLoadingIndicator/>
-  
-  <NuxtLayout>
-    <NuxtPage/>
-  </NuxtLayout>
+  <!-- <Nav v-if="isAuthenticated" /> -->
 
-  <UNotifications/>
+  <router-view v-if="store.isAuthenticated" />
+
+  <Login v-else />
 </template>
 
-<script lang="ts" setup>
-import {authStore} from "~/stores";
-import {usePostApi2} from "~/composables/useApi";
+
+<script setup lang="ts">
+import { useAuthStore } from '@/stores/authState'
+
+const store = useAuthStore()
+const settings = computed(() => store.settings)
+const authToken = computed(() => store.authToken)
+
+watch(authToken, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    store.initiate()
+  }
+})
+
+watch(settings, (newValue, oldValue) => {
+  store.updateConfig()
+}, { deep: true })
 
 onMounted(() => {
-  document.documentElement.classList.add('h-full', 'bg-gray-50');
-  document.body.classList.add('h-full');
-
-  setTimeout(() => {
-    const ref = useRoute().query.ref as string;
-    if (ref && !authStore().isAuthenticated && !authStore().referral_code) {
-      // send the visit event to the backend
-      usePostApi2('/referrals', {ref}, false).then(res => {
-        console.log('referral visit event sent', res);
-        authStore().setRef(ref);
-      });
-    }
-  }, 1000);
+  if (sessionStorage.getItem('auth_key') !== null) {
+    store.setAuthToken(sessionStorage.auth_key)
+  }
 })
 </script>

@@ -3,7 +3,7 @@ import { usePostApi } from "~/composables/useApi";
 import _ from 'lodash';
 import { useMainStore } from './mainState';
 
-export const useAuthState = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
     state: () => ({
         authToken: '',
         hasLivePluginInstalled: false,

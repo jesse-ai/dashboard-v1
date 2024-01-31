@@ -39,11 +39,11 @@
   
 <script setup lang="ts">
 import { ArrowLongRightIcon, LockClosedIcon } from '@heroicons/vue/24/outline/esm'
-import { useMainStore } from '@/stores/mainState'
+import { useAuthStore } from '@/stores/authState'
 
 const open = ref(true)
 const password = ref('')
-const store = useMainStore()
+const store = useAuthStore()
 
 const setAuth = () => {
     store.setAuthToken(sessionStorage.auth_key)

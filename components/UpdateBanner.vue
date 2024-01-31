@@ -22,12 +22,12 @@
   
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import { useMainStore } from '@/stores/mainState'
+import { useAuthStore } from '@/stores/authState'
 import helpers from '@/utils/helpers'
 
 
 const skipped = ref(false)
-const store = useMainStore()
+const store = useAuthStore()
 const updateInfo = computed(() => store.updateInfo)
 const systemInfo = computed(() => store.systemInfo)
 
