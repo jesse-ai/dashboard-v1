@@ -37,10 +37,6 @@
     </section>
 </template>
   
-<template>
-    <!-- Your template here -->
-</template>
-  
 <script setup lang="ts">
 import { ArrowLongRightIcon, LockClosedIcon } from '@heroicons/vue/24/outline/esm'
 import { useMainStore } from '@/stores/mainState'
