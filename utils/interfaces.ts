@@ -113,3 +113,7 @@ interface GetConfigResponse {
         }
     }
 }
+// ==================== auth Response ====================
+interface AuthResponse {
+    auth_token: string;
+}

@@ -6,7 +6,7 @@ export const useMainStore = defineStore('main', {
     state: () => ({
         isConnected: false,
         isInitiated: false,
-        isAuthenticated: false,
+        authToken: '',
         hasLivePluginInstalled: false,
         systemInfo: {} as SystemInfo,
         updateInfo: {} as UpdateInfo,
@@ -96,6 +96,9 @@ export const useMainStore = defineStore('main', {
             }
             // sort arr's items by name alphabetically
             return arr.sort()
+        },
+        isAuthenticated(): boolean {
+            return this.authToken !== ''
         }
     },
     actions: {
@@ -166,6 +169,10 @@ export const useMainStore = defineStore('main', {
             }
         }, 1000,
             { leading: true, trailing: true }
-        )
+        ),
+
+        setAuthToken(token: string) {
+            this.authToken = token
+        },
     }
 })
