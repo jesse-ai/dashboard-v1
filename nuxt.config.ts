@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
     // environment variables
     runtimeConfig: {
+        ssr: false,
         public: {
             apiBaseUrl1: process.env.NUXT_API_BASE_URL1,
             appName: 'Jesse',
