@@ -42,8 +42,8 @@ const show = computed(() => {
     }
 
     // fetch skipped versions from the local storage
-    const skippedJesseVersions = helpers.localStorageGet('skippedJesseVersions') || []
-    const skippedLivePluginVersions = helpers.localStorageGet('skippedLivePluginVersions') || []
+    const skippedJesseVersions = store.skippedJesseVersions || []
+    const skippedLivePluginVersions = store.skippedLivePluginVersions || []
 
     if (updateInfo.value.jesse_latest_version > systemInfo.value.jesse_version && !skippedJesseVersions.includes(updateInfo.value.jesse_latest_version)) {
         return {
@@ -73,16 +73,16 @@ const show = computed(() => {
 
 const skip = (type: string, version: string) => {
     if (type === 'jesse') {
-        const skippedJesseVersions = helpers.localStorageGet('skippedJesseVersions') || []
+        const skippedJesseVersions = store.skippedJesseVersions || []
         skippedJesseVersions.push(version)
-        helpers.localStorageSet('skippedJesseVersions', skippedJesseVersions)
+        store.skippedJesseVersions = skippedJesseVersions
         skipped.value = true
     }
 
     if (type === 'live') {
-        const skippedLivePluginVersions = helpers.localStorageGet('skippedLivePluginVersions') || []
+        const skippedLivePluginVersions = store.skippedLivePluginVersions || []
         skippedLivePluginVersions.push(version)
-        helpers.localStorageSet('skippedLivePluginVersions', skippedLivePluginVersions)
+        store.skippedLivePluginVersions = skippedLivePluginVersions
         skipped.value = true
     }
 }
