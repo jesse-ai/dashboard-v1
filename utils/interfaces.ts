@@ -3,22 +3,29 @@ interface GeneralInfoResponse {
     exchanges: Exchange[];
     has_live_plugin_installed: boolean;
     jesse_supported_timeframes: never[];
-    plan_info: {
-        plan: string
-    };
+    plan_info: PlanInfo;
     strategies: never[];
-    system_info: {
-        cpu_cores: number;
-        is_docker: boolean;
-        jesse_version: string;
-        operating_system: string;
-        python_version: string
-    };
-    update_info: {
-        is_update_info_available: boolean;
-        jesse_latest_version: string;
-        jesse_live_latest_version: string
-    }
+    system_info: SystemInfo;
+    update_info: UpdateInfo;
+}
+
+interface SystemInfo {
+    cpu_cores: number;
+    is_docker: boolean;
+    jesse_version: string;
+    operating_system: string;
+    python_version: string;
+    live_plugin_version?: string
+}
+
+interface PlanInfo {
+    plan: string
+}
+
+interface UpdateInfo {
+    is_update_info_available: boolean;
+    jesse_latest_version: string;
+    jesse_live_latest_version: string
 }
 
 // ==================== exchanges ====================

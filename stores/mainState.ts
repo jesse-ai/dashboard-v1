@@ -8,9 +8,9 @@ export const useMainStore = defineStore('main', {
         isInitiated: false,
         isAuthenticated: false,
         hasLivePluginInstalled: false,
-        systemInfo: {},
-        updateInfo: {},
-        planInfo: {},
+        systemInfo: {} as SystemInfo,
+        updateInfo: {} as UpdateInfo,
+        planInfo: {} as PlanInfo,
         theme: localStorage.theme,
         modals: {
             settings: false,
