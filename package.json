@@ -19,7 +19,7 @@
     "nuxt": "^3.8.0",
     "nuxt-vitest": "^0.11.5",
     "vitest": "^0.33.0",
-    "vue": "^3.3.7",
+    "vue": "3.4",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
@@ -28,8 +28,5 @@
     "@pinia/nuxt": "^0.5.1",
     "lodash": "^4.17.21",
     "pinia": "^2.1.7"
-  },
-  "resolutions": {
-    "vue": "3.3.7"
   }
 }
