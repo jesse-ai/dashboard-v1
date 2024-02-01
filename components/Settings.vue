@@ -35,7 +35,14 @@
             <Card>
                 <Heading>Data</Heading>
                 <div>
-                    <FormInput data-cy="backtest-setting-data-input" placeholder="ex: 210" title="Warmup Candles" :object="settings.backtest" description="Number of warmup candles that is loaded before starting each session" name="warm_up_candles" input-type="number" />
+                    <UFormGroup label="Warmup Candles">
+                        <template #description>
+                            Number of warmup candles that is loaded before starting each session
+                        </template>
+                        <template #default>
+                            <UInput v-model="settings.backtest.warm_up_candles" type="number" placeholder="ex: 210" />
+                        </template>
+                    </UFormGroup>
                 </div>
             </Card>
 
@@ -52,9 +59,13 @@
                     <UDivider :label="e.name" />
 
                     <div class="grid grid-cols-6 gap-6">
-                        <FormInput :title="`Starting Capital`" :object="e" name="balance" input-type="number" :step="1000" />
+                        <UFormGroup label="Starting Capital">
+                            <UInput v-model="e.balance" type="number" step="1000" />
+                        </UFormGroup>
 
-                        <FormInput :title="`Trading Fee (${round(e.fee * 100, 2)}%)`" :object="e" name="fee" input-type="number" :step="0.0001" />
+                        <UFormGroup :label="`Trading Fee (${round(e.fee * 100, 2)}%)`">
+                            <UInput v-model="e.fee" type="number" step="0.0001" />
+                        </UFormGroup>
                     </div>
 
                     <br>
@@ -87,7 +98,7 @@
 
                 <br>
 
-                <ToggleButton :object="settings.live" name="persistency" title="Enable Persistency" />
+                <ToggleButton v-model="settings.live.persistency" title="Enable Persistency" />
             </Card>
 
             <Card>
@@ -101,7 +112,7 @@
 
                 <br>
 
-                <ToggleButton :object="settings.live" name="generate_candles_from_1m" title="Generate Candles Locally" />
+                <ToggleButton v-model="settings.live.generate_candles_from_1m" title="Generate Candles Locally" />
             </Card>
 
             <Card>
@@ -205,9 +216,13 @@
                     <br>
 
                     <div class="grid grid-cols-6 gap-6">
-                        <FormInput title="Starting Capital" :object="e" name="balance" input-type="number" :step="1000" />
+                        <UFormGroup label="Starting Capital">
+                            <UInput v-model="e.balance" type="number" step="1000" />
+                        </UFormGroup>
 
-                        <FormInput :title="`Trading Fee (${round(e.fee * 100, 2)}%)`" :object="e" name="fee" input-type="number" :step="0.0001" />
+                        <UFormGroup :label="`Trading Fee (${round(e.fee * 100, 2)}%)`">
+                            <UInput v-model="e.fee" type="number" step="0.0001" />
+                        </UFormGroup>
                     </div>
 
                     <br>
@@ -221,7 +236,9 @@
             <Card>
                 <Heading>CPU</Heading>
                 <div>
-                    <FormInput placeholder="ex: 4" :title="`CPU cores to use for optimization (${settings.optimization.cpu_cores}/${systemInfo.cpu_cores})`" :object="settings.optimization" description="How many CPU cores of your machine would you like to be used for optimization?" name="cpu_cores" input-type="number" />
+                    <UFormGroup :label="`CPU cores to use for optimization(${settings.optimization.cpu_cores} / ${systemInfo.cpu_cores})`" :object="settings.optimization" description="How many CPU cores of your machine would you like to be used for optimization?`">
+                        <UInput v-model="settings.optimization.cpu_cores" type="number" placeholder="ex: 4" />
+                    </UFormGroup>
                 </div>
             </Card>
 
@@ -235,7 +252,14 @@
             <Card>
                 <Heading>Data</Heading>
                 <div>
-                    <FormInput data-cy="optimization-warmup-candles-input" placeholder="ex: 210" title="Warmup Candles" :object="settings.optimization" description="Number of warmup candles that is loaded before starting each session" name="warm_up_candles" input-type="number" />
+                    <UFormGroup label="Warmup Candles" name="Warmup Candles">
+                        <template #description>
+                            Number of warmup candles that is loaded before starting each session
+                        </template>
+                        <template #default>
+                            <UInput v-model="settings.optimization.warm_up_candles" typ="number" placeholder="ex: 210" />
+                        </template>
+                    </UFormGroup>
                 </div>
             </Card>
 
@@ -246,9 +270,14 @@
                     Because the optimize mode is limited to one route only, it makes sense to have only one configuration section for the exchange values. Depending on the exchange you define in your route, these configurations will be used.
                 </p>
                 <div class="grid grid-cols-6 gap-6 my-4">
-                    <FormInput :title="`Starting Capital`" :object="settings.optimization.exchange" name="balance" input-type="number" :step="1000" />
 
-                    <FormInput :title="`Trading Fee (${round(settings.optimization.exchange.fee * 100, 2)}%)`" :object="settings.optimization.exchange" name="fee" input-type="number" :step="0.0001" />
+                    <UFormGroup label="Starting Capital" name="Starting Capital">
+                        <UInput v-model="settings.optimization.exchange.balance" typ="number" step="1000" />
+                    </UFormGroup>
+
+                    <UFormGroup :label="`Trading Fee (${round(settings.optimization.exchange.fee * 100, 2)}%)`">
+                        <UInput v-model="settings.optimization.exchange.fee" typ="number" step="0.0001" />
+                    </UFormGroup>
                 </div>
 
                 <br>
@@ -272,9 +301,7 @@
 <script setup lang="ts">
 import { CalculatorIcon, CpuChipIcon, CurrencyDollarIcon } from '@heroicons/vue/24/outline'
 import { useAuthStore } from '@/stores/authState'
-import FormInput from '@/components/Functional/FormInput'
 import _ from 'lodash'
-import ToggleButton from '@/components/ToggleButton'
 
 const store = useAuthStore()
 const route = useRoute()
