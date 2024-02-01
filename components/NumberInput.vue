@@ -23,10 +23,7 @@
 let numberModel = defineModel()
 const props = defineProps<{
     title: string;
-    default: {
-        type: Number,
-        default: 1
-    }
+    default?: number
 }>()
 
 const setDefault = () => {
@@ -35,7 +32,7 @@ const setDefault = () => {
     }
 }
 
-watch(() => [numberModel, props.default], setDefault, { immediate: true })
+watch(() => [numberModel.value, props.default], setDefault, { immediate: true })
 
 const increase = () => {
     numberModel.value = numberModel.value as number + 1;

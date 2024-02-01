@@ -3,7 +3,7 @@
         <div class="font-semibold">{{ title }}</div>
 
         <div>
-            <RadioGroup v-model="object[name]">
+            <RadioGroup v-model="(model as any)">
                 <RadioGroupLabel class="sr-only">{{ title }}</RadioGroupLabel>
 
                 <div class="bg-white dark:bg-backdrop-dark rounded-md flex">
@@ -28,23 +28,22 @@
 <script setup lang="ts">
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
+let model = defineModel()
 const props = defineProps<{
     title: string;
-    object: Record<string, any>;
-    name: string;
     options: string[];
-    default: string;
+    default?: string
 }>()
 
 const setDefaults = () => {
     if (props.default && !props.options.includes(props.default)) {
         console.error(`The default value "${props.default}" is not in the options array. options: ${props.options}`)
     }
-    if (!props.object[props.name]) {
-        props.object[props.name] = props.default
+    if (model.value) {
+        model.value = props.default
     }
 }
 
-watch(() => [props.default, props.options, props.object, props.name], setDefaults, { immediate: true })
+watch(() => [props.default, props.options, model.value], setDefaults, { immediate: true })
 </script>
   

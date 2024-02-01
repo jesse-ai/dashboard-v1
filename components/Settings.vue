@@ -59,14 +59,14 @@
 
                     <br>
 
-                    <RadioGroups title="Type:" :object="e" name="type" :options="['spot', 'futures']" />
+                    <RadioGroups title="Type:" v-model="e.type" :options="['spot', 'futures']" />
 
                     <br>
 
                     <div v-if="e.type === 'futures'">
-                        <RadioGroups title="Leverage Mode:" :object="e" name="futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
+                        <RadioGroups title="Leverage Mode:" v-model="e.futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
                         <br>
-                        <NumberInput v-if="e.type === 'futures'" title="Leverage (x):" name="futures_leverage" :object="e" :default="1" />
+                        <NumberInput v-if="e.type === 'futures'" title="Leverage (x):" v-model="e.futures_leverage" :default="1" />
                         <br>
                     </div>
                 </div>
@@ -192,11 +192,11 @@
                 <div v-for="(e, index) in settings.live.exchanges" :key="index">
                     <UDivider :label="e.name" />
 
-                    <RadioGroups title="Leverage Mode:" :object="e" name="futures_leverage_mode" :options="['cross', 'isolated']" />
+                    <RadioGroups title="Leverage Mode:" v-model="e.futures_leverage_mode" :options="['cross', 'isolated']" />
 
                     <br>
 
-                    <NumberInput title="Leverage (x):" name="futures_leverage" :object="e" />
+                    <NumberInput title="Leverage (x):" v-model="e.futures_leverage" />
 
                     <br>
 
@@ -228,7 +228,7 @@
             <!-- Fitness Function-->
             <Card>
                 <Heading>Fitness Function</Heading>
-                <RadioGroups title="Ratio:" :object="settings.optimization" name="ratio" :options="['sharpe', 'calmar', 'sortino', 'omega']" />
+                <RadioGroups title="Ratio:" v-model="settings.optimization.ratio" :options="['sharpe', 'calmar', 'sortino', 'omega']" />
             </Card>
 
             <!-- Data -->
@@ -253,16 +253,16 @@
 
                 <br>
 
-                <RadioGroups title="Type:" :object="settings.optimization.exchange" name="type" :options="['spot', 'futures']" default="futures" />
+                <RadioGroups title="Type:" v-model="settings.optimization.exchange.type" :options="['spot', 'futures']" default="futures" />
 
                 <br>
 
                 <div v-if="settings.optimization.exchange.type === 'futures'">
-                    <RadioGroups title="Leverage Mode:" :object="settings.optimization.exchange" name="futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
+                    <RadioGroups title="Leverage Mode:" v-model="settings.optimization.exchange.futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
 
                     <br>
 
-                    <NumberInput title="Leverage (x):" name="futures_leverage" :object="settings.optimization.exchange" :default="1" />
+                    <NumberInput title="Leverage (x):" v-model="settings.optimization.exchange.futures_leverage" :default="1" />
                 </div>
             </Card>
         </div>
@@ -271,10 +271,8 @@
 
 <script setup lang="ts">
 import { CalculatorIcon, CpuChipIcon, CurrencyDollarIcon } from '@heroicons/vue/24/outline'
-import RadioGroups from '@/components/RadioGroups'
 import { useAuthStore } from '@/stores/authState'
 import FormInput from '@/components/Functional/FormInput'
-import NumberInput from '@/components/Functional/NumberInput'
 import _ from 'lodash'
 import ToggleButton from '@/components/ToggleButton'
 
