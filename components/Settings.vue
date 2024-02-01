@@ -20,15 +20,15 @@
                 </p>
                 <br>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <UCheckbox v-model="settings.backtest.logging" label="Order Submission" />
-                    <UCheckbox label="Order Cancellation" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Order Execution" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Position Opened" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Position Increased" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Position Reduced" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Position Closed" v-model="settings.backtest.logging" />
-                    <UCheckbox label="1m candles" v-model="settings.backtest.logging" />
-                    <UCheckbox label="Trading Candles" v-model="settings.backtest.logging" />
+                    <UCheckbox label="Order Submission" v-model="settings.backtest.logging['order_submission']" />
+                    <UCheckbox label="Order Cancellation" v-model="settings.backtest.logging['order_cancellation']" />
+                    <UCheckbox label="Order Execution" v-model="settings.backtest.logging['order_execution']" />
+                    <UCheckbox label="Position Opened" v-model="settings.backtest.logging['position_opened']" />
+                    <UCheckbox label="Position Increased" v-model="settings.backtest.logging['position_increased']" />
+                    <UCheckbox label="Position Reduced" v-model="settings.backtest.logging['position_reduced']" />
+                    <UCheckbox label="Position Closed" v-model="settings.backtest.logging['position_closed']" />
+                    <UCheckbox label="1m candles" v-model="settings.backtest.logging['shorter_period_candles']" />
+                    <UCheckbox label="Trading Candles" v-model="settings.backtest.logging['trading_candles']" />
                 </div>
             </Card>
 
@@ -49,7 +49,7 @@
                 <br>
 
                 <div v-for="(e, index) in settings.backtest.exchanges" :key="index" :data-cy="'backtest-setting-exchange-' + convertToSlug(e.name)">
-                    <Divider bg-light="bg-gray-50" bg-dark="dark:bg-gray-700" :title="e.name" />
+                    <UDivider :label="e.name" />
 
                     <div class="grid grid-cols-6 gap-6">
                         <FormInput :title="`Starting Capital`" :object="e" name="balance" input-type="number" :step="1000" />
@@ -112,15 +112,15 @@
                 </p>
                 <br>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <UCheckbox label="Order Submission" v-model="settings.live.logging" />
-                    <UCheckbox label="Order Cancellation" v-model="settings.live.logging" />
-                    <UCheckbox label="Order Execution" v-model="settings.live.logging" />
-                    <UCheckbox label="Position Opened" v-model="settings.live.logging" />
-                    <UCheckbox label="Position Increased" v-model="settings.live.logging" />
-                    <UCheckbox label="Position Reduced" v-model="settings.live.logging" />
-                    <UCheckbox label="Position Closed" v-model="settings.live.logging" />
-                    <UCheckbox label="1m candles" v-model="settings.live.logging" />
-                    <UCheckbox label="Trading Candles" v-model="settings.live.logging" />
+                    <UCheckbox label="Order Submission" v-model="settings.live.logging['order_submission']" />
+                    <UCheckbox label="Order Cancellation" v-model="settings.live.logging['order_cancellation']" />
+                    <UCheckbox label="Order Execution" v-model="settings.live.logging['order_execution']" />
+                    <UCheckbox label="Position Opened" v-model="settings.live.logging['position_opened']" />
+                    <UCheckbox label="Position Increased" v-model="settings.live.logging['position_increased']" />
+                    <UCheckbox label="Position Reduced" v-model="settings.live.logging['position_reduced']" />
+                    <UCheckbox label="Position Closed" v-model="settings.live.logging['position_closed']" />
+                    <UCheckbox label="1m candles" v-model="settings.live.logging['shorter_period_candles']" />
+                    <UCheckbox label="Trading Candles" v-model="settings.live.logging['trading_candles']" />
                 </div>
             </Card>
 
@@ -145,7 +145,7 @@
                 </p>
                 <br>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <UCheckbox label="Enable Notifications" v-model="settings.live.notifications" />
+                    <UCheckbox label="Enable Notifications" v-model="settings.live.notifications['enabled']" />
                 </div>
                 <br>
 
@@ -155,14 +155,14 @@
                     </p>
                     <br>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <UCheckbox label="Errors" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Session Start" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Session Termination" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Order Submission" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Order Cancellation" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Order Execution" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Opened Positions" v-model="settings.live.notifications.events" />
-                        <UCheckbox label="Updated Position" v-model="settings.live.notifications.events" />
+                        <UCheckbox label="Errors" v-model="settings.live.notifications.events['errors']" />
+                        <UCheckbox label="Session Start" v-model="settings.live.notifications.events['started_session']" />
+                        <UCheckbox label="Session Termination" v-model="settings.live.notifications.events['terminated_session']" />
+                        <UCheckbox label="Order Submission" v-model="settings.live.notifications.events['submitted_orders']" />
+                        <UCheckbox label="Order Cancellation" v-model="settings.live.notifications.events['cancelled_orders']" />
+                        <UCheckbox label="Order Execution" v-model="settings.live.notifications.events['executed_orders']" />
+                        <UCheckbox label="Opened Positions" v-model="settings.live.notifications.events['opened_position']" />
+                        <UCheckbox label="Updated Position" v-model="settings.live.notifications.events['updated_position']" />
                     </div>
 
                     <br>
@@ -190,7 +190,7 @@
 
             <Card v-if="Object.keys(settings.live.exchanges).length">
                 <div v-for="(e, index) in settings.live.exchanges" :key="index">
-                    <Divider :title="e.name" bg-light="bg-gray-50" bg-dark="dark:bg-gray-700" />
+                    <UDivider :label="e.name" />
 
                     <RadioGroups title="Leverage Mode:" :object="e" name="futures_leverage_mode" :options="['cross', 'isolated']" />
 
@@ -268,124 +268,104 @@
         </div>
     </div>
 </template>
-  
-<script>
-import { CalculatorIcon, ChipIcon, CurrencyDollarIcon } from '@heroicons/vue/outline'
-import Divider from '@/components/Divider'
-import Heading from '@/components/Heading'
-import Card from '@/components/Card'
+
+<script setup lang="ts">
+import { CalculatorIcon, CpuChipIcon, CurrencyDollarIcon } from '@heroicons/vue/24/outline'
 import RadioGroups from '@/components/RadioGroups'
-import { mapState } from 'pinia'
-import { useMainStore } from '@/stores/main'
+import { useAuthStore } from '@/stores/authState'
 import FormInput from '@/components/Functional/FormInput'
 import NumberInput from '@/components/Functional/NumberInput'
 import _ from 'lodash'
 import ToggleButton from '@/components/ToggleButton'
 
+const store = useAuthStore()
+const route = useRoute()
 
-export default {
-    components: {
-        ToggleButton,
-        Checkbox,
-        Divider,
-        Heading,
-        Card,
-        RadioGroups,
-        FormInput,
-        NumberInput
+const timeframes = ref(['1m', '3m', '5m', '15m', '30m', '45m', '1h', '2h', '3h', '4h', '6h', '8h', '12h', '1D'])
+let currentTab = ref(route.name)
+const persistencyOptions = ref([
+    {
+        name: 'Continue Session',
+        description: 'Continue from the previous session using existing data on the exchange'
     },
-    data() {
-        return {
-            timeframes: ['1m', '3m', '5m', '15m', '30m', '45m', '1h', '2h', '3h', '4h', '6h', '8h', '12h', '1D'],
-            currentTab: 'Backtest',
-            persistencyOptions: [
-                {
-                    name: 'Continue Session',
-                    description: 'Continue from the previous session using existing data on the exchange'
-                },
-                {
-                    name: 'New Session',
-                    description: 'Start a fresh sessions. Close existing positions and orders on the exchange'
-                }
-            ],
-        }
-    },
-    computed: {
-        ...mapState(useMainStore, ['settings', 'systemInfo', 'hasLivePluginInstalled', 'planInfo', 'exchangeInfo']),
-        isLive() {
-            return this.$route.name === 'Live'
-        },
-        navigation() {
-            const arr = [
-                { name: 'Backtest', icon: CalculatorIcon },
-                { name: 'Optimization', icon: ChipIcon },
-            ]
-            if (this.hasLivePluginInstalled) {
-                arr.push({ name: 'Live', icon: CurrencyDollarIcon })
-            }
-            return arr
-        }
-    },
-    created() {
-        // if this.$route.name is either "Backtest", "Optimization" or "Live", set the currentTab to that value
-        if (this.$route.name === 'Backtest') {
-            this.currentTab = 'Backtest'
-        } else if (this.$route.name === 'Optimization') {
-            this.currentTab = 'Optimization'
-        } else if (this.$route.name === 'Live') {
-            this.currentTab = 'Live'
-        }
-    },
-    mounted() {
-        this.sortExchanges()
-        this.removeInactiveLiveExchanges()
-    },
-    methods: {
-        round: _.round,
-        sortExchanges() {
-            const sortBacktestKeys = Object.keys(this.settings.backtest.exchanges).sort()
-            const sortLiveKeys = Object.keys(this.settings.live.exchanges).sort()
-            const backtestExchange = {}
-            const liveExchange = {}
-            for (const item of sortBacktestKeys) {
-                backtestExchange[item] = this.settings.backtest.exchanges[item]
-            }
-            this.settings.backtest.exchanges = backtestExchange
-
-            for (const item of sortLiveKeys) {
-                liveExchange[item] = this.settings.live.exchanges[item]
-            }
-            this.settings.live.exchanges = liveExchange
-        },
-        removeInactiveLiveExchanges() {
-            // loop through this.settings.live.exchanges, if the
-            // allowedToTradeIn(exchange.name) is false, remove
-            // that item from this.settings.live.exchanges
-            for (const exchange of Object.keys(this.settings.live.exchanges)) {
-                if (!this.allowedToTradeIn(exchange)) {
-                    delete this.settings.live.exchanges[exchange]
-                }
-            }
-        },
-        allowedToTradeIn(exchangeName) {
-            // can trade everywhere if it's not for live mode
-            if (!this.isLive) return true
-
-            // premium plans can trade everywhere
-            if (this.planInfo.plan === 'premium') {
-                return true
-            }
-
-            // otherwise, can trade if "required_live_plan" property of the exchange is "free"
-            return this.exchangeInfo[exchangeName].required_live_plan === 'free'
-        },
-        convertToSlug(Text) {
-            return Text
-                .toLowerCase()
-                .replace(/ /g, '-')
-                .replace(/[^\w-]+/g, '')
-        },
+    {
+        name: 'New Session',
+        description: 'Start a fresh sessions. Close existing positions and orders on the exchange'
     }
+])
+
+const settings = computed(() => store.settings)
+const systemInfo = computed(() => store.systemInfo)
+const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled)
+const planInfo = computed(() => store.planInfo)
+const exchangeInfo = computed(() => store.exchangeInfo)
+
+const isLive = computed(() => route.name === 'Live')
+const navigation = computed(() => {
+    const arr = [
+        { name: 'Backtest', icon: CalculatorIcon },
+        { name: 'Optimization', icon: CpuChipIcon },
+    ]
+    if (hasLivePluginInstalled.value) {
+        arr.push({ name: 'Live', icon: CurrencyDollarIcon })
+    }
+    return arr
+})
+
+if (route.name === 'Backtest') {
+    currentTab.value = 'Backtest'
+} else if (route.name === 'Optimization') {
+    currentTab.value = 'Optimization'
+} else if (route.name === 'Live') {
+    currentTab.value = 'Live'
+}
+
+sortExchanges()
+removeInactiveLiveExchanges()
+
+const round = _.round
+
+function sortExchanges() {
+    const sortBacktestKeys = Object.keys(settings.value.backtest.exchanges).sort()
+    const sortLiveKeys = Object.keys(settings.value.live.exchanges).sort()
+    const backtestExchange = {} as any
+    const liveExchange = {} as any
+    for (const item of sortBacktestKeys) {
+        backtestExchange[item] = settings.value.backtest.exchanges[item]
+    }
+    settings.value.backtest.exchanges = backtestExchange
+
+    for (const item of sortLiveKeys) {
+        liveExchange[item] = settings.value.live.exchanges[item]
+    }
+    settings.value.live.exchanges = liveExchange
+}
+
+function removeInactiveLiveExchanges() {
+    // loop through this.settings.value.live.exchanges, if the
+    // allowedToTradeIn(exchange.name) is false, remove
+    // that item from this.settings.value.live.exchanges
+    for (const exchange of Object.keys(settings.value.live.exchanges)) {
+        if (!allowedToTradeIn(exchange)) {
+            delete settings.value.live.exchanges[exchange]
+        }
+    }
+}
+
+function allowedToTradeIn(exchangeName: string) {
+    if (!isLive.value) return true
+    if (planInfo.value.plan === 'premium') {
+        return true
+    }
+    const exchange = exchangeInfo.value.find(exchange => exchange.name === exchangeName)
+    return exchange ? exchange.required_live_plan === 'free' : false
+}
+
+function convertToSlug(Text: string) {
+    return Text
+        .toLowerCase()
+        .replace(/ /g, '-')
+        .replace(/[^\w-]+/g, '')
 }
 </script>
   
