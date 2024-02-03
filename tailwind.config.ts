@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss'
+import type { Config } from 'tailwindcss'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 export default <Partial<Config>>{
@@ -11,6 +11,17 @@ export default <Partial<Config>>{
                 display: ["Inter"],
                 body: ["Inter"],
             },
+            colors: {
+                primary: {
+                    DEFAULT: '#4f46e5',
+                    dark: '#f9b537'
+                },
+                backdrop: {
+                    DEFAULT: '#ffffff',
+                    dark: '#333333'
+                },
+            },
         },
+
     },
 }
