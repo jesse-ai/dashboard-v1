@@ -1,9 +1,15 @@
 <template>
-  <Nav v-if="store.isAuthenticated" />
+  <NuxtLoadingIndicator />
 
-  <router-view v-if="store.isAuthenticated" />
+  <NuxtLayout>
+    <Nav v-if="store.isAuthenticated" />
 
-  <Login v-else />
+    <NuxtPage v-if="store.isAuthenticated" />
+
+    <Login v-else />
+  </NuxtLayout>
+
+  <UNotifications />
 </template>
 
 
@@ -13,6 +19,7 @@ import { useAuthStore } from '@/stores/authState'
 const store = useAuthStore()
 const settings = computed(() => store.settings)
 const authToken = computed(() => store.authToken)
+const colorMode = useColorMode()
 
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -28,12 +35,6 @@ watch(settings, (newValue, oldValue) => {
 onMounted(() => {
   if (sessionStorage.getItem('auth_key') !== null) {
     store.setAuthToken(sessionStorage.auth_key)
-  }
-
-  if (store.theme == 'dark') {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
   }
 })
 </script>
