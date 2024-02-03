@@ -22,11 +22,9 @@ const toggle = () => {
     const newTheme = theme.value === 'light' ? 'dark' : 'light'
     if (newTheme === 'light') {
         document.documentElement.classList.remove('dark')
-        localStorage.theme = 'light'
         theme.value = 'light'
     } else if (newTheme === 'dark') {
         document.documentElement.classList.add('dark')
-        localStorage.theme = 'dark'
         theme.value = 'dark'
     }
 }
