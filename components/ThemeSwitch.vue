@@ -1,8 +1,9 @@
 <template>
     <button id="theme-switch-button" class="btn-nav" @click="toggle">
-        <MoonIcon v-if="store.theme === 'light'" class="h-6 w-6" aria-hidden="true" />
+        <SunIcon v-if="colorMode.preference === 'dark'" class="h-6 w-6" aria-hidden="true" />
 
-        <SunIcon v-if="store.theme === 'dark'" class="h-6 w-6" aria-hidden="true" />
+        <MoonIcon v-else class="h-6 w-6" aria-hidden="true" />
+
     </button>
 </template>
   
@@ -11,20 +12,14 @@ import {
     MoonIcon,
     SunIcon
 } from '@heroicons/vue/24/outline'
-import { useAuthStore } from '@/stores/authState'
-
-const store = useAuthStore()
+const colorMode = useColorMode()
 
 
 const toggle = () => {
-    const newTheme = store.theme === 'light' ? 'dark' : 'light'
-    if (newTheme === 'light') {
-        document.documentElement.classList.remove('dark')
-        store.theme = 'light'
-    } else if (newTheme === 'dark') {
-        document.documentElement.classList.add('dark')
-        store.theme = 'dark'
-    }
+    if (colorMode.preference == 'dark')
+        colorMode.preference = 'light'
+    else
+        colorMode.preference = 'dark'
 }
 </script>
   

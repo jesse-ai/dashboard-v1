@@ -12,7 +12,8 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxtjs/tailwindcss": "^6.8.1",
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@nuxtjs/tailwindcss": "^6.11.2",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@types/lodash": "^4.14.202",
     "happy-dom": "^12.10.3",

@@ -10,7 +10,6 @@ export const useAuthStore = defineStore('auth', {
         systemInfo: {} as SystemInfo,
         updateInfo: {} as UpdateInfo,
         planInfo: {} as PlanInfo,
-        theme: 'dark',
         settings: {
             backtest: {
                 logging: {

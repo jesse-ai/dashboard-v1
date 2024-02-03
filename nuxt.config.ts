@@ -14,6 +14,11 @@ export default defineNuxtConfig({
         '@pinia/nuxt',
         '@pinia-plugin-persistedstate/nuxt',
         '@nuxt/ui',
-        'nuxt-vitest'
-    ]
+        'nuxt-vitest',
+        '@nuxtjs/tailwindcss',
+        '@nuxtjs/color-mode'
+    ],
+    css: [
+        '@/assets/css/main.css'
+    ],
 })
