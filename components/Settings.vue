@@ -2,7 +2,7 @@
     <div class="lg:grid lg:grid-cols-12 lg:gap-x-5 select-none">
         <aside class="py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
             <nav class="space-y-1">
-                <button v-for="item in navigation" :key="item.name" :data-cy="item.name + '-setting'" class="block w-full" :class="[currentTab === item.name ? 'bg-gray-100 dark:bg-gray-800 text-indigo-700 dark:text-indigo-400 hover:text-indigo-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-300', 'group rounded-md px-3 py-2 flex items-center text-sm font-medium']" @click="currentTab = item.name">
+                <button v-for="item in navigation" :key="item.name" class="block w-full" :class="[currentTab === item.name ? 'bg-gray-100 dark:bg-gray-800 text-indigo-700 dark:text-indigo-400 hover:text-indigo-700' : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-300', 'group rounded-md px-3 py-2 flex items-center text-sm font-medium']" @click="currentTab = item.name">
                     <component :is="item.icon" :class="[currentTab === item.name ? 'text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-500' : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-400', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6']" aria-hidden="true" />
                     <span class="truncate">
                         {{ item.name }}
@@ -12,7 +12,7 @@
         </aside>
 
         <!-- backtest settings -->
-        <div v-if="currentTab === 'Backtest'" data-cy="backtest-setting-tab" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
+        <div v-if="currentTab === 'Backtest'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
             <Card>
                 <Heading>Logs</Heading>
                 <p>
@@ -55,7 +55,7 @@
                 <br>
                 <br>
 
-                <div v-for="(e, index) in settings.backtest.exchanges" :key="index" :data-cy="'backtest-setting-exchange-' + convertToSlug(e.name)">
+                <div v-for="(e, index) in settings.backtest.exchanges" :key="index">
                     <UDivider :label="e.name" />
 
                     <div class="grid grid-cols-6 gap-6">
@@ -85,7 +85,7 @@
         </div>
 
         <!-- live settings -->
-        <div v-if="currentTab === 'Live'" data-cy="setting-live-tab" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
+        <div v-if="currentTab === 'Live'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
             <Card>
                 <Heading>Persistency</Heading>
                 <p>
@@ -140,7 +140,7 @@
             <Card>
                 <Heading>Data</Heading>
                 <div>
-                    <FormInput data-cy="live-setting-warmup-candles-input" placeholder="ex: 210" title="Warmup Candles" :object="settings.live" description="Number of warmup candles that is loaded before starting each session" name="warm_up_candles" :min="1" input-type="number" />
+                    <FormInput placeholder="ex: 210" title="Warmup Candles" :object="settings.live" description="Number of warmup candles that is loaded before starting each session" name="warm_up_candles" :min="1" input-type="number" />
                 </div>
             </Card>
 
@@ -191,7 +191,7 @@
 
                     <p>You can choose the <strong>timeframe</strong> for how frequently you want to receive them:</p>
 
-                    <select v-model="settings.live.notifications.position_report_timeframe" data-cy="live-setting-report-notification-timeframe" class="dark:bg-backdrop-dark dark:hover:bg-gray-800 hover:bg-gray-50 cursor-pointer w-full py-2 my-4 rounded border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                    <select v-model="settings.live.notifications.position_report_timeframe" class="dark:bg-backdrop-dark dark:hover:bg-gray-800 hover:bg-gray-50 cursor-pointer w-full py-2 my-4 rounded border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         <option v-for="item in timeframes" :key="item">{{ item }}</option>
                     </select>
 
@@ -231,7 +231,7 @@
         </div>
 
         <!-- optimization settings -->
-        <div v-if="currentTab === 'Optimization'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full" data-cy="optimization-setting-tab">
+        <div v-if="currentTab === 'Optimization'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
             <!-- CPU cores -->
             <Card>
                 <Heading>CPU</Heading>
@@ -307,7 +307,8 @@ const store = useAuthStore()
 const route = useRoute()
 
 const timeframes = ref(['1m', '3m', '5m', '15m', '30m', '45m', '1h', '2h', '3h', '4h', '6h', '8h', '12h', '1D'])
-let currentTab = ref(route.name)
+let currentTab = ref(['Optimization', 'Backtest', 'Live'].includes(route.name as string) ? route.name : 'Backtest')
+console.log(route.name)
 const persistencyOptions = ref([
     {
         name: 'Continue Session',
