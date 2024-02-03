@@ -1,5 +1,5 @@
 <template>
-  <!-- <Nav v-if="isAuthenticated" /> -->
+  <Nav v-if="store.isAuthenticated" />
 
   <router-view v-if="store.isAuthenticated" />
 
@@ -24,9 +24,16 @@ watch(settings, (newValue, oldValue) => {
   store.updateConfig()
 }, { deep: true })
 
+
 onMounted(() => {
   if (sessionStorage.getItem('auth_key') !== null) {
     store.setAuthToken(sessionStorage.auth_key)
+  }
+
+  if (store.theme == 'dark') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
   }
 })
 </script>
