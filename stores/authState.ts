@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
 import { usePostApi } from "~/composables/useApi";
-import _ from 'lodash';
 import { useMainStore } from './mainState';
-
+import { useThrottleFn } from '@vueuse/core';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         authToken: '',
@@ -95,10 +94,11 @@ export const useAuthStore = defineStore('auth', {
     },
     actions: {
         async initiate() {
-            const { data, error } = await usePostApi('/general-info', {})
+            const { data, error } = await usePostApi('/general-info', {}, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
+                return
             }
 
             const res = data.value as GeneralInfoResponse
@@ -142,26 +142,27 @@ export const useAuthStore = defineStore('auth', {
                 }
             }
 
-            const { data: postData, error: postError } = await usePostApi('/get-config', { current_config: this.settings })
-            const resConfig = postData.value as GetConfigResponse
-            // fetch and merge the user's settings from the database
-            this.settings = resConfig.data.data.data
-            // initiate the main store
-            useMainStore().initiate()
+            const { data: postData, error: postError } = await usePostApi('/get-config', { current_config: this.settings }, true)
             if (postError.value && postError.value.statusCode !== 200) {
                 showNotification('error', postError.value.data.message)
+                return
             }
+            const resConfig = postData.value as GetConfigResponse
+            // fetch and merge the user's settings from the database
+            this.settings = resConfig.data.data
+            // initiate the main store
+            useMainStore().initiate()
         },
 
-        updateConfig: _.throttle(async function (this: any) {
-            if (!useMainStore().isInitiated) return
+        updateConfig: useThrottleFn(async () => {
+            if (!useMainStore().isInitiated && !useAuthStore().settings) return
+            const { data, error } = await usePostApi('/update-config', { current_config: useAuthStore().settings }, true)
 
-            const { data, error } = await usePostApi('/update-config', { current_config: this.settings })
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
             }
         }, 1000,
-            { leading: true, trailing: true }
+            true, true
         ),
 
         setAuthToken(token: string) {

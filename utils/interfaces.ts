@@ -108,9 +108,7 @@ interface Settings {
 // ==================== get config ====================
 interface GetConfigResponse {
     data: {
-        data: {
-            data: Settings;
-        }
+        data: Settings;
     }
 }
 // ==================== auth Response ====================
