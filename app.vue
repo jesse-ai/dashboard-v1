@@ -19,7 +19,6 @@ import { useAuthStore } from '@/stores/authState'
 const store = useAuthStore()
 const settings = computed(() => store.settings)
 const authToken = computed(() => store.authToken)
-const colorMode = useColorMode()
 
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
