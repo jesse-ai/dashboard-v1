@@ -18,31 +18,25 @@
             <br>
 
             <div>
-                <form action="/login" @submit.prevent="login">
-                    <div class="mt-1 flex">
-                        <div class="relative flex items-stretch flex-grow focus-within:z-10">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <LockClosedIcon class="h-5 w-5 text-gray-600 dark:text-gray-400" aria-hidden="true" />
-                            </div>
-                            <input id="password" v-model="password" type="password" name="password" autofocus class="dark:bg-gray-800 dark:border-gray-900 text-black dark:text-white focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 block w-full rounded pl-10 sm:text-sm border-gray-300" placeholder="Password...">
-                        </div>
+                <UForm :state="form" class="flex items-center justify-center" @submit="login">
+                    <UFormGroup name="password">
+                        <UInput v-model="form.password" placeholder="password" icon="i-heroicons-lock-closed" type="password" />
+                    </UFormGroup>
 
-                        <button type="submit" class="relative inline-flex items-center px-4 py-4 rounded bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none text-white dark:text-black text-base tracking-wide ml-2">
-                            <ArrowLongRightIcon class="h-5 w-5 text-white" aria-hidden="true" />
-                        </button>
-                    </div>
-                </form>
+                    <UButton icon="i-heroicons-arrow-long-right" type="submit" class="ml-2" size="sm" color="primary" square variant="solid" />
+                </UForm>
             </div>
         </div>
     </section>
 </template>
   
 <script setup lang="ts">
-import { ArrowLongRightIcon, LockClosedIcon } from '@heroicons/vue/24/outline/esm'
 import { useAuthStore } from '@/stores/authState'
 
 const open = ref(true)
-const password = ref('')
+const form = reactive({
+    password: undefined,
+})
 const store = useAuthStore()
 
 const setAuth = () => {
@@ -52,14 +46,14 @@ const setAuth = () => {
 }
 
 const login = async () => {
-    const { data, error } = await usePostApi('/auth', {
-        password: password.value,
-    })
-    const res = data.value as AuthResponse
-    sessionStorage.auth_key = res.auth_token
-    setAuth()
-    showNotification('success', 'Logged in successfully')
+    if (!form.password) {
+        showNotification('error', 'Password is required')
+        return true
+    }
 
+    const { data, error } = await usePostApi('/auth', {
+        password: form.password,
+    })
     if (error.value && error.value.statusCode !== 200) {
         if (!error.value.data.message) {
             showNotification('error', error.value.data)
@@ -68,6 +62,11 @@ const login = async () => {
         } else {
             showNotification('error', `[${error.value.statusCode}]: ${error.value.data.message}`)
         }
+        return
     }
+    const res = data.value as AuthResponse
+    sessionStorage.auth_key = res.auth_token
+    setAuth()
+    showNotification('success', 'Logged in successfully')
 }
 </script>
