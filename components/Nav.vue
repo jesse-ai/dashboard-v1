@@ -7,17 +7,15 @@
         <Settings />
     </SlideOver>
 
-
-
     <!-- Feedback -->
     <SlideOver v-model="feedback" title="Feedback">
         <Feedback v-model="feedback" />
     </SlideOver>
 
     <!-- Make strategy -->
-    <!-- <SlideOver :object="modals" name="makeStrategy" title="Make a new strategy" width="max-w-lg">
-        <MakeStrategy />
-    </SlideOver> -->
+    <SlideOver v-model="makeStrategy" title="Make a new strategy" width="max-w-lg">
+        <MakeStrategy v-model="makeStrategy" />
+    </SlideOver>
 
     <!-- Make strategy -->
     <!-- <SlideOver :object="modals" name="about" title="About" width="max-w-lg">
