@@ -12,7 +12,7 @@ export async function useFetchApi(url: string, authenticated: boolean = false) {
     }
 
     const headers = authenticated ? {
-        'Authorization': `Bearer ${authStore().bearerToken}`
+        'Authorization': `${useAuthStore().authToken}`
     } : undefined;
     const { data, error } = await useFetch(`${fullUrl}`, { headers });
     return { data, error };
@@ -29,7 +29,7 @@ export async function usePostApi(url: string, payload: any, authenticated: boole
         fullUrl = url;
     }
     const headers: HeadersInit = authenticated ? {
-        'Authorization': `Bearer ${authStore().bearerToken}`,
+        'Authorization': `${useAuthStore().authToken}`,
         'Content-Type': 'application/json'
     } : {
         'Content-Type': 'application/json'
