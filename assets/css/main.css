@@ -8,6 +8,37 @@
     font-display: swap;
 }
 
+html {
+    @apply text-body bg-backdrop;
+}
+
+html.dark {
+    @apply text-body-dark bg-backdrop-dark;
+}
+
+h1,
+.h1 {
+    @apply text-xl;
+}
+
+h2,
+.h2 {
+    @apply text-lg;
+}
+
+h3,
+.h3 {
+    @apply text-base font-semibold;
+}
+
 .btn-nav {
     @apply ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none
+}
+
+.btn-primary {
+    @apply font-medium select-none items-center px-2.5 py-1.5 border border-transparent rounded shadow-sm text-white bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none dark:text-black text-base tracking-wide;
+}
+
+.btn-link {
+    @apply font-medium select-none items-center hover:underline focus:outline-none text-base tracking-wide;
 }

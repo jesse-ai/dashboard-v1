@@ -4,6 +4,10 @@ import defaultTheme from 'tailwindcss/defaultTheme'
 export default <Partial<Config>>{
     theme: {
         extend: {
+            container: {
+                center: true,
+                padding: '1rem'
+            },
             fontFamily: {
                 sans: ["Inter"],
                 serif: ["source-serif-pro", ...defaultTheme.fontFamily.serif],
@@ -20,6 +24,10 @@ export default <Partial<Config>>{
                     DEFAULT: '#ffffff',
                     dark: '#333333'
                 },
+                body: {
+                    DEFAULT: '#333333',
+                    dark: '#f6f7ee'
+                }
             },
         },
 
