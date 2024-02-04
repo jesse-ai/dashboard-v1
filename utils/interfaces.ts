@@ -131,3 +131,8 @@ interface FAQ {
     updated_at: Date;
     views: number;
 }
+// ==================== Make Strategy Response ====================
+interface MakeStrategyResponse {
+    message: string;
+    status: string;
+}
