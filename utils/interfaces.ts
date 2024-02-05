@@ -136,3 +136,53 @@ interface MakeStrategyResponse {
     message: string;
     status: string;
 }
+// ==================== positions Event ====================
+interface positionsEvent {
+    currency: string;
+    current_price: number;
+    entry: number;
+    leverage: number;
+    liquidation_price: number | null;
+    opened_at: number;
+    pnl: number;
+    pnl_perc: number;
+    qty: number;
+    strategy_name: string;
+    symbol: string;
+    type: string;
+    value: number;
+}
+// ==================== orders Event ====================
+interface ordersEvent {
+    canceled_at: number | null;
+    created_at: number;
+    exchange_id: string;
+    executed_at: number | null;
+    filled_qty: number;
+    id: string;
+    price: number;
+    qty: number;
+    session_id: string | null;
+    side: string;
+    status: string;
+    symbol: string;
+    type: string;
+}
+// ==================== general Info Event ====================
+interface generalInfoEvent {
+    started_at: number;
+    current_time: number;
+    started_balance: number;
+    current_balance: number;
+    debug_mode: boolean;
+    count_error_logs: number;
+    count_info_logs: number;
+    count_active_orders: number;
+    open_positions: number;
+    pnl: number;
+    pnl_perc: number;
+    count_trades: number;
+    count_winning_trades: number;
+    count_losing_trades: number;
+    routes: any[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
+}
