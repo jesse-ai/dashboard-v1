@@ -6,7 +6,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         authToken: '',
         hasLivePluginInstalled: false,
-        systemInfo: {} as SystemInfo,
+        systemInfo: {} as any,
         updateInfo: {} as UpdateInfo,
         planInfo: {} as PlanInfo,
         settings: {
@@ -27,7 +27,7 @@ export const useAuthStore = defineStore('auth', {
                 exchanges: {},
             },
             live: {
-                persistency: true,
+                persistency: {},
                 generate_candles_from_1m: false,
                 logging: {
                     order_submission: true,
@@ -76,7 +76,9 @@ export const useAuthStore = defineStore('auth', {
         exchangeInfo: {} as Exchange[],
         jesseSupportedTimeframes: [],
     }),
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
     getters: {
         backtestingExchangeNames(): string[] {
             const arr = []
@@ -102,7 +104,6 @@ export const useAuthStore = defineStore('auth', {
             }
 
             const res = data.value as GeneralInfoResponse
-
             this.systemInfo = res.system_info
             this.updateInfo = res.update_info
             this.strategies = res.strategies
