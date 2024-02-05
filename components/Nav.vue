@@ -17,10 +17,10 @@
         <MakeStrategy v-model="makeStrategy" />
     </SlideOver>
 
-    <!-- Make strategy -->
-    <!-- <SlideOver :object="modals" name="about" title="About" width="max-w-lg">
-        <About />
-    </SlideOver> -->
+    <!-- About -->
+    <SlideOver v-model="about" title="About" width="max-w-lg">
+        <About v-model="about" />
+    </SlideOver>
 
     <Disclosure v-slot="{ open }" as="nav" class="bg-gray-100 dark:bg-gray-800 border-b dark:border-gray-900 select-none">
         <div class="mx-auto px-4 lg:px-8">
@@ -185,7 +185,7 @@
                 </div>
 
                 <div class="w-full">
-                    <button href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank" @click="makeStrategy = true">
+                    <button href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank" @click="about = true">
                         <IdentificationIcon class="w-5 h-5 mr-2" />
                         About
                     </button>
