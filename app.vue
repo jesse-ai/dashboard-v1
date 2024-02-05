@@ -2,11 +2,11 @@
   <NuxtLoadingIndicator />
 
   <NuxtLayout>
-    <Nav v-if="store.isAuthenticated" />
+    <Nav v-if="useAuthStore().isAuthenticated" />
 
-    <NuxtPage v-if="store.isAuthenticated" />
+    <NuxtPage v-if="useAuthStore().isAuthenticated" />
 
-    <Login v-else />
+    <Login v-if="!useAuthStore().isAuthenticated" />
   </NuxtLayout>
 
   <UNotifications />
@@ -16,24 +16,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authState'
 
-const store = useAuthStore()
-const settings = computed(() => store.settings)
-const authToken = computed(() => store.authToken)
+const settings = computed(() => useAuthStore().settings)
+const authToken = computed(() => useAuthStore().authToken)
 
+const systemInfo = computed(() => useAuthStore().systemInfo)
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    store.initiate()
+    useAuthStore().initiate()
   }
 })
 
 watch(settings, (newValue, oldValue) => {
-  store.updateConfig()
+  useAuthStore().updateConfig()
 }, { deep: true })
-
-
-onMounted(() => {
-  if (sessionStorage.getItem('auth_key') !== null) {
-    store.setAuthToken(sessionStorage.auth_key)
-  }
-})
 </script>
