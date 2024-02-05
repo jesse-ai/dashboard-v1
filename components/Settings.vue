@@ -308,7 +308,6 @@ const route = useRoute()
 
 const timeframes = ref(['1m', '3m', '5m', '15m', '30m', '45m', '1h', '2h', '3h', '4h', '6h', '8h', '12h', '1D'])
 let currentTab = ref(['Optimization', 'Backtest', 'Live'].includes(route.name as string) ? route.name : 'Backtest')
-console.log(route.name)
 const persistencyOptions = ref([
     {
         name: 'Continue Session',
