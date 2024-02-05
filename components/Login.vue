@@ -39,8 +39,8 @@ const form = reactive({
 })
 const store = useAuthStore()
 
-const setAuth = () => {
-    store.setAuthToken(sessionStorage.auth_key)
+const setAuth = (token: string) => {
+    store.setAuthToken(token)
     store.initiate()
     open.value = false
 }
@@ -65,8 +65,7 @@ const login = async () => {
         return
     }
     const res = data.value as AuthResponse
-    sessionStorage.auth_key = res.auth_token
-    setAuth()
+    setAuth(res.auth_token)
     showNotification('success', 'Logged in successfully')
 }
 </script>
