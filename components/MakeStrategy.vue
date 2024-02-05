@@ -19,9 +19,9 @@
             </div>
 
             <div class="flex justify-end">
-                <UButton id="feedback-cancel-button" color="gray" variant="link" class="mr-8" label="Cancel" @click="makeStrategy = false" />
+                <UButton id="make-strategy-cancel-button" color="gray" variant="link" class="mr-8" label="Cancel" @click="makeStrategy = false" />
 
-                <UButton id="feedback-submit-button" type="submit" class="w-48 flex justify-center " label="Create" :loading="loadingBtn" :disabled="!form.name.length" />
+                <UButton id="make-strategy-submit-button" type="submit" class="w-48 flex justify-center " label="Create" :loading="loadingBtn" :disabled="!form.name.length" />
             </div>
         </UForm>
     </div>
