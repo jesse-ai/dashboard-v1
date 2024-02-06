@@ -186,3 +186,42 @@ interface generalInfoEvent {
     count_losing_trades: number;
     routes: any[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
 }
+// ==================== Tab ====================
+interface Tabs {
+    [id: number]: Tab;
+}
+interface Tab {
+    id: number;
+    name: string;
+    form: {
+        start_date: string;
+        exchange: string;
+        symbol: string;
+    };
+    results: TabResults;
+}
+
+interface TabResults {
+    showResults: boolean;
+    executing: boolean;
+    progressbar: {
+        current: number;
+        estimated_remaining_seconds: number;
+    };
+    metrics: any[]; // Replace 'any' with the actual type of the items in the 'metrics' array if known
+    infoLogs: string;
+    exception: {
+        error: string;
+        traceback: string;
+    };
+    alert: {
+        message: string;
+        type: string;
+    };
+}
+
+interface TabCandles {
+    start_date: string,
+    exchange: string,
+    symbol: string,
+}
