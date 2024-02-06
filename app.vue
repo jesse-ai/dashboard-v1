@@ -19,7 +19,6 @@ import { useAuthStore } from '@/stores/authState'
 const settings = computed(() => useAuthStore().settings)
 const authToken = computed(() => useAuthStore().authToken)
 
-const systemInfo = computed(() => useAuthStore().systemInfo)
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     useAuthStore().initiate()
