@@ -39,8 +39,9 @@ function newTab() {
 export const useCandlesStore = defineStore('candles', {
     state: () => ({
         tabs: {
-            1: newTab()
-        } as any
+            1: newTab() as Tab
+        } as Tabs,
+        candlesForm: {} as TabCandles
     }),
     actions: {
         addTab() {
@@ -55,6 +56,7 @@ export const useCandlesStore = defineStore('candles', {
             this.start(tab.id)
         },
         async start(id: number) {
+            console.log(id)
             this.tabs[id].results.progressbar.current = 0
             this.tabs[id].results.executing = true
             this.tabs[id].results.infoLogs = ''
@@ -114,5 +116,8 @@ export const useCandlesStore = defineStore('candles', {
                 showNotification('success', 'Session terminated successfully')
             }
         },
+        updateCandlesForm(form: TabCandles) {
+            this.candlesForm = form
+        }
     }
 })
