@@ -1,8 +1,9 @@
 <template>
-    <Tabs :page-id="pageId" :tabs="tabs" />
-    
+    <div class="w-full">
+        <Tabs :page-id="pageId" :tabs="tabs" />
+    </div>
 
-    <!-- <CandlesTab v-if="tabs[pageId]" :form="tabs[pageId].form" :results="tabs[pageId].results" /> -->
+    <CandlesTab v-if="tabs[pageId]" :form="tabs[pageId].form" :results="tabs[pageId].results" />
 </template>
   
 <script setup lang="ts">
