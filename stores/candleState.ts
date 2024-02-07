@@ -43,6 +43,7 @@ export const useCandlesStore = defineStore('candles', {
         } as CandleTabs,
         candlesForm: {} as TabCandles
     }),
+    persist: true,
     actions: {
         addTab() {
             const tab = newTab()
@@ -56,7 +57,6 @@ export const useCandlesStore = defineStore('candles', {
             this.start(tab.id)
         },
         async start(id: number) {
-            console.log(id)
             this.tabs[id].results.progressbar.current = 0
             this.tabs[id].results.executing = true
             this.tabs[id].results.infoLogs = ''
@@ -67,7 +67,7 @@ export const useCandlesStore = defineStore('candles', {
             const { data, error } = await usePostApi('/import-candles', { id, exchange: this.tabs[id].form.exchange, symbol: this.tabs[id].form.symbol, start_date: this.tabs[id].form.start_date }, true)
 
             if (error.value && error.value.statusCode !== 200) {
-                showNotification('error', error.value.data.message)
+                showNotification('error', error.value.message)
                 return
             }
         },
@@ -77,10 +77,10 @@ export const useCandlesStore = defineStore('candles', {
                 return
             }
 
-            const { data, error } = await usePostApi('/import-candles', { id }, true)
+            const { data, error } = await usePostApi('/cancel-import-candles', { id }, true)
 
             if (error.value && error.value.statusCode !== 200) {
-                showNotification('error', error.value.data.message)
+                showNotification('error', error.value.message)
                 return
             }
         },
