@@ -6,7 +6,8 @@ export default defineNuxtConfig({
         public: {
             apiBaseUrl1: process.env.NUXT_API_BASE_URL1,
             appName: 'Jesse',
-            appUrl: process.env.APP_URL
+            appUrl: process.env.APP_URL,
+            wsUrl: process.env.VUE_APP_SOCKET_PATH,
         }
     },
     devtools: { enabled: true },
@@ -23,7 +24,7 @@ export default defineNuxtConfig({
     ],
     router: {
         options: {
-          hashMode: true
+            hashMode: true
         }
-      }
+    }
 })
