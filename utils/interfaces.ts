@@ -186,7 +186,7 @@ interface generalInfoEvent {
     count_losing_trades: number;
     routes: any[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
 }
-// ==================== Tab ====================
+// ==================== Candle Tab ====================
 interface CandleTabs {
     [id: number]: CandleTab;
 }
@@ -224,4 +224,80 @@ interface TabCandles {
     start_date: string,
     exchange: string,
     symbol: string,
+}
+
+// ==================== Optimization Tab ====================
+interface OptimizationTabs {
+    [id: number]: OptimizationTab;
+}
+
+interface OptimizationResults {
+    showResults: boolean;
+    executing: boolean;
+    logsModal: boolean;
+    progressbar: {
+        current: number;
+        estimated_remaining_seconds: number;
+    };
+    routes_info: any[];
+    best_candidates: any[];
+    metrics: any[];
+    generalInfo: (string | number)[][];
+    infoLogs: string;
+    info: (string | number)[][];
+    exception: {
+        error: string;
+        traceback: string;
+    };
+    alert: {
+        message: string;
+        type: string;
+    };
+}
+
+
+interface OptimizationForm {
+    start_date: string;
+    finish_date: string;
+    debug_mode: boolean;
+    export_csv: boolean;
+    export_json: boolean;
+    routes: any[];
+    extra_routes: any[];
+    optimal_total: number;
+}
+
+interface OptimizationTab {
+    id: number;
+    name: string;
+    form: OptimizationForm;
+    results: OptimizationResults;
+}
+
+interface bestCandidatesEvent {
+    rank: number;
+    dna: string;
+    fitness: number;
+    training_win_rate: number;
+    training_total_trades: number;
+    training_pnl: number;
+    testing_win_rate: number;
+    testing_total_trades: number;
+    testing_pnl: number;
+}
+
+interface multiplesTablesValue {
+    value: string | number;
+    style: string;
+    tag?: string;
+}
+
+interface GeneralInfoEvent {
+    started_at: string,
+    index: number,
+    average_execution_seconds: number,
+    trading_route: string,
+    population_size?: number,
+    iterations?: number,
+    solution_length?: number,
 }
