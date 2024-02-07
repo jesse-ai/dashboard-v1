@@ -9,7 +9,7 @@
                         </span>
 
                         <span aria-hidden="true" :class="[tab.id === props.pageId && (Object.keys(props.tabs).length > 1) ? 'bg-indigo-400' : 'bg-transparent dark:bg-gray-600', 'absolute inset-x-0 bottom-0 h-0.5']" />
-                    </NuxtLink >
+                    </NuxtLink>
 
                     <!-- Tab close button -->
                     <button v-show="Object.keys(props.tabs).length > 1" :data-cy="'tab-close-button' + index" class="absolute right-[1em] focus:outline-none" @click="closeTab(tab.id)">
@@ -41,7 +41,7 @@ const router = useRouter()
 
 const props = defineProps<{
     pageId: number
-    tabs: Tabs
+    tabs: CandleTabs | OptimizationTabs
 }>()
 
 const addTab = () => {

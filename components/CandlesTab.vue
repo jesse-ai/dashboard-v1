@@ -75,7 +75,7 @@ const backtestState = useBacktestStore()
 
 const props = defineProps<{
     form: any;
-    results: TabResults
+    results: CandleTabResults
 }>();
 
 const totalSymbolError = ref<string[]>([])
