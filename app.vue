@@ -15,9 +15,13 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/authState'
-
+import { useSocketStore } from '@/stores/socketState'
 const settings = computed(() => useAuthStore().settings)
 const authToken = computed(() => useAuthStore().authToken)
+
+onMounted(() => {
+  useSocketStore().initiate()
+});
 
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
