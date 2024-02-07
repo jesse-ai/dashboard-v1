@@ -265,6 +265,8 @@ interface OptimizationForm {
     routes: any[];
     extra_routes: any[];
     optimal_total: number;
+    // add this because of the error
+    symbol?: null
 }
 
 interface OptimizationTab {
