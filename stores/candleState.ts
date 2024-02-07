@@ -39,8 +39,8 @@ function newTab() {
 export const useCandlesStore = defineStore('candles', {
     state: () => ({
         tabs: {
-            1: newTab() as Tab
-        } as Tabs,
+            1: newTab() as CandleTab
+        } as CandleTabs,
         candlesForm: {} as TabCandles
     }),
     actions: {

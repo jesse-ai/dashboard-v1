@@ -187,10 +187,10 @@ interface generalInfoEvent {
     routes: any[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
 }
 // ==================== Tab ====================
-interface Tabs {
-    [id: number]: Tab;
+interface CandleTabs {
+    [id: number]: CandleTab;
 }
-interface Tab {
+interface CandleTab {
     id: number;
     name: string;
     form: {
@@ -198,10 +198,10 @@ interface Tab {
         exchange: string;
         symbol: string;
     };
-    results: TabResults;
+    results: CandleTabResults;
 }
 
-interface TabResults {
+interface CandleTabResults {
     showResults: boolean;
     executing: boolean;
     progressbar: {
