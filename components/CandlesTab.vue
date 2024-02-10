@@ -74,7 +74,7 @@ const authState = useAuthStore()
 const backtestState = useBacktestStore()
 
 const props = defineProps<{
-    form: any;
+    form: CandleTabForm;
     results: CandleTabResults
 }>();
 

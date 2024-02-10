@@ -193,14 +193,16 @@ interface CandleTabs {
 interface CandleTab {
     id: number;
     name: string;
-    form: {
-        start_date: string;
-        exchange: string;
-        symbol: string;
-    };
+    form: CandleTabForm;
     results: CandleTabResults;
 }
 
+interface CandleTabForm {
+    start_date: string;
+    exchange: string;
+    symbol: string;
+    debug_mode?: boolean;
+}
 interface CandleTabResults {
     showResults: boolean;
     executing: boolean;
