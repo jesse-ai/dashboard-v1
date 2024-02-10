@@ -305,3 +305,55 @@ interface GeneralInfoEvent {
     iterations?: number,
     solution_length?: number,
 }
+
+// ==================== Backtest Tab ====================
+interface BacktestResults {
+    showResults: boolean;
+    executing: boolean;
+    logsModal: boolean;
+    progressbar: {
+        current: number;
+        estimated_remaining_seconds: number;
+    };
+    routes_info: any[];
+    metrics: any[];
+    hyperparameters: any[];
+    generalInfo: Record<string, unknown>;
+    infoLogs: string;
+    exception: {
+        error: string;
+        traceback: string;
+    };
+    charts: {
+        equity_curve: any[];
+    };
+    alert: {
+        message: string;
+        type: string;
+    };
+    info?: (string | number)[][]
+}
+
+interface BacktestForm {
+    start_date: string;
+    finish_date: string;
+    debug_mode: boolean;
+    export_chart: boolean;
+    export_tradingview: boolean;
+    export_full_reports: boolean;
+    export_csv: boolean;
+    export_json: boolean;
+    routes: any[];
+    extra_routes: any[];
+}
+
+interface BacktestTab {
+    id: number;
+    name: string;
+    form: BacktestForm;
+    results: BacktestResults;
+}
+
+interface BacktestTabs {
+    [id: number]: BacktestTab;
+}

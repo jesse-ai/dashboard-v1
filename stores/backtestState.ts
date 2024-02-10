@@ -10,7 +10,7 @@ const router = useRouter()
 /**
  * A function that returns required data for a new tab
  */
-function newTab() {
+function newTab(): BacktestTab {
     return _.cloneDeep({
         id: ++idCounter,
         name: 'Tab 0',
@@ -54,12 +54,11 @@ function newTab() {
     })
 }
 
-export const useBacktestStore = defineStore({
-    id: 'backtest',
+export const useBacktestStore = defineStore('backtest', {
     state: () => ({
         tabs: {
             1: newTab()
-        } as any
+        } as BacktestTabs
     }),
     actions: {
         addTab() {
@@ -136,7 +135,7 @@ export const useBacktestStore = defineStore({
             }
             this.tabs[id].results.info = list
         },
-        routesInfoEvent(id: number, data: any) {
+        routesInfoEvent(id: number, data: { exchange: string, symbol: string, timeframe: string, strategy_name: string }[]) {
             const arr: any[] = [['Exchange', 'Symbol', 'Timeframe', 'Strategy']]
             data.forEach((item: { exchange: string, symbol: string, timeframe: string, strategy_name: string }) => {
                 arr.push([
