@@ -1,6 +1,6 @@
 <template>
     <div class="w-full">
-        <Tabs :page-id="pageId" :tabs="tabs" />
+        <Tabs :page-id="pageId" :tabs="tabs" mode="candles" />
     </div>
 
     <CandlesTab v-if="tabs[pageId]" :form="tabs[pageId].form" :results="tabs[pageId].results" />
