@@ -1,7 +1,7 @@
 <template>
     <SlideOver v-model="exceptionReport" title="Report">
         <div v-if="alert.message" class="mb-4">
-            <Alert :data="alert" />
+            <UAlert color="teal" icon="i-heroicons-check-circle" :title="alert.message" @close="alert.message = ''" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" />
         </div>
 
         <p>

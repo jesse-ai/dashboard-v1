@@ -20,8 +20,8 @@
     <LayoutsSidebar v-else>
         <template #left>
             <!-- alert -->
-            <div v-if="results.alert.message">
-                <Alert :data="results.alert" />
+            <div v-if="results.alert.message" class="mb-8">
+                <UAlert color="teal" icon="i-heroicons-check-circle" :title="results.alert.message" @close="results.alert.message = ''" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" />
             </div>
 
             <!-- Content -->
