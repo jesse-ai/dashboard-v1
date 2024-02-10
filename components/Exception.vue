@@ -14,28 +14,24 @@
         <label class="font-semibold">Exception:</label>
         <pre class="break-all lg:break-normal mt-2 text-sm whitespace-pre-line px-6 py-6 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-700 dark:text-gray-300 dark:border-gray-800 border border-gray-200" v-html="content" />
 
-        <br>
+        <UForm :state="form" class="space-y-4 mt-4" @submit="report">
+            <UFormGroup label="Description (optional):" name="Description (optional):">
+                <UTextarea v-model="form.description" :rows="10" placeholder="Describe how the exception occurred..." />
+            </UFormGroup>
 
-        <FormTextarea title="Description (optional):" placeholder="Describe how the exception occurred..." name="description" :object="form" :rows="10" />
+            <UFormGroup v-if="!hasLivePluginInstalled" label="Email (must be registered with on Jesse.Trade)" description="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade" required>
+                <UInput v-model="form.email" placeholder="Email address..." type="email" />
+            </UFormGroup>
 
-        <br>
+            <!-- export chart -->
+            <ToggleButton v-if="showLogToggle" v-model="form.attachLogs" title="Attach Debugging Logs" description="Attach the log file of this session along with this report which helps Jesse's team" />
 
-        <div v-if="!hasLivePluginInstalled">
-            <FormInput title="Email (must be registered with on Jesse.Trade)" description="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade" input-type="email" placeholder="Email address..." name="email" :object="form" />
-            <br>
-        </div>
+            <div class="flex justify-end">
+                <UButton id="feedback-cancel-button" color="gray" variant="link" class="mr-8" label="Cancel" @click="exceptionReport = false" />
 
-        <!-- export chart -->
-        <ToggleButton v-if="showLogToggle" :object="form" name="attachLogs" title="Attach Debugging Logs" description="Attach the log file of this session along with this report which helps Jesse's team" />
-
-        <br>
-
-        <div class="flex justify-end item-center">
-            <button class="btn-link text-indigo-600 dark:text-indigo-400 mr-4" @click="exceptionReport = false">Cancel</button>
-            <button :disabled="!form.email.length && !hasLivePluginInstalled" class="btn-primary" @click="report">
-                Submit
-            </button>
-        </div>
+                <UButton id="feedback-submit-button" type="submit" class="w-48 flex justify-center " label="Submit" :loading="loadingBtn" :disabled="!form.description.length || (!form.email.length && !hasLivePluginInstalled)" />
+            </div>
+        </UForm>
     </SlideOver>
 
     <DividerWithButtons title="Exception">
@@ -96,6 +92,7 @@ const form = reactive({
 
 const showException = ref(false)
 const copied = ref(false)
+const loadingBtn = ref(false)
 
 const alert = computed(() => {
     if (props.mode === 'backtest' && !props.debugMode) {
@@ -119,6 +116,7 @@ const showLogToggle = computed(() => {
 const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled);
 
 const report = async () => {
+    loadingBtn.value = true
     const { data, error } = await usePostApi('/report-exception', {
         description: form.description,
         email: form.email,
@@ -126,8 +124,8 @@ const report = async () => {
         mode: props.mode,
         attach_logs: form.attachLogs,
         session_id: props.sessionId
-    })
-
+    }, true)
+    loadingBtn.value = false
     if (error.value && error.value.statusCode !== 200) {
         showNotification('error', `[${error.value.statusCode}]: ${error.value.message}`)
         return
