@@ -13,7 +13,7 @@
 
         <!-- exception  -->
         <div v-if="results.exception.error && results.executing" class="mx-auto container mt-8">
-            <Exception :title="results.exception.error" :content="results.exception.traceback" mode="candles" />
+            <Exception :title="results.exception.error" :content="results.exception.traceback" mode="candles" v-model="exceptionReport" />
         </div>
     </div>
 
@@ -77,6 +77,10 @@ const props = defineProps<{
     form: any;
     results: CandleTabResults
 }>();
+
+props.results.alert.message = ''
+
+const exceptionReport = ref(false)
 
 const totalSymbolError = ref<string[]>([])
 const copiedForm = ref<{ symbol: Object }>({ symbol: props.form })

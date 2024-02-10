@@ -1,5 +1,5 @@
 <template>
-    <SlideOver name="exceptionReport" :object="modals" title="Report">
+    <SlideOver v-model="exceptionReport" title="Report">
         <div v-if="alert.message" class="mb-4">
             <Alert :data="alert" />
         </div>
@@ -31,7 +31,7 @@
         <br>
 
         <div class="flex justify-end item-center">
-            <button class="btn-link text-indigo-600 dark:text-indigo-400 mr-4" @click="modals.exceptionReport = false">Cancel</button>
+            <button class="btn-link text-indigo-600 dark:text-indigo-400 mr-4" @click="exceptionReport = false">Cancel</button>
             <button :disabled="!form.email.length && !hasLivePluginInstalled" class="btn-primary" @click="report">
                 Submit
             </button>
@@ -116,6 +116,8 @@ const showLogToggle = computed(() => {
     return (props.mode === 'backtest' && props.debugMode) || props.mode === 'live'
 })
 
+const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled);
+
 const report = async () => {
     const { data, error } = await usePostApi('/report-exception', {
         description: form.description,
@@ -143,26 +145,15 @@ const report = async () => {
 }
 
 const copy = () => {
-    showException.value = true
-    setTimeout(() => {
-        const infoErrorToCopy = document.querySelector('#exception-info')
-        infoErrorToCopy.setAttribute('type', 'text')
-        infoErrorToCopy.select()
-        document.execCommand('copy')
-        copied.value = true
-
-        // unselect the range
-        infoErrorToCopy.setAttribute('type', 'hidden')
-        window.getSelection().removeAllRanges()
-        showException.value = false
-    }, 10)
-
+    navigator.clipboard.writeText(props.content)
+    showNotification('success', 'Report copied successfully')
+    copied.value = true
     setTimeout(() => {
         copied.value = false
-    }, 3000)
+    }, 2000)
 }
 
 const openReport = () => {
-    store.modals.exceptionReport = true
+    exceptionReport.value = true
 }
 </script>
