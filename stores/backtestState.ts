@@ -58,7 +58,8 @@ export const useBacktestStore = defineStore('backtest', {
     state: () => ({
         tabs: {
             1: newTab()
-        } as BacktestTabs
+        } as BacktestTabs,
+        backtestForm: {} as BacktestForm
     }),
     actions: {
         addTab() {

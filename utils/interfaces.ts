@@ -345,6 +345,7 @@ interface BacktestForm {
     export_json: boolean;
     routes: any[];
     extra_routes: any[];
+    symbol?: string;
 }
 
 interface BacktestTab {
