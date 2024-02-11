@@ -3,7 +3,7 @@
         <div class="hidden sm:block">
             <nav class="relative rounded-lg shadow flex divide-x divide-gray-200 dark:divide-gray-700" aria-label="props.Tabs">
                 <div v-for="(tab, name, index) in props.tabs" :key="tab.id" :data-cy="'tab' + index" class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
-                    <NuxtLink :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-4 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']" :to="`/candles/${tab.id}`">
+                    <NuxtLink :to="`/${mode}/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-4 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']">
                         <span>
                             {{ tab.results.executing ? '' : `Tab ${index + 1}` }} {{ tab.results.executing ? `${tab.form.symbol ? tab.form.symbol : ''}` : `` }} {{ tab.results.executing && !tab.results.showResults ? ' | ' + tab.results.progressbar.current + '%' : '' }} {{ tab.results.showResults ? ' - Results' : '' }}
                         </span>
@@ -41,13 +41,14 @@ const router = useRouter()
 
 const props = defineProps<{
     pageId: number
-    tabs: CandleTabs | OptimizationTabs
+    tabs: CandleTabs | OptimizationTabs | BacktestTabs,
+    mode: string
 }>()
 
 const addTab = () => {
     if (String(route.name).includes('candles')) {
         return useCandlesStore().addTab()
-    } else if (route.name === 'Backtest') {
+    } else if (String(route.name).includes('backtest')) {
         return useBacktestStore().addTab()
     } else if (route.name === 'Live') {
         return useLiveStore().addTab()
