@@ -442,7 +442,6 @@ function getSupportedTimeframes(exchange: string) {
     if (!exchange) {
         return [];
     }
-    console.log(authStore.exchangeInfo)
 
     if (route.name !== 'Live') {
         return authStore.jesseSupportedTimeframes;

@@ -13,7 +13,7 @@
 const props = defineProps<{
     progress: number;
 }>()
-console.log('props.progress')
+
 const classes = computed(() => {
     let arr = 'progress-circle'
     if (props.progress > 50) {
