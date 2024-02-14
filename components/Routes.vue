@@ -2,9 +2,14 @@
     <div class="select-none">
         <DividerWithButtons title="Routes">
             <div class="w-full flex justify-center">
-                <UButton icon="i-heroicons-plus" color="gray" class="bg-inherit rounded-l-full" variant="outline" label="Trading Route" @click="addRoute" />
-
-                <UButton icon="i-heroicons-plus" color="gray" class="bg-inherit rounded-r-full" variant="outline" label="Extra Route" @click="addExtraRoute" />
+                <button type="button" class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-l-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none" @click="addRoute">
+                    <PlusSmIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <span>Trading Route</span>
+                </button>
+                <button type="button" class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-r-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none" @click="addExtraRoute">
+                    <PlusSmIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <span>Extra Route</span>
+                </button>
             </div>
         </DividerWithButtons>
 
@@ -14,24 +19,24 @@
        ================================
       -->
         <div v-for="(r, i) in form.routes" :key="r.exchange + i" class="w-full flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
-            <select v-model="r.exchange" class="dark:bg-backdrop-dark dark:border-gray-900 dark:hover:bg-gray-700 hover:bg-gray-50 cursor-pointer w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500  rounded-l-lg">
+            <select v-model="r.exchange" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 rounded-l-lg">
                 <option v-for="item in exchanges" :key="item.name" :disabled="!allowedToTradeIn(item.name)">{{ item.name }} {{ allowedToTradeIn(item.name) ? '' : ' (premium only)' }}</option>
             </select>
 
             <!-- symbol -->
-            <input v-model="r.symbol" type="text" class="dark:bg-backdrop-dark dark:border-gray-900 dark:hover:bg-gray-700 hover:bg-gray-50 w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 " placeholder="ex: BTC-USDT">
+            <input v-model="r.symbol" type="text" class="bg-white dark:bg-gray-900 w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 " placeholder="ex: BTC-USDT">
 
             <!-- timeframe -->
-            <select v-model="r.timeframe" class="dark:bg-backdrop-dark dark:border-gray-900 dark:hover:bg-gray-700 hover:bg-gray-50 cursor-pointer w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
+            <select v-model="r.timeframe" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
                 <option v-for="item in getSupportedTimeframes(r.exchange)" :key="item">{{ item }}</option>
             </select>
 
-            <select v-model="r.strategy" class="dark:bg-backdrop-dark dark:border-gray-900 dark:hover:bg-gray-700 hover:bg-gray-50 cursor-pointer w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
+            <select v-model="r.strategy" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
                 <option v-for="item in strategies" :key="item">{{ item }}</option>
             </select>
 
             <!-- More Button -->
-            <div class="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-r-lg">
+            <div class="flex flex-col items-center justify-center cursor-pointer bg-white dark:bg-gray-900 rounded-r-lg">
                 <Menu as="div" class="relative block h-full w-full">
                     <MenuButton class="px-5 block text-left h-full w-full focus:outline-none">
                         <EllipsisVerticalIcon class="h-8 w-8 text-gray-400" />
