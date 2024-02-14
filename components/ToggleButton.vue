@@ -1,12 +1,15 @@
 <template>
-    <div class="flex justify-between items-center">
-        <UToggle v-model="(btnModel as boolean)" />
-        <div class="font-medium text-gray-700 dark:text-gray-200">
-            {{ title }}
+    <div>
+        <div class="flex justify-between items-center">
+            <div class="font-medium text-gray-700 dark:text-gray-200">
+                {{ title }}
+            </div>
+
+            <UToggle v-model="(btnModel as boolean)" />
         </div>
-    </div>
-    <div @if="description" class="text-sm text-gray-500 dark:text-gray-400 mt-4">
-        {{ description }}
+        <div @if="description" class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+            {{ description }}
+        </div>
     </div>
 </template>
 
