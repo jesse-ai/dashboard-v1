@@ -72,7 +72,7 @@ export const useAuthStore = defineStore('auth', {
             }
         } as Settings,
         strategies: [] as string[],
-        exchangeInfo: {} as Exchange[],
+        exchangeInfo: {} as { [key: string]: Exchange },
         jesseSupportedTimeframes: [],
     }),
     persist: {

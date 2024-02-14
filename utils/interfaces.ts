@@ -1,6 +1,6 @@
 // ==================== general info ====================
 interface GeneralInfoResponse {
-    exchanges: Exchange[];
+    exchanges: { [key: string]: Exchange };
     has_live_plugin_installed: boolean;
     jesse_supported_timeframes: never[];
     plan_info: PlanInfo;
@@ -357,4 +357,12 @@ interface BacktestTab {
 
 interface BacktestTabs {
     [id: number]: BacktestTab;
+}
+
+// ==================== Routes ====================
+interface Route {
+    exchange: string;
+    symbol: string;
+    timeframe: string;
+    strategy: string;
 }
