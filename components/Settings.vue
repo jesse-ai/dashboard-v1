@@ -58,13 +58,13 @@
                 <div v-for="(e, index) in settings.backtest.exchanges" :key="index">
                     <UDivider :label="e.name" />
 
-                    <div class="grid grid-cols-6 gap-6">
-                        <UFormGroup label="Starting Capital">
-                            <UInput v-model="e.balance" type="number" step="1000" />
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <UFormGroup label="Starting Capital" class="w-full">
+                            <UInput v-model="e.balance" type="number" step="1000" class="w-full" />
                         </UFormGroup>
 
-                        <UFormGroup :label="`Trading Fee (${round(e.fee * 100, 2)}%)`">
-                            <UInput v-model="e.fee" type="number" step="0.0001" />
+                        <UFormGroup :label="`Trading Fee (${round(e.fee * 100, 2)}%)`" class="w-full">
+                            <UInput v-model="e.fee" type="number" step="0.0001" class="w-full" />
                         </UFormGroup>
                     </div>
 
@@ -215,7 +215,7 @@
 
                     <br>
 
-                    <div class="grid grid-cols-6 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <UFormGroup label="Starting Capital">
                             <UInput v-model="e.balance" type="number" step="1000" />
                         </UFormGroup>
@@ -269,7 +269,7 @@
                 <p>
                     Because the optimize mode is limited to one route only, it makes sense to have only one configuration section for the exchange values. Depending on the exchange you define in your route, these configurations will be used.
                 </p>
-                <div class="grid grid-cols-6 gap-6 my-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-4">
 
                     <UFormGroup label="Starting Capital" name="Starting Capital">
                         <UInput v-model="settings.optimization.exchange.balance" typ="number" step="1000" />
