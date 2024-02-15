@@ -6,7 +6,7 @@
             <RadioGroup v-model="(model as any)">
                 <RadioGroupLabel class="sr-only">{{ title }}</RadioGroupLabel>
 
-                <div class="bg-white dark:bg-backdrop-dark rounded-md flex">
+                <div class="bg-white dark:bg-gray-900 rounded-md flex">
                     <RadioGroupOption v-for="(setting, settingIdx) in options" :key="setting" v-slot="{ checked }" class="flex-1" as="template" :value="setting">
                         <div :class="[settingIdx === 0 ? 'rounded-l-md' : '', settingIdx === options.length - 1 ? 'rounded-r-md' : '', checked ? 'bg-indigo-50 dark:bg-gray-800 border-indigo-200 dark:border-indigo-400 z-10' : 'border-gray-200 dark:border-gray-800', 'relative border px-4 py-3 flex cursor-pointer focus:outline-none']">
                             <span :class="[checked ? 'bg-indigo-600 dark:bg-indigo-400 border-transparent' : 'bg-white dark:bg-backdrop-dark border-gray-300 dark:border-gray-700', 'h-4 w-4 mt-0.5 cursor-pointer rounded-full border flex items-center justify-center']" aria-hidden="true">
