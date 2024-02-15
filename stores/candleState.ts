@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import { useRouter } from 'vue-router'
 
 let idCounter = 0
-const router = useRouter()
 
 function newTab() {
     return _.cloneDeep({
@@ -45,10 +43,10 @@ export const useCandlesStore = defineStore('candles', {
     }),
     persist: true,
     actions: {
-        addTab() {
+        async addTab() {
             const tab = newTab()
             this.tabs[tab.id] = tab
-            return router.push(`/candles/${tab.id}`)
+            await navigateTo(`/candles/${tab.id}`)
         },
         startInNewTab(id: number) {
             const tab = newTab()

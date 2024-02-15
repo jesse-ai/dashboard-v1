@@ -2,10 +2,8 @@ import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useAuthStore } from '@/stores/authState'
-import { useRouter } from 'vue-router'
 
 let idCounter = 0
-const router = useRouter()
 
 function newTab(): OptimizationTab {
     return _.cloneDeep({
@@ -54,10 +52,10 @@ export const useOptimizationStore = defineStore('optimization', {
         } as OptimizationTabs
     }),
     actions: {
-        addTab() {
+        async addTab() {
             const tab = newTab()
             this.tabs[tab.id] = tab
-            return router.push(`/optimization/${tab.id}`)
+            await navigateTo(`/optimization/${tab.id}`)
         },
         async startInNewTab(id: number) {
             const tab = newTab()
