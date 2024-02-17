@@ -29,6 +29,7 @@
 import { RadioGroup, RadioGroupLabel, RadioGroupOption } from '@headlessui/vue'
 
 let model = defineModel()
+
 const props = defineProps<{
     title: string;
     options: string[];
@@ -39,7 +40,7 @@ const setDefaults = () => {
     if (props.default && !props.options.includes(props.default)) {
         console.error(`The default value "${props.default}" is not in the options array. options: ${props.options}`)
     }
-    if (model.value) {
+    if (!model.value) {
         model.value = props.default
     }
 }
