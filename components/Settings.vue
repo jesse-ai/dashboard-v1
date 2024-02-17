@@ -353,11 +353,12 @@ const round = _.round
 function sortExchanges() {
     const sortBacktestKeys = Object.keys(settings.value.backtest.exchanges).sort()
     const sortLiveKeys = Object.keys(settings.value.live.exchanges).sort()
-    const backtestExchange = {} as any
-    const liveExchange = {} as any
+    const backtestExchange = {} as { [key: string]: ConfigExchange }
+    const liveExchange = {} as { [key: string]: ConfigExchange }
     for (const item of sortBacktestKeys) {
         backtestExchange[item] = settings.value.backtest.exchanges[item]
     }
+    console.log(backtestExchange)
     settings.value.backtest.exchanges = backtestExchange
 
     for (const item of sortLiveKeys) {
