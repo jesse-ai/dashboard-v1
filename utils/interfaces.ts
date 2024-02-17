@@ -75,7 +75,7 @@ interface Notifications {
 interface Backtest {
     logging: Logging;
     warm_up_candles: number;
-    exchanges: any; // Replace with actual type
+    exchanges: { [key: string]: ConfigExchange }; // Replace with actual type
 }
 
 interface Live {
@@ -83,7 +83,7 @@ interface Live {
     generate_candles_from_1m: boolean;
     logging: Logging;
     warm_up_candles: number;
-    exchanges: any; // Replace with actual type
+    exchanges: { [key: string]: ConfigExchange };
     notifications: Notifications;
 }
 
@@ -91,14 +91,8 @@ interface Optimization {
     cpu_cores: number;
     ratio: string;
     warm_up_candles: number;
-    exchange: {
-        balance: number;
-        fee: number;
-        type: string;
-        futures_leverage: number;
-        futures_leverage_mode: string;
-    };
-}
+    exchange: { [key: string]: ConfigExchange }
+};
 
 interface Settings {
     backtest: Backtest;
@@ -110,6 +104,15 @@ interface GetConfigResponse {
     data: {
         data: Settings;
     }
+}
+
+interface ConfigExchange {
+    name: string;
+    type?: string;
+    balance: number;
+    fee: number;
+    futures_leverage_mode?: string;
+    futures_leverage?: number;
 }
 // ==================== auth Response ====================
 interface AuthResponse {

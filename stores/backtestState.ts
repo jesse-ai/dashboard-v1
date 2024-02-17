@@ -2,10 +2,8 @@ import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useAuthStore } from '@/stores/authState'
-import { useRouter } from 'vue-router'
 
 let idCounter = 0
-const router = useRouter()
 
 /**
  * A function that returns required data for a new tab
@@ -62,10 +60,10 @@ export const useBacktestStore = defineStore('backtest', {
         backtestForm: {} as BacktestForm
     }),
     actions: {
-        addTab() {
+        async addTab() {
             const tab = newTab()
             this.tabs[tab.id] = tab
-            return router.push(`/backtest/${tab.id}`)
+            await navigateTo(`/backtest/${tab.id}`)
         },
         startInNewTab(id: number) {
             const tab = newTab()
@@ -87,6 +85,7 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: any) => {
                 return { ...route, symbol: route.symbol.toUpperCase() }
             })
+
             // also for extra_routes
             this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route: any) => {
                 route.symbol = route.symbol.toUpperCase()
@@ -106,7 +105,7 @@ export const useBacktestStore = defineStore('backtest', {
                 this.tabs[id].results.executing = false
                 return
             }
-            const { data, error } = await usePostApi('/backtest', { id }, true)
+            const { data, error } = await usePostApi('/cancel-backtest', { id }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
@@ -219,6 +218,7 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.showResults = true
         },
         terminationEvent(id: number) {
+            console.log('backtest terminate')
             if (this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
