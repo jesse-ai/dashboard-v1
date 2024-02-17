@@ -21,6 +21,9 @@ const authToken = computed(() => useAuthStore().authToken)
 
 onMounted(() => {
   useSocketStore().initiate()
+  setTimeout(() => {
+    useAuthStore().initiate()
+  }, 500);
 });
 
 watch(authToken, (newValue, oldValue) => {
