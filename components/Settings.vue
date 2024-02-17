@@ -382,15 +382,8 @@ function allowedToTradeIn(exchangeName: string) {
     if (planInfo.value.plan === 'premium') {
         return true
     }
-    const exchange = exchangeInfo.value.find(exchange => exchange.name === exchangeName)
-    return exchange ? exchange.required_live_plan === 'free' : false
-}
 
-function convertToSlug(Text: string) {
-    return Text
-        .toLowerCase()
-        .replace(/ /g, '-')
-        .replace(/[^\w-]+/g, '')
+    return exchangeInfo.value[exchangeName].required_live_plan === 'free'
 }
 </script>
   
