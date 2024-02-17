@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', {
                     balance_update: true,
                 },
                 warm_up_candles: 210,
-                exchanges: {},
+                exchanges: {} as { [key: string]: Exchange },
             },
             live: {
                 persistency: {},
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', {
                     balance_update: true,
                 },
                 warm_up_candles: 210,
-                exchanges: {},
+                exchanges: {} as { [key: string]: Exchange },
                 notifications: {
                     enabled: true,
                     position_report_timeframe: '1h',
@@ -150,7 +150,6 @@ export const useAuthStore = defineStore('auth', {
             const resConfig = postData.value as GetConfigResponse
             // fetch and merge the user's settings from the database
             this.settings = resConfig.data.data
-            // initiate the main store
         },
 
         updateConfig: useThrottleFn(async () => {
