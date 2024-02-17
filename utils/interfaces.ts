@@ -91,7 +91,7 @@ interface Optimization {
     cpu_cores: number;
     ratio: string;
     warm_up_candles: number;
-    exchange: { [key: string]: ConfigExchange }
+    exchange: ConfigExchange
 };
 
 interface Settings {
