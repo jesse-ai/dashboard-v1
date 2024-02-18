@@ -47,7 +47,8 @@ function newTab(): BacktestTab {
             alert: {
                 message: '',
                 type: ''
-            }
+            },
+            info: []
         }
     })
 }
@@ -164,7 +165,7 @@ export const useBacktestStore = defineStore('backtest', {
         generalInfoEvent(id: number, data: BacktestGeneralInfo) {
             this.tabs[id].results.generalInfo = data
         },
-        hyperparametersEvent(id: number, data: BacktestHyperparameters[]) {
+        hyperparametersEvent(id: number, data: ArrayItem[]) {
             this.tabs[id].results.hyperparameters = data
         },
         metricsEvent(id: number, data: BacktestMetricsEvent) {

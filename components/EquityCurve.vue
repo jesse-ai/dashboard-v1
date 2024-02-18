@@ -11,13 +11,9 @@ let theme = computed(() => colorMode.preference)
 let chart = null as any
 let lineSeries = null as any
 
-const props = defineProps({
-    equityCurve: {
-        type: [],
-        required: true,
-        default: () => []
-    }
-})
+const props = defineProps<{
+    equityCurve: { time: number, value: number }[]
+}>()
 
 const settings = ref({
     width: 800,

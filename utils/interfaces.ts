@@ -324,13 +324,6 @@ interface BacktestRoutesInfoEvent {
     timeframe: string,
     strategy_name: string
 }
-interface BacktestHyperparameters {
-    name: string;
-    type: string;
-    min: number;
-    max: number;
-    default: number;
-}
 
 interface BacktestGeneralInfo {
     debug_mode?: boolean;
@@ -405,7 +398,7 @@ interface BacktestResults {
     progressbar: ProgressBar;
     routes_info: BacktestRouteInfo[][];
     metrics: ArrayItems;
-    hyperparameters: BacktestHyperparameters[];
+    hyperparameters: ArrayItems;
     generalInfo: BacktestGeneralInfo;
     infoLogs: string;
     exception: {
@@ -419,7 +412,7 @@ interface BacktestResults {
         message: string;
         type: string;
     };
-    info?: ArrayItems
+    info: ArrayItems
 }
 
 interface BacktestForm {

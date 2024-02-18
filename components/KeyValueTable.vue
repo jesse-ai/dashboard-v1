@@ -26,7 +26,7 @@
 import { defineProps } from 'vue';
 
 const props = defineProps<{
-    data: [];
+    data: [string, string | number][];
 }>();
 </script>
   

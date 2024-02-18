@@ -14,7 +14,7 @@
   
 <script setup lang="ts">
 const props = defineProps<{
-    data: (string | number)[][];
+    data: [string, string | number][];
 }>()
 </script>
   

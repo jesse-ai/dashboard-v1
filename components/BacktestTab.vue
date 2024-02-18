@@ -42,7 +42,7 @@
     <LayoutsSidebar else>
         <template #left>
             <!-- alert -->
-            <div v-if="results.showResults && results.alert.message">
+            <div v-if="results.showResults && results.alert.message" class="mb-10">
                 <UAlert color="teal" icon="i-heroicons-check-circle" :title="results.alert.message" @close="results.alert.message = ''" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" />
             </div>
 
@@ -84,8 +84,8 @@
             <!-- Results -->
             <div v-if="results.showResults" class="w-full mx-auto">
                 <div>
-                    <Divider title="Routes" />
-                    <MultipleValuesTable :data="results.routes_info" header />
+                    <Divider title="Routes" class="mb-4" />
+                    <MultipleValuesTable :data="results.routes_info" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
                     <Divider v-if="results.hyperparameters.length" class="mt-16" title="Hyperparameters" />
                     <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
@@ -107,44 +107,32 @@
             <!-- Action Buttons -->
             <div v-if="!results.executing">
                 <div v-if="results.showResults">
-                    <button class="flex justify-center items-center btn-primary text-center mb-4 w-full" @click="rerun(Number($route.params.id))">
-                        <RefreshIcon class="w-5 h-5 mr-2" />
-                        Rerun
-                    </button>
+                    <UButton @click="rerun(Number($route.params.id))" class="w-full flex justify-center" icon="i-heroicons-arrow-path" size="xl" variant="solid" label="Rerun" :trailing="false" />
 
-                    <button class="flex justify-center items-center btn-success text-center mb-4 w-full" @click="newBacktest(Number($route.params.id))">
-                        <ReplyIcon class="w-5 h-5 mr-2" />
-                        New session
-                    </button>
+                    <UButton @click="newBacktest(Number($route.params.id))" class="w-full flex justify-center mt-4" color="green" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="New session" :trailing="false" />
 
-                    <a v-if="form.debug_mode" :href="logsUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        Debugging Logs
+                    <a v-if="form.debug_mode" :href="logsUrl" target="_blank" class="">
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="Debugging Logs" :trailing="false" />
                     </a>
 
-                    <a v-if="form.export_chart && hasExecutedTrades" :href="legacyChartUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        Legacy Chart
+                    <a v-if="form.export_chart && hasExecutedTrades" :href="legacyChartUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label=" Legacy Chart" :trailing="false" />
                     </a>
 
-                    <a v-if="form.export_full_reports && hasExecutedTrades" :href="fullReportsUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        QuantStats Report
+                    <a v-if="form.export_full_reports && hasExecutedTrades" :href="fullReportsUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="QuantStats Report" :trailing="false" />
                     </a>
 
-                    <a v-if="form.export_csv && hasExecutedTrades" :href="csvUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        CSV
+                    <a v-if="form.export_csv && hasExecutedTrades" :href="csvUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="CVS" :trailing="false" />
                     </a>
 
-                    <a v-if="form.export_json && hasExecutedTrades" :href="jsonUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        JSON
+                    <a v-if="form.export_json && hasExecutedTrades" :href="jsonUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="JSON" :trailing="false" />
                     </a>
 
                     <a v-if="form.export_tradingview && hasExecutedTrades" :href="tradingviewUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        TradingView Pine Editor
+                        <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="TradingView Pine Editor" :trailing="false" />
                     </a>
 
                     <hr class="my-8 border-2 dark:border-gray-600 rounded-full">
@@ -171,6 +159,7 @@ const props = defineProps<{
     form: BacktestForm;
     results: BacktestResults;
 }>()
+
 
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)

@@ -358,7 +358,7 @@ function sortExchanges() {
     for (const item of sortBacktestKeys) {
         backtestExchange[item] = settings.value.backtest.exchanges[item]
     }
-    console.log(backtestExchange)
+
     settings.value.backtest.exchanges = backtestExchange
 
     for (const item of sortLiveKeys) {
