@@ -59,6 +59,7 @@ export const useBacktestStore = defineStore('backtest', {
         } as BacktestTabs,
         backtestForm: {} as BacktestForm
     }),
+    persist: true,
     actions: {
         async addTab() {
             const tab = newTab()
@@ -82,12 +83,13 @@ export const useBacktestStore = defineStore('backtest', {
             const mainStore = useAuthStore()
 
             // make authState symbols are uppercase
-            this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: any) => {
+            this.tabs[id].form.routes = this.tabs[id].form.routes.map(route => {
                 return { ...route, symbol: route.symbol.toUpperCase() }
             })
 
             // also for extra_routes
-            this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route: any) => {
+            console.log(this.tabs[id].form.extra_routes)
+            this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map(route => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
@@ -120,7 +122,7 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.showResults = false
         },
 
-        candlesInfoEvent(id: number, data: any) {
+        candlesInfoEvent(id: number, data: BacktestCandlesInfoEvent) {
             const list = [
                 ['Period', data.duration],
                 ['Starting Date', helpers.timestampToDate(
@@ -128,16 +130,16 @@ export const useBacktestStore = defineStore('backtest', {
                 )],
                 ['Ending Date', helpers.timestampToDate(data.finishing_time)],
                 ['Exchange Type', data.exchange_type],
-            ]
+            ] as [string, string | number][]
             if (data.exchange_type === 'futures') {
                 list.push(['Leverage', data.leverage])
                 list.push(['Leverage Mode', data.leverage_mode])
             }
             this.tabs[id].results.info = list
         },
-        routesInfoEvent(id: number, data: { exchange: string, symbol: string, timeframe: string, strategy_name: string }[]) {
-            const arr: any[] = [['Exchange', 'Symbol', 'Timeframe', 'Strategy']]
-            data.forEach((item: { exchange: string, symbol: string, timeframe: string, strategy_name: string }) => {
+        routesInfoEvent(id: number, data: BacktestRoutesInfoEvent[]) {
+            const arr: BacktestRouteInfo[][] = []
+            data.forEach((item: BacktestRoutesInfoEvent) => {
                 arr.push([
                     { value: item.exchange, style: '' },
                     { value: item.symbol, style: '' },
@@ -147,25 +149,25 @@ export const useBacktestStore = defineStore('backtest', {
             })
             this.tabs[id].results.routes_info = arr
         },
-        progressbarEvent(id: number, data: any) {
+        progressbarEvent(id: number, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
         },
-        infoLogEvent(id: number, data: any) {
+        infoLogEvent(id: number, data: { timestamp: number, message: string }) {
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: any) {
+        exceptionEvent(id: number, data: { error: string, traceback: string }) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        generalInfoEvent(id: number, data: any) {
+        generalInfoEvent(id: number, data: BacktestGeneralInfo) {
             this.tabs[id].results.generalInfo = data
         },
-        hyperparametersEvent(id: number, data: any) {
+        hyperparametersEvent(id: number, data: BacktestHyperparameters[]) {
             this.tabs[id].results.hyperparameters = data
         },
-        metricsEvent(id: number, data: any) {
+        metricsEvent(id: number, data: BacktestMetricsEvent) {
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []
@@ -201,7 +203,7 @@ export const useBacktestStore = defineStore('backtest', {
                 ['Total Losing Trades', data.total_losing_trades]
             ]
         },
-        equityCurveEvent(id: number, data: any) {
+        equityCurveEvent(id: number, data: BacktestEquityCurveEvent[]) {
             this.tabs[id].results.charts.equity_curve = []
 
             if (data !== null) {
@@ -218,13 +220,12 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.showResults = true
         },
         terminationEvent(id: number) {
-            console.log('backtest terminate')
             if (this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
             }
         },
-        alertEvent(id: number, data: any) {
+        alertEvent(id: number, data: { message: string; type: string; }) {
             this.tabs[id].results.alert = data
         },
     }
