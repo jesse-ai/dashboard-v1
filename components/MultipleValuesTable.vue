@@ -12,8 +12,8 @@
                             </tr>
                         </thead>
 
-                        <tbody v-if="dataItems.length">
-                            <tr v-for="(d, index) in dataItems" :key="index" class="text-gray-900 dark:text-gray-200" :class="index % 2 === 0 ? 'bg-white dark:bg-backdrop-dark' : 'bg-gray-50 dark:bg-gray-700'">
+                        <tbody v-if="data.length">
+                            <tr v-for="(d, index) in data" :key="index" class="text-gray-900 dark:text-gray-200" :class="index % 2 === 0 ? 'bg-white dark:bg-backdrop-dark' : 'bg-gray-50 dark:bg-gray-700'">
                                 <td v-for="(item, subIndex) in d" :key="item" class="px-6 py-4 whitespace-nowrap text-sm font-medium" :class="d[subIndex].style">
                                     <Tooltip v-if="d[subIndex].tooltip" :title="d[subIndex].tooltip">
                                         <code v-if="d[subIndex].tag === 'code'" class="rounded border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 select-text text-sm dark:text-gray-300 w-full px-4 sm:px-6 py-2" v-text="d[subIndex].value === 0 ? '' : d[subIndex].value" />
@@ -31,7 +31,7 @@
                         </tbody>
                     </table>
 
-                    <div v-if="!dataItems.length" class="text-center text-xs dark:bg-gray-700 py-4 opacity-30 dark:opacity-75 select-none">
+                    <div v-if="!data.length" class="text-center text-xs dark:bg-gray-700 py-4 opacity-30 dark:opacity-75 select-none">
                         Empty List
                     </div>
                 </div>
@@ -45,9 +45,7 @@
 const props = defineProps<{
     header: boolean;
     data: Array<any>;
+    headerItems: Array<string>;
 }>()
-
-const headerItems = computed(() => props.data[0])
-const dataItems = computed(() => props.header ? props.data.slice(1) : props.data)
 </script>
   
