@@ -87,13 +87,13 @@
                     <Divider title="Routes" class="mb-4" />
                     <MultipleValuesTable :data="results.routes_info" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
-                    <Divider v-if="results.hyperparameters.length" class="mt-16" title="Hyperparameters" />
+                    <Divider v-if="results.hyperparameters.length" class="mt-16 mb-4" title="Hyperparameters" />
                     <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
 
-                    <Divider v-if="hasExecutedTrades" class="mt-16" title="Equity Curve" />
+                    <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Equity Curve" />
                     <EquityCurve v-if="hasExecutedTrades" :equity-curve="results.charts.equity_curve" />
 
-                    <Divider v-if="hasExecutedTrades" class="mt-16" title="Performance" />
+                    <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Performance" />
                     <KeyValueTable v-if="hasExecutedTrades" :data="results.metrics" />
 
                     <div v-if="!hasExecutedTrades" class="text-yellow-500 border-yellow-400 bg-yellow-50 dark:bg-gray-700 dark:text-yellow-400 mt-16 text-center text-2xl rounded border-2 border-dashed dark:border-gray-800 py-16 select-none">
