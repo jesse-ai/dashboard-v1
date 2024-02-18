@@ -89,7 +89,6 @@ export const useBacktestStore = defineStore('backtest', {
             })
 
             // also for extra_routes
-            console.log(this.tabs[id].form.extra_routes)
             this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map(route => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
