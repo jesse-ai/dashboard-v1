@@ -143,7 +143,7 @@
         </div>
 
         <!-- error section -->
-        <div id="error-section" class="text-sm text-red-400 p-2 rounded-lg mb-4">
+        <div v-if="totalRoutesError.length" id="error-section" class="text-sm text-red-400 p-2 rounded-lg mb-4">
             <div v-for="(item, i) in totalRoutesError" :key="i" class="flex justify-start items-center mb-2">
                 <ExclamationTriangleIcon class="-ml-1.5 mr-1 h-5 w-5" />
 
