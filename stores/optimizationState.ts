@@ -115,7 +115,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 this.tabs[id].results.executing = false
                 return
             }
-            const { data, error } = await usePostApi('/optimization', id, true)
+            const { data, error } = await usePostApi('/cancel-optimization', { id }, true)
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
                 return
