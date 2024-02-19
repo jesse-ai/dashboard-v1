@@ -3,9 +3,9 @@
         <div class="hidden sm:block">
             <nav class="relative rounded-lg shadow flex divide-x divide-gray-200 dark:divide-gray-700" aria-label="props.Tabs">
                 <div v-for="(tab, name, index) in props.tabs" :key="tab.id" :data-cy="'tab' + index" class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
-                    <NuxtLink :to="`/${mode}/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-4 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']">
+                    <NuxtLink :to="`/candles/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-4 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']">
                         <span>
-                            {{ tab.results.executing ? '' : `Tab ${index + 1}` }} {{ tab.results.executing ? `${tab.form.routes[0].symbol}` : `` }} {{ tab.results.executing && !tab.results.showResults ? ' | ' + tab.results.progressbar.current + '%' : '' }} {{ tab.results.showResults ? ' - Results' : '' }}
+                            {{ tab.results.executing ? '' : `Tab ${index + 1}` }} {{ tab.results.executing ? `${tab.form.symbol}` : `` }} {{ tab.results.executing && !tab.results.showResults ? ' | ' + tab.results.progressbar.current + '%' : '' }} {{ tab.results.showResults ? ' - Results' : '' }}
                         </span>
 
                         <span aria-hidden="true" :class="[tab.id === props.pageId && (Object.keys(props.tabs).length > 1) ? 'bg-indigo-400' : 'bg-transparent dark:bg-gray-600', 'absolute inset-x-0 bottom-0 h-0.5']" />
@@ -30,8 +30,7 @@
 </template>
   
 <script setup lang="ts">
-import { useBacktestStore } from '@/stores/backtestState'
-import { useLiveStore } from '@/stores/liveState'
+import { useCandlesStore } from '@/stores/candleState'
 import { useRouter, useRoute } from 'vue-router'
 import { XMarkIcon, PlusIcon } from '@heroicons/vue/24/outline'
 
@@ -40,16 +39,11 @@ const router = useRouter()
 
 const props = defineProps<{
     pageId: number
-    tabs: OptimizationTabs | BacktestTabs,
-    mode: string
+    tabs: CandleTabs
 }>()
 
 const addTab = () => {
-    if (String(route.name).includes('backtest')) {
-        return useBacktestStore().addTab()
-    } else if (route.name === 'Live') {
-        return useLiveStore().addTab()
-    }
+    return useCandlesStore().addTab()
 }
 
 const closeTab = (tabId: number) => {
