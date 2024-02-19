@@ -236,6 +236,18 @@ function copyInfoLogs() {
         copiedLogsInfo.value = false
     }, 3000)
 }
+
+watch(() => props.form.start_date, (val) => {
+    if (props.form.finish_date < val) {
+        props.form.finish_date = val
+    }
+})
+
+watch(() => props.form.finish_date, (val) => {
+    if (props.form.start_date > val) {
+        props.form.start_date = val
+    }
+})
 </script>
   
   
