@@ -19,19 +19,19 @@
        ================================
       -->
         <div v-for="(r, i) in form.routes" :key="r.exchange + i" class="w-full flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
-            <select v-model="r.exchange" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 rounded-l-lg">
+            <select v-model="r.exchange" class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 rounded-l-lg">
                 <option v-for="item in exchanges" :key="item.name" :disabled="!allowedToTradeIn(item.name)">{{ item.name }} {{ allowedToTradeIn(item.name) ? '' : ' (premium only)' }}</option>
             </select>
 
             <!-- symbol -->
-            <input v-model="r.symbol" type="text" class="bg-white dark:bg-gray-900 w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 " placeholder="ex: BTC-USDT">
+            <input v-model="r.symbol" type="text" class="bg-white dark:bg-gray-900 w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 " placeholder="ex: BTC-USDT">
 
             <!-- timeframe -->
-            <select v-model="r.timeframe" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
+            <select v-model="r.timeframe" class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
                 <option v-for="item in getSupportedTimeframes(r.exchange)" :key="item">{{ item }}</option>
             </select>
 
-            <select v-model="r.strategy" class="bg-white dark:bg-gray-900 cursor-pointer w-full px-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
+            <select v-model="r.strategy" class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 ">
                 <option v-for="item in strategies" :key="item">{{ item }}</option>
             </select>
 
@@ -458,4 +458,3 @@ function getSupportedTimeframes(exchange: string) {
 
 }
 </script>
-  
