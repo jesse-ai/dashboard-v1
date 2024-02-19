@@ -15,5 +15,10 @@ const backtestsStore = useBacktestStore()
 const tabs = computed(() => backtestsStore.tabs)
 const route = useRoute()
 const pageId = computed(() => parseInt(route.params.id as string))
+
+onMounted(() => {
+    if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing)
+        tabs.value[pageId.value].results.executing = false
+})
 </script>
   

@@ -107,6 +107,7 @@ export const useBacktestStore = defineStore('backtest', {
                 this.tabs[id].results.executing = false
                 return
             }
+
             const { data, error } = await usePostApi('/cancel-backtest', { id }, true)
 
             if (error.value && error.value.statusCode !== 200) {
