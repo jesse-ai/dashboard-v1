@@ -209,20 +209,11 @@ interface CandleTabForm {
 interface CandleTabResults {
     showResults: boolean;
     executing: boolean;
-    progressbar: {
-        current: number;
-        estimated_remaining_seconds: number;
-    };
+    progressbar: ProgressBar;
     metrics: any[]; // Replace 'any' with the actual type of the items in the 'metrics' array if known
     infoLogs: string;
-    exception: {
-        error: string;
-        traceback: string;
-    };
-    alert: {
-        message: string;
-        type: string;
-    };
+    exception: Exception;
+    alert: Alert;
 }
 
 interface TabCandles {
@@ -250,14 +241,8 @@ interface OptimizationResults {
     generalInfo: (string | number)[][];
     infoLogs: string;
     info: (string | number)[][];
-    exception: {
-        error: string;
-        traceback: string;
-    };
-    alert: {
-        message: string;
-        type: string;
-    };
+    exception: Exception;
+    alert: Alert;
 }
 
 
@@ -401,17 +386,11 @@ interface BacktestResults {
     hyperparameters: ArrayItems;
     generalInfo: BacktestGeneralInfo;
     infoLogs: string;
-    exception: {
-        error: string;
-        traceback: string;
-    };
+    exception: Exception;
     charts: {
         equity_curve: BacktestEquityCurve[];
     };
-    alert: {
-        message: string;
-        type: string;
-    };
+    alert: Alert;
     info: ArrayItems
 }
 
@@ -457,4 +436,14 @@ interface ExtraRoute {
 interface ProgressBar {
     current: number;
     estimated_remaining_seconds: number;
+}
+
+interface Alert {
+    message: string;
+    type: string;
+}
+
+interface Exception {
+    error: string;
+    traceback: string;
 }

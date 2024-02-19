@@ -83,14 +83,14 @@ export const useCandlesStore = defineStore('candles', {
             }
         },
 
-        progressbarEvent(id: number, data: any) {
+        progressbarEvent(id: number, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
 
             if (this.tabs[id].results.progressbar.current < 100 && this.tabs[id].results.executing === false) {
                 this.tabs[id].results.executing = true
             }
         },
-        alertEvent(id: number, data: any) {
+        alertEvent(id: number, data: Alert) {
             this.tabs[id].results.alert = data
 
             // session is finished:
@@ -99,12 +99,12 @@ export const useCandlesStore = defineStore('candles', {
             this.tabs[id].results.exception.traceback = ''
             this.tabs[id].results.exception.error = ''
         },
-        infoLogEvent(id: number, data: any) {
+        infoLogEvent(id: number, data: { timestamp: number, message: string }) {
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: any) {
+        exceptionEvent(id: number, data: Exception) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
