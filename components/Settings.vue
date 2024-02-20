@@ -140,7 +140,9 @@
             <Card>
                 <Heading>Data</Heading>
                 <div>
-                    <FormInput placeholder="ex: 210" title="Warmup Candles" :object="settings.live" description="Number of warmup candles that is loaded before starting each session" name="warm_up_candles" :min="1" input-type="number" />
+                    <UFormGroup label="Warmup Candles" description="Number of warmup candles that is loaded before starting each session">
+                        <UInput v-model="settings.live['warm_up_candles']" type="number" min="1" placeholder="ex: 210" />
+                    </UFormGroup>
                 </div>
             </Card>
 
@@ -191,9 +193,7 @@
 
                     <p>You can choose the <strong>timeframe</strong> for how frequently you want to receive them:</p>
 
-                    <select v-model="settings.live.notifications.position_report_timeframe" class="dark:bg-backdrop-dark dark:hover:bg-gray-800 hover:bg-gray-50 cursor-pointer w-full py-2 my-4 rounded border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        <option v-for="item in timeframes" :key="item">{{ item }}</option>
-                    </select>
+                    <USelect v-model="settings.live.notifications.position_report_timeframe" :options="timeframes" />
 
                     <br>
                 </div>
@@ -337,11 +337,11 @@ const navigation = computed(() => {
     return arr
 })
 
-if (route.name === 'Backtest') {
+if (String(route.name).includes('backtest')) {
     currentTab.value = 'Backtest'
-} else if (route.name === 'Optimization') {
+} else if (String(route.name).includes('optimization')) {
     currentTab.value = 'Optimization'
-} else if (route.name === 'Live') {
+} else if (String(route.name).includes('live')) {
     currentTab.value = 'Live'
 }
 
