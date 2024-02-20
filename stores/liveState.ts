@@ -135,7 +135,7 @@ export const useLiveStore = defineStore('Live', {
             ]
         },
         routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
-            const arr: RouteInfo[][] = []
+            const arr: any[][] = []
             data.forEach(item => {
                 arr.push([
                     item.exchange,
