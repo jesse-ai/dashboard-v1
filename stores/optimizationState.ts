@@ -51,6 +51,7 @@ export const useOptimizationStore = defineStore('optimization', {
             1: newTab()
         } as OptimizationTabs
     }),
+    persist: true,
     actions: {
         async addTab() {
             const tab = newTab()
@@ -115,6 +116,8 @@ export const useOptimizationStore = defineStore('optimization', {
                 this.tabs[id].results.executing = false
                 return
             }
+            this.tabs[id].results.executing = false
+
             const { data, error } = await usePostApi('/cancel-optimization', { id }, true)
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
@@ -130,6 +133,7 @@ export const useOptimizationStore = defineStore('optimization', {
         },
 
         candlesInfoEvent(id: number, data: any) {
+            console.log(data)
             this.tabs[id].results.info = [
                 ['Period', data.duration],
                 [
@@ -152,15 +156,16 @@ export const useOptimizationStore = defineStore('optimization', {
             })
             this.tabs[id].results.routes_info = arr
         },
-        progressbarEvent(id: number, data: any) {
+        progressbarEvent(id: number, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
         },
         infoLogEvent(id: number, data: any) {
+            console.log(data)
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: any) {
+        exceptionEvent(id: number, data: Exception) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
@@ -186,6 +191,7 @@ export const useOptimizationStore = defineStore('optimization', {
             }
         },
         metricsEvent(id: number, data: any) {
+            console.log(data)
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []
@@ -240,7 +246,7 @@ export const useOptimizationStore = defineStore('optimization', {
             })
             this.tabs[id].results.best_candidates = arr
         },
-        alertEvent(id: number, data: any) {
+        alertEvent(id: number, data: Alert) {
             this.tabs[id].results.alert = data
             this.tabs[id].results.executing = false
             this.tabs[id].results.showResults = true

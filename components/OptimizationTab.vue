@@ -1,6 +1,6 @@
 <template>
     <!-- Debugger Logs -->
-    <SlideOver v-if="form.debug_mode" name="logsModal" :object="results" title="Logs">
+    <SlideOver v-if="form.debug_mode" v-model="results.logsModal" title="Logs">
         <template #default>
             <Logs :logs="results.infoLogs" />
         </template>
@@ -29,8 +29,8 @@
             <!-- Execution -->
             <div v-if="(results.executing || results.showResults) && !results.exception.error">
                 <Divider title="Info" />
-                <KeyValueTable v-if="results.generalInfo.length" :data="results.generalInfo" />
-                <TablePlaceholder v-else />
+                <KeyValueTable v-if="results.generalInfo.length" :data="results.generalInfo" class="my-4" />
+                <TablePlaceholder v-else class="my-4" />
 
                 <div v-if="results.best_candidates.length" class="mt-16">
                     <Divider title="Best DNA Candidates" />
