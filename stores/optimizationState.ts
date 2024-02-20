@@ -132,8 +132,7 @@ export const useOptimizationStore = defineStore('optimization', {
             this.tabs[id].results.showResults = false
         },
 
-        candlesInfoEvent(id: number, data: any) {
-            console.log(data)
+        candlesInfoEvent(id: number, data: CandlesInfoEvent) {
             this.tabs[id].results.info = [
                 ['Period', data.duration],
                 [
@@ -144,8 +143,8 @@ export const useOptimizationStore = defineStore('optimization', {
                 ]
             ]
         },
-        routesInfoEvent(id: number, data: { exchange: string, symbol: string, timeframe: string, strategy_name: string }[]) {
-            const arr: multiplesTablesValue[][] = []
+        routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
+            const arr: RouteInfo[][] = []
             data.forEach(item => {
                 arr.push([
                     { value: item.exchange, style: '' },
@@ -169,7 +168,7 @@ export const useOptimizationStore = defineStore('optimization', {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        generalInfoEvent(id: number, data: GeneralInfoEvent) {
+        generalInfoEvent(id: number, data: OptimizationGeneralInfoEvent) {
             if (!this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = true
             }
@@ -190,8 +189,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 this.tabs[id].results.generalInfo.push(['Solution length', data.solution_length ? data.solution_length : ''])
             }
         },
-        metricsEvent(id: number, data: any) {
-            console.log(data)
+        metricsEvent(id: number, data: MetricsEvent) {
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []

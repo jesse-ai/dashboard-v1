@@ -123,7 +123,7 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.showResults = false
         },
 
-        candlesInfoEvent(id: number, data: BacktestCandlesInfoEvent) {
+        candlesInfoEvent(id: number, data: CandlesInfoEvent) {
             const list = [
                 ['Period', data.duration],
                 ['Starting Date', helpers.timestampToDate(
@@ -138,9 +138,9 @@ export const useBacktestStore = defineStore('backtest', {
             }
             this.tabs[id].results.info = list
         },
-        routesInfoEvent(id: number, data: BacktestRoutesInfoEvent[]) {
-            const arr: BacktestRouteInfo[][] = []
-            data.forEach((item: BacktestRoutesInfoEvent) => {
+        routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
+            const arr: RouteInfo[][] = []
+            data.forEach(item => {
                 arr.push([
                     { value: item.exchange, style: '' },
                     { value: item.symbol, style: '' },
@@ -168,7 +168,7 @@ export const useBacktestStore = defineStore('backtest', {
         hyperparametersEvent(id: number, data: ArrayItem[]) {
             this.tabs[id].results.hyperparameters = data
         },
-        metricsEvent(id: number, data: BacktestMetricsEvent) {
+        metricsEvent(id: number, data: MetricsEvent) {
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []
@@ -204,7 +204,7 @@ export const useBacktestStore = defineStore('backtest', {
                 ['Total Losing Trades', data.total_losing_trades]
             ]
         },
-        equityCurveEvent(id: number, data: BacktestEquityCurveEvent[]) {
+        equityCurveEvent(id: number, data: EquityCurveEvent[]) {
             this.tabs[id].results.charts.equity_curve = []
 
             if (data !== null) {

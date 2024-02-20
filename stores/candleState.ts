@@ -38,8 +38,7 @@ export const useCandlesStore = defineStore('candles', {
     state: () => ({
         tabs: {
             1: newTab() as CandleTab
-        } as CandleTabs,
-        candlesForm: {} as TabCandles
+        } as CandleTabs
     }),
     persist: true,
     actions: {
@@ -113,9 +112,6 @@ export const useCandlesStore = defineStore('candles', {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
             }
-        },
-        updateCandlesForm(form: TabCandles) {
-            this.candlesForm = form
         }
     }
 })

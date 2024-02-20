@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authState'
 
 let idCounter = 0
 
-function newTab() {
+function newTab(): LiveTab {
     return _.cloneDeep({
         id: ++idCounter,
         session_id: '',
@@ -15,13 +15,6 @@ function newTab() {
             paper_mode: true,
             routes: [],
             extra_routes: []
-        },
-        modals: {
-            reportWithoutException: false,
-            infoLogs: false,
-            errorLogs: false,
-            terminationConfirm: false,
-            orders: false,
         },
         results: {
             showResults: false,
@@ -50,17 +43,17 @@ function newTab() {
             },
             charts: {
                 equity_curve: []
-            }
+            },
+            info: []
         }
     })
 }
 
-export const useLiveStore = defineStore({
-    id: 'live',
+export const useLiveStore = defineStore('Live', {
     state: () => ({
         tabs: {
             1: newTab()
-        } as any
+        } as LiveTabs
     }),
     actions: {
         async addTab() {
@@ -129,22 +122,21 @@ export const useLiveStore = defineStore({
                 showNotification('error', error.value.data.message)
                 return
             }
-            this.tabs[id].modals.terminationConfirm = false
             this.tabs[id].results.terminating = true
         },
         newLive(id: number) {
             this.tabs[id].results.monitoring = false
             this.tabs[id].results.finished = false
         },
-        candlesInfoEvent(id: number, data: any) {
+        candlesInfoEvent(id: number, data: CandlesInfoEvent) {
             this.tabs[id].results.info = [
                 ['Period', data.duration],
                 ['Starting-Ending Date', `${helpers.timestampToDate(data.starting_time)} => ${helpers.timestampToDate(data.finishing_time)}`]
             ]
         },
-        routesInfoEvent(id: number, data: any) {
-            const arr: [exchange: string, symbol: string, timeframe: string, strategy_name: string][] = []
-            data.forEach((item: { exchange: string, symbol: string, timeframe: string, strategy_name: string }) => {
+        routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
+            const arr: RouteInfo[][] = []
+            data.forEach(item => {
                 arr.push([
                     item.exchange,
                     item.symbol,
@@ -173,7 +165,7 @@ export const useLiveStore = defineStore({
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        generalInfoEvent(id: number, data: generalInfoEvent) {
+        generalInfoEvent(id: number, data: LiveGeneralInfoEvent) {
             this.tabs[id].results.generalInfo = data
 
             // set routes in both form.routes (maybe page was refreshed)
@@ -250,11 +242,7 @@ export const useLiveStore = defineStore({
             this.tabs[id].results.watchlist = data
         },
         positionsEvent(id: number, data: positionsEvent[]) {
-            this.tabs[id].results.positions = [
-                [
-                    'Symbol', 'QTY', 'Entry', 'Price', 'Liq Price', 'PNL'
-                ]
-            ]
+            this.tabs[id].results.positions = []
 
             for (const item of data) {
                 const qty = item.type === 'close' ? '' : item.qty
@@ -263,15 +251,15 @@ export const useLiveStore = defineStore({
                     { value: qty, style: helpers.colorBasedOnType(item.type), tooltip: `${item.value} ${item.currency}` },
                     { value: helpers.roundPrice(item.entry), style: '' },
                     { value: helpers.roundPrice(item.current_price), style: '' },
-                    { value: item.liquidation_price ? helpers.roundPrice(item.liquidation_price) : null, style: '' },
+                    { value: item.liquidation_price ? helpers.roundPrice(item.liquidation_price) : '', style: '' },
                     { value: `${_.round(item.pnl, 2)} (${_.round(item.pnl_perc, 2)}%)`, style: helpers.colorBasedOnNumber(item.pnl) },
                 ])
             }
         },
-        ordersEvent(id: number, data: ordersEvent) {
+        ordersEvent(id: number, data: ordersEvent[]) {
             this.tabs[id].results.orders = data
         },
-        metricsEvent(id: number, data: any) {
+        metricsEvent(id: number, data: MetricsEvent) {
             this.tabs[id].results.metrics = [
                 ['Total Closed Trades', data.total],
                 ['Total Net Profit', `${_.round(data.net_profit, 2)} (${_.round(data.net_profit_percentage, 2)}%)`],
@@ -300,7 +288,7 @@ export const useLiveStore = defineStore({
                 ['Total Losing Trades', data.total_losing_trades]
             ]
         },
-        equityCurveEvent(id: number, data: any) {
+        equityCurveEvent(id: number, data: EquityCurveEvent[]) {
             this.tabs[id].results.charts.equity_curve = []
             data.forEach((item: { balance: number, timestamp: number }) => {
                 this.tabs[id].results.charts.equity_curve.push({
