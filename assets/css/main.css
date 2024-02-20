@@ -44,5 +44,5 @@ h3,
 }
 
 select {
-    @apply pr-8 appearance-none bg-[url('assets/imgs/dropdown-light.png')] dark:bg-[url('assets/imgs/dropdown-dark.png')] bg-no-repeat bg-[center_right_8px] bg-[length:16px_16px];
+    @apply pr-8 appearance-none bg-[url('assets/imgs/dropdown-light.png')] dark:bg-[url('assets/imgs/dropdown-dark.png')] bg-no-repeat bg-[center_right_14px] bg-[length:16px_16px];
 }
