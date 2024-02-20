@@ -89,13 +89,6 @@ const backtestingExchangeNames = computed(() => authState.backtestingExchangeNam
 
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 
-watch(props.form, () => {
-    initiate()
-    if (props.form.exchange !== '') {
-        candlesStore.candlesForm = props.form
-    }
-}, { deep: true })
-
 
 useAuthStore().initiate()
 
