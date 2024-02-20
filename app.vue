@@ -36,17 +36,3 @@ watch(settings, (newValue, oldValue) => {
   useAuthStore().updateConfig()
 }, { deep: true })
 </script>
-
-
-<style>
-select {
-  padding-right: 24px;
-  appearance: none;
-  /* This is to remove the default browser styles */
-  background: url('assets/svg/dropdown-icon.svg') no-repeat center;
-  background-position: right 4px center;
-  /* Replace 'dropdown-icon.png' with your icon */
-  background-size: 15px;
-  /* Adjust this value to change the size of the icon */
-}
-</style>
