@@ -110,3 +110,8 @@ interface multiplesTablesValue {
     tag?: string;
     tooltip?: string;
 }
+
+interface FeedbackResponse {
+    status: string;
+    message: string;
+}

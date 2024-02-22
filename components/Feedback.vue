@@ -50,14 +50,14 @@ async function submit() {
         showNotification('error', `[${error.value.statusCode}]: Something went wrong. If this persists, please contact support.`);
     }
     // todo: fix type of the response
-    const res = data.value as any;
-    if (res.data.status === 'success') {
+    const res = data.value as FeedbackResponse;
+    if (res.status === 'success') {
         form.description = '';
         form.email = '';
-        showNotification('success', res.data.message)
+        showNotification('success', res.message)
         close();
-    } else if (res.data.status === 'error') {
-        showNotification('error', res.data.message)
+    } else if (res.status === 'error') {
+        showNotification('error', res.message)
     }
 }
 
