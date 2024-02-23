@@ -116,7 +116,7 @@ export const useLiveStore = defineStore('Live', {
             }
         },
         async stop(id: number) {
-            const { data, error } = await usePostApi('/live', { id }, true)
+            const { data, error } = await usePostApi('/cancel-live', { id }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
