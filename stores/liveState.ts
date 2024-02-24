@@ -171,9 +171,7 @@ export const useLiveStore = defineStore('Live', {
             // set routes in both form.routes (maybe page was refreshed)
             this.tabs[id].form.routes = this.tabs[id].results.generalInfo.routes
             // and results.routes which is where the table is read from
-            this.tabs[id].results.routes = [
-                ['Exchange', 'Symbol', 'Timeframe', 'Strategy']
-            ]
+            this.tabs[id].results.routes = []
             for (const item of this.tabs[id].form.routes) {
                 this.tabs[id].results.routes.push([
                     { value: item.exchange, style: '' },
