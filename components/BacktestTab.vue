@@ -28,8 +28,7 @@
             </div>
 
             <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                Debugging Logs
+                <UButton icon="i-heroicons-document-arrow-down" label="Debugging Logs" color="gray" size="sm" variant="solid" :trailing="false" class="w-64 flex justify-center" />
             </a>
         </div>
 
@@ -151,7 +150,7 @@
 </template>
   
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/outline'
 import { useBacktestStore } from '@/stores/backtestState'
 import { useAuthStore } from '@/stores/authState'
 import helpers from '@/utils/helpers'
