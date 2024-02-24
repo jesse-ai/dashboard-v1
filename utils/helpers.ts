@@ -2,7 +2,7 @@ import _ from 'lodash'
 
 const helpers = {
     timestampToTime(timestamp: number) {
-        const date = new Date(timestamp);
+        const date = new Date(Number(timestamp));
         const year = date.getUTCFullYear();
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const day = String(date.getUTCDate()).padStart(2, '0');
@@ -10,12 +10,12 @@ const helpers = {
     },
 
     timestampToTimeOnly(timestamp: number) {
-        const date = new Date(timestamp);
+        const date = new Date(Number(timestamp));
         return `${date.toUTCString().slice(17, 25)}`;
     },
 
     timestampToDate(timestamp: number) {
-        const date = new Date(timestamp);
+        const date = new Date(Number(timestamp));
         const year = date.getUTCFullYear();
         const month = String(date.getUTCMonth() + 1).padStart(2, '0');
         const day = String(date.getUTCDate()).padStart(2, '0');
