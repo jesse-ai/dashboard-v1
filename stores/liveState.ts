@@ -208,11 +208,13 @@ export const useLiveStore = defineStore('Live', {
                 showNotification('error', error.value.data.message)
                 return
             }
-            const res = data.value as any
-            const arr = res.data.data
+
+            const res = data.value as GetLogsEvent
+            const arr = res.data
+
             this.tabs[id].results.infoLogs = ''
 
-            arr.forEach((data: any) => {
+            arr.forEach((data: LogsData) => {
                 this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                     data.timestamp
                 )}] ${data.message}\n`
@@ -225,11 +227,12 @@ export const useLiveStore = defineStore('Live', {
                 showNotification('error', errorLog.value.data.message)
                 return
             }
-            const resLog = dataLog.value as any
-            const arrLog = resLog.data.data
+
+            const resLog = dataLog.value as GetLogsEvent
+            const arrLog = resLog.data
             this.tabs[id].results.errorLogs = ''
 
-            arrLog.forEach((data: any) => {
+            arrLog.forEach((data: LogsData) => {
                 this.tabs[id].results.errorLogs += `[${helpers.timestampToTime(
                     data.timestamp
                 )}] ${data.message}\n`

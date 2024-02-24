@@ -91,3 +91,15 @@ interface positionsEvent {
     type: string;
     value: number;
 }
+
+
+interface LogsData {
+    id: string;
+    timestamp: number;
+    message: string;
+}
+
+interface GetLogsEvent {
+    id: string;
+    data: LogsData[];
+}
