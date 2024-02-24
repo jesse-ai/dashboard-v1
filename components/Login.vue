@@ -20,10 +20,10 @@
             <div>
                 <UForm :state="form" class="flex items-center justify-center" @submit="login">
                     <UFormGroup name="password">
-                        <UInput v-model="form.password" placeholder="password" icon="i-heroicons-lock-closed" type="password" />
+                        <UInput v-model="form.password" placeholder="password" icon="i-heroicons-lock-closed" size="xl" type="password" />
                     </UFormGroup>
 
-                    <UButton icon="i-heroicons-arrow-long-right" type="submit" class="ml-2" size="sm" color="primary" square variant="solid" />
+                    <UButton icon="i-heroicons-arrow-long-right" type="submit" class="ml-2" size="xl" color="primary" square variant="solid" />
                 </UForm>
             </div>
         </div>
