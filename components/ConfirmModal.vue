@@ -30,9 +30,7 @@
                                 </DialogTitle>
                             </div>
 
-                            <button class="btn-nav" @click="model = false">
-                                <XMarkIcon class="h-5 w-5 text-gray-400 rounded-full" />
-                            </button>
+                            <UButton icon="i-heroicons-x-mark" variant="link" color="gray" class="btn-nav" @click="model = false" />
                         </div>
 
                         <div :class="[description ? '' : 'items-center', 'flex items-start justify-start']">
@@ -47,9 +45,7 @@
 
                         <div class="mt-5 sm:mt-4 flex justify-end">
                             <!-- action button which must insert in main component -->
-                            <button ref="cancelButtonRef" type="button" class="font-medium select-none items-center text-gray-700 dark:text-gray-300 hover:underline focus:outline-none text-base tracking-wide mr-4" @click="model = false">
-                                {{ type === 'danger' ? 'Cancel' : 'Close' }}
-                            </button>
+                            <UButton variant="link" color="gray" class="mr-4" :label="type === 'danger' ? 'Cancel' : 'Close'" @click="model = false" />
 
                             <slot />
                         </div>
@@ -62,7 +58,7 @@
   
 <script setup lang="ts">
 import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { NoSymbolIcon, ExclamationTriangleIcon, CheckIcon, XMarkIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
+import { NoSymbolIcon, ExclamationTriangleIcon, CheckIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 
 const model = defineModel()
 
