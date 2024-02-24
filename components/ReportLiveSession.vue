@@ -56,7 +56,7 @@ const report = async () => {
         mode: 'live',
         attach_logs: true,
         session_id: props.sessionId
-    })
+    }, true)
     loadingBtn.value = false
 
     if (error.value && error.value.statusCode !== 200) {
