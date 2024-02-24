@@ -85,8 +85,7 @@
                     <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="sm" variant="solid" label="Cancel" :trailing="false" />
 
                     <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        Debugging Logs
+                        <UButton color="gray" variant="outline" size="sm" label="Debugging Logs" icon="i-heroicons-document-arrow-down" :trailing="false" />
                     </a>
                 </div>
 
@@ -99,14 +98,11 @@
             <!-- Show Results -->
             <div v-if="results.showResults">
                 <div class="mb-8 w-full">
-                    <button class="flex justify-center items-center btn-success text-center mb-4 w-full" @click="newSession">
-                        <ReplyIcon class="w-5 h-5 mr-2" />
-                        New session
-                    </button>
+
+                    <UButton @click="newSession" class="w-full flex justify-center" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="Start" :trailing="false" />
 
                     <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <DocumentDownloadIcon class="w-5 h-5 mr-2" />
-                        Debugging Logs
+                        <UButton color="gray" variant="outline" label="Debugging Logs" icon="i-heroicons-document-arrow-down" :trailing="false" />
                     </a>
                 </div>
             </div>
