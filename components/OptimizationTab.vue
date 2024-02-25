@@ -82,10 +82,10 @@
             <!-- Execution -->
             <div v-if="results.executing && !results.showResults" class="flex flex-col items-center justify-center select-none">
                 <div class="mb-8 w-full">
-                    <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="sm" variant="solid" label="Cancel" :trailing="false" />
+                    <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
 
-                    <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                        <UButton color="gray" variant="outline" size="sm" label="Debugging Logs" icon="i-heroicons-document-arrow-down" :trailing="false" />
+                    <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 mt-4 w-full">
+                        <UButton class="w-full flex justify-center" color="gray" variant="outline" size="xl" label="Debugging Logs" icon="i-heroicons-document-arrow-down" :trailing="false" />
                     </a>
                 </div>
 
