@@ -32,7 +32,7 @@ const colorMode = useColorMode()
 const lightTheme = ref({
     chart: {
         layout: {
-            backgroundColor: '#ffffff',
+            background: { color: '#ffffff' },
             textColor: 'rgba(33, 56, 77, 1)'
         },
         grid: {
@@ -62,7 +62,7 @@ const lightTheme = ref({
 const darkTheme = ref({
     chart: {
         layout: {
-            backgroundColor: '#333333',
+            background: { color: '#333333' },
             textColor: '#D1D5DB'
         },
         grid: {
