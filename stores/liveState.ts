@@ -90,12 +90,12 @@ export const useLiveStore = defineStore('Live', {
             const authStore = useAuthStore()
 
             // make sure symbols are uppercase
-            this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: any) => {
+            this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: Route) => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
             // also for extra_routes
-            this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route: any) => {
+            this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route: ExtraRoute) => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
@@ -107,16 +107,17 @@ export const useLiveStore = defineStore('Live', {
             }
         },
         async cancel(id: number) {
-            this.tabs[id].results.booting = false
-            const { data, error } = await usePostApi('/cancel-live', { id }, true)
+            const { data, error } = await usePostApi('/cancel-live', { id, paper_mode: this.tabs[id].form.paper_mode }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
                 return
             }
+
+            this.tabs[id].results.booting = false
         },
         async stop(id: number) {
-            const { data, error } = await usePostApi('/cancel-live', { id }, true)
+            const { data, error } = await usePostApi('/cancel-live', { id, paper_mode: this.tabs[id].form.paper_mode }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
@@ -135,26 +136,27 @@ export const useLiveStore = defineStore('Live', {
             ]
         },
         routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
-            const arr: any[][] = []
+            const arr: RouteInfo[][] = []
             data.forEach(item => {
                 arr.push([
-                    item.exchange,
-                    item.symbol,
-                    item.timeframe,
-                    item.strategy_name
+                    { value: item.exchange, style: '' },
+                    { value: item.symbol, style: '' },
+                    { value: item.timeframe, style: '' },
+                    { value: item.strategy_name, style: '' },
                 ])
             })
             this.tabs[id].results.routes_info = arr
         },
-        progressbarEvent(id: number, data: any) {
+        progressbarEvent(id: number, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
         },
-        infoLogEvent(id: number, data: any) {
+        infoLogEvent(id: number, data: { timestamp: number, message: string }) {
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
         errorLogEvent(id: number, data: any) {
+            console.log(data)
             showNotification('error', data.message)
 
             this.tabs[id].results.errorLogs += `[${helpers.timestampToTime(
@@ -162,6 +164,7 @@ export const useLiveStore = defineStore('Live', {
             )}] ${data.message}\n`
         },
         exceptionEvent(id: number, data: any) {
+            console.log(data)
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
@@ -195,8 +198,8 @@ export const useLiveStore = defineStore('Live', {
                 showNotification('error', error.value.data.message)
                 return
             }
-            const res = data.value as any
-            this.tabs[id].results.candles = res.data.data
+            const res = data.value as GetCandlesResponse
+            this.tabs[id].results.candles = res.data
         },
         async fetchLogs(id: number) {
             // info logs
@@ -236,10 +239,10 @@ export const useLiveStore = defineStore('Live', {
                 )}] ${data.message}\n`
             })
         },
-        currentCandlesEvent(id: number, data: any) {
+        currentCandlesEvent(id: number, data: CurrentCandlesObject) {
             this.tabs[id].results.currentCandles = data
         },
-        watchlistEvent(id: number, data: any) {
+        watchlistEvent(id: number, data: KeyValueObject[]) {
             this.tabs[id].results.watchlist = data
         },
         positionsEvent(id: number, data: positionsEvent[]) {
@@ -302,7 +305,7 @@ export const useLiveStore = defineStore('Live', {
             this.tabs[id].results.booting = false
             this.tabs[id].results.showResults = true
         },
-        unexpectedTerminationEvent(id: number, data: any) {
+        unexpectedTerminationEvent(id: number, data: { message: string }) {
             this.tabs[id].results.finished = true
         },
         terminationEvent(id: number) {

@@ -30,9 +30,9 @@ interface ResultsLiveTab {
     generalInfo: any;
     positions: multiplesTablesValue[][];
     orders: ordersEvent[];
-    watchlist: any[];
-    candles: any[];
-    currentCandles: Record<string, unknown>;
+    watchlist: KeyValueObject[];
+    candles: LiveCandleData[];
+    currentCandles: CurrentCandlesObject;
     infoLogs: string;
     errorLogs: string;
     exception: Exception;
@@ -73,7 +73,7 @@ interface LiveGeneralInfoEvent {
     count_trades: number;
     count_winning_trades: number;
     count_losing_trades: number;
-    routes: any[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
+    routes: Route[]; // Replace 'any' with the actual type of the items in the 'routes' array if known
 }
 
 interface positionsEvent {
@@ -102,4 +102,27 @@ interface LogsData {
 interface GetLogsEvent {
     id: string;
     data: LogsData[];
+}
+
+interface KeyValueObject {
+    key: string;
+    value: string;
+}
+
+interface LiveCandleData {
+    time: number;
+    open: number;
+    close: number;
+    high: number;
+    low: number;
+    volume: number;
+}
+
+interface CurrentCandlesObject {
+    [key: string]: LiveCandleData;
+}
+
+interface GetCandlesResponse {
+    id: string;
+    data: LiveCandleData[];
 }
