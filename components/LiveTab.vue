@@ -114,7 +114,7 @@
                 <div v-if="results.monitoring" class="mt-8 lg:mt-0">
                     <UButton v-if="results.finished" class="w-full flex justify-center" variant="solid" icon="i-heroicons-plus" size="xl" label="New session" @click="newLive(Number($route.params.id))" />
 
-                    <UButton v-else class="w-full flex justify-center" variant="outline" color="gray" icon="i-heroicons-no-symbol" size="xl" :label="results.terminating ? 'Terminating...' : 'Terminate'" @click="terminationConfirmModal = true" />
+                    <UButton v-else class="w-full flex justify-center" variant="solid" color="gray" icon="i-heroicons-no-symbol" size="xl" :label="results.terminating ? 'Terminating...' : 'Terminate'" @click="terminationConfirmModal = true" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" />
 
                     <!-- report button -->
                     <UButton v-if="results.monitoring || results.finished" class="w-full flex justify-center mt-4" variant="solid" color="gray" icon="i-heroicons-flag" size="xl" label="Report" @click="reportWithoutExceptionModal = true" />
