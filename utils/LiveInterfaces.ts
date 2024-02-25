@@ -106,7 +106,7 @@ interface GetLogsEvent {
 
 interface KeyValueObject {
     key: string;
-    value: string;
+    value: string | number;
 }
 
 interface LiveCandleData {

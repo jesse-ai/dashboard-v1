@@ -6,9 +6,7 @@
 
     <!-- report without exception -->
     <SlideOver v-model="reportWithoutExceptionModal" width="max-w-3xl" title="Report">
-        <template #default>
-            <ReportLiveSession :session-id="results.generalInfo.session_id" @close="reportWithoutExceptionModal = false" />
-        </template>
+        <ReportLiveSession :session-id="results.generalInfo.session_id" @close="reportWithoutExceptionModal = false" />
     </SlideOver>
 
     <!-- general logs modal -->
@@ -42,7 +40,7 @@
 
     <!-- session termination modal -->
     <ConfirmModal title="Termination Confirm" description="Are you sure you want to terminate this session?" type="info" v-model="terminationConfirmModal">
-        <button class="btn-danger ml-2" @click="stop(Number($route.params.id))">Terminate</button>
+        <UButton @click="stop(Number($route.params.id))" variant="solid" color="red" class="flex justify-center" label="Terminate" />
     </ConfirmModal>
 
     <!-- Execution -->
@@ -54,30 +52,24 @@
         <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText" />
 
         <div class="mt-8">
-            <button v-if="form.debug_mode" class="flex justify-center items-center btn-primary mb-4 w-64" @click="infoLogsModal = true">
-                <ClipboardListIcon class="w-5 h-5 mr-2" />
-                View Logs
-            </button>
+            <UButton v-if="form.debug_mode" icon="i-heroicons-clipboard-document-list" variant="solid" label="View Logs" size="xl" class="flex justify-center w-64" @click="infoLogsModal = true" />
 
-            <button data-cy="live-cancel-button" class="flex justify-center items-center btn-secondary w-64" @click="cancel(Number($route.params.id))">
-                <BanIcon class="w-5 h-5 mr-2" />
-                Cancel
-            </button>
+            <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center mt-4" size="xl" icon="i-heroicons-no-symbol" variant="solid" label="Cancel" :trailing="false" />
         </div>
 
         <!-- exception  -->
         <div v-if="results.exception.error" class="mx-auto container mt-8">
-            <Exception :title="results.exception.error" :content="results.exception.traceback" mode="live" :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" />
+            <Exception :title="results.exception.error" :content="results.exception.traceback" mode="live" :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" v-model="exceptionReport" />
         </div>
     </div>
 
-    <LayoutWithSidebar v-else>
+    <LayoutsSidebar v-else>
         <template #left>
             <!-- form -->
             <div v-if="!results.booting && !results.monitoring && !results.showResults" data-cy="live-page-content">
                 <Routes :form="form" :results="results" />
 
-                <Divider class="mt-16" title="Options" />
+                <Divider class="mt-16 mb-4" title="Options" />
 
                 <div class="grid grid-cols-1 gap-6">
                     <ToggleButton :object="form" name="debug_mode" title="Debug Mode" description="Logs more details, helpful for debugging. Not recommended for beginners." />
@@ -95,22 +87,23 @@
 
                 <!-- Candlesticks chart-->
                 <div>
-                    <CandlesChart v-if="results.candles.length" :candles="results.candles" :results="results" :form="form" />
+                    <CandlesChart v-if="results.candles && results.candles.length" :candles="results.candles" :results="results" :form="form" />
                 </div>
 
                 <!--tables-->
-                <Divider class="mt-12" title="Routes" />
+                <Divider class="mb-4" :class="results.candles && results.candles.length ? 'mt-16' : ''" title="Routes" />
                 <MultipleValuesTable :data="results.routes" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
-                <Divider class="mt-12" title="Positions" />
+                <Divider class="mt-12 mb-4" title="Positions" />
                 <MultipleValuesTable :data="results.positions" :headerItems="['Symbol', 'QTY', 'Entry', 'Price', 'Liq Price', 'PNL']" header />
 
-                <DividerWithButtons class="mt-12" title="Orders">
+                <DividerWithButtons class="mt-12 mb-4" title="Orders">
                     <button type="button" class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none" @click="ordersModal = true">
-                        <CollectionIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                        <RectangleStackIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                         <span>More</span>
                     </button>
                 </DividerWithButtons>
+
                 <MultipleValuesTable :data="orders" :headerItems="['Created', 'Symbol', 'Type', 'Side', 'Price', 'QTY', 'Status']" header />
             </div>
         </template>
@@ -118,33 +111,17 @@
         <template #right>
             <!-- Action Buttons -->
             <div v-if="!results.booting">
-                <div v-if="results.monitoring">
-                    <button v-if="results.finished" class="flex justify-center items-center btn-primary text-center mb-4 w-full" @click="newLive(Number($route.params.id))">
-                        <PlusSmIcon class="w-5 h-5 mr-2" />
-                        New session
-                    </button>
+                <div v-if="results.monitoring" class="mt-8 lg:mt-0">
+                    <UButton v-if="results.finished" class="w-full flex justify-center" variant="solid" icon="i-heroicons-plus" size="xl" label="New session" @click="newLive(Number($route.params.id))" />
 
-                    <button v-else :disabled="results.terminating" class="flex items-center justify-center btn-cancel text-center mr-2 w-full mb-4" @click="terminationConfirmModal = true">
-                        <BanIcon class="w-5 h-5 mr-2" />
-                        {{ results.terminating ? 'Terminating...' : 'Terminate' }}
-                    </button>
+                    <UButton v-else class="w-full flex justify-center" variant="outline" color="gray" icon="i-heroicons-no-symbol" size="xl" :label="results.terminating ? 'Terminating...' : 'Terminate'" @click="terminationConfirmModal = true" />
 
                     <!-- report button -->
-                    <button v-if="results.monitoring || results.finished" class="flex items-center justify-center btn-secondary text-center mr-2 w-full mb-4" @click="reportWithoutExceptionModal = true">
-                        <FlagIcon class="w-5 h-5 mr-2" />
-                        Report
-                    </button>
+                    <UButton v-if="results.monitoring || results.finished" class="w-full flex justify-center mt-4" variant="solid" color="gray" icon="i-heroicons-flag" size="xl" label="Report" @click="reportWithoutExceptionModal = true" />
                 </div>
 
                 <div v-else data-cy="live-action-button">
-                    <button data-cy="live-start-button" class="flex justify-center items-center btn-primary text-center mr-2 w-full mb-4" @click="start(Number($route.params.id))">
-                        <LightningBoltIcon class="w-5 h-5 mr-2" />
-                        Start
-                    </button>
-
-                    <!--          <button class="btn-secondary text-center block w-full mb-4" @click="startInNewTab($route.params.id)">-->
-                    <!--            Start in a new tab-->
-                    <!--          </button>-->
+                    <UButton @click="start(Number($route.params.id))" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
                 </div>
             </div>
 
@@ -155,21 +132,21 @@
                 <div class="flex justify-between items-center">
                     <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Current Time:</div>
                     <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        {{ timestampToTime(results.generalInfo.current_time) }}
+                        {{ helpers.timestampToTime(results.generalInfo.current_time) }}
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center">
                     <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started:</div>
                     <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        {{ timestampToTime(results.generalInfo.started_at) }}
+                        {{ helpers.timestampToTime(results.generalInfo.started_at) }}
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center">
                     <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started/Current Balance:</div>
                     <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        {{ `${results.generalInfo.started_balance}/${results.generalInfo.current_balance}` }}
+                        {{ `${results.generalInfo.started_balance} /${results.generalInfo.current_balance}` }}
                     </div>
                 </div>
 
@@ -199,10 +176,10 @@
 
                 <div class="flex justify-between items-center">
                     <div class="flex justify-start items-center">
-                        <button class="text-sm font-medium text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 truncate flex items-center hover:underline cursor-pointer focus:outline-none" @click="modals.infoLogs = true">
+                        <button class="text-sm font-medium text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 truncate flex items-center hover:underline cursor-pointer focus:outline-none" @click="infoLogsModal = true">
                             <span>Info Logs:</span>
                             <span class="focus:outline-none flex justify-start items-center">
-                                <ClipboardListIcon class="w-6 h-6 ml-2" />
+                                <ClipboardDocumentListIcon class="w-6 h-6 ml-2" />
                             </span>
                         </button>
                     </div>
@@ -213,10 +190,10 @@
 
                 <div class="flex justify-between items-center">
                     <div class="flex justify-start items-center">
-                        <button class="text-sm font-medium text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 truncate flex items-center hover:underline cursor-pointer focus:outline-none" @click="modals.errorLogs = true">
+                        <button class="text-sm font-medium text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 truncate flex items-center hover:underline cursor-pointer focus:outline-none" @click="errorLogsModal = true">
                             <span>Error Logs:</span>
                             <span class="focus:outline-none flex justify-start items-center">
-                                <ClipboardListIcon class="w-6 h-6 ml-2 cursor-pointer" />
+                                <ClipboardDocumentListIcon class="w-6 h-6 ml-2 cursor-pointer" />
                             </span>
                         </button>
                     </div>
@@ -228,15 +205,15 @@
 
             <!-- watch list -->
             <div v-if="results.monitoring && results.watchlist.length">
-                <Divider class="mt-8" title="Watch List" />
+                <Divider class="mt-8 mb-4" title="Watch List" />
                 <KeyValueTableSimple :data="results.watchlist" />
             </div>
         </template>
-    </LayoutWithSidebar>
+    </LayoutsSidebar>
 </template>
   
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { RectangleStackIcon, ClipboardDocumentListIcon, PlusIcon, ClipboardIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useLiveStore } from '@/stores/liveState'
 import { useAuthStore } from '@/stores/authState'
 import helpers from '@/utils/helpers'
@@ -246,6 +223,7 @@ const props = defineProps<{
     results: ResultsLiveTab
 }>()
 
+const exceptionReport = ref(false)
 const displayInfo = ref(false)
 const displayErrors = ref(false)
 const copiedLogsInfo = ref(false)
@@ -293,8 +271,12 @@ const orders = computed(() => {
 
 const start = liveStore.start
 const cancel = liveStore.cancel
-const stop = liveStore.stop
 const newLive = liveStore.newLive
+
+const stop = (id: number) => {
+    terminationConfirmModal.value = false
+    liveStore.stop(id)
+}
 
 const copyInfoLogs = () => {
     displayInfo.value = true
