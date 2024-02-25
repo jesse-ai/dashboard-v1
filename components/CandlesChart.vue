@@ -12,12 +12,12 @@ const props = defineProps<{
     candles: Array<any>;
 }>()
 
-const chart = null as any
-const candleSeries = null as any
-const lines = ref({
+let chart = null as any
+let candleSeries = null as any
+const lines = {
     orderEntries: {} as any,
     positionEntry: null
-})
+}
 
 const settings = ref({
     width: 800,
@@ -91,13 +91,14 @@ const darkTheme = ref({
 
 let theme = computed(() => colorMode.preference)
 const currentCandles = computed(() => props.results.currentCandles)
-const positionEntry = computed(() => props.results.positions[1][2].value)
+const positionEntry = computed(() => props.results.positions[0][2].value)
 const positionType = computed(() => {
-    if (Number(props.results.positions[1][1].value) > 0) return 'long'
-    if (Number(props.results.positions[1][1].value) < 0) return 'short'
+    if (Number(props.results.positions[0][1].value) > 0) return 'long'
+    if (Number(props.results.positions[0][1].value) < 0) return 'short'
     return 'close'
 })
-const firstPosition = computed(() => props.results.positions[1])
+
+const firstPosition = computed(() => props.results.positions[0])
 
 watch(currentCandles, (newValue, oldValue) => {
     const firstRoute = props.form.routes[0]
@@ -120,19 +121,19 @@ watch(() => props.results.orders, (newValue, oldValue) => {
 }, { deep: true })
 
 onMounted(() => {
-    settings.value.width = chart.value.clientWidth
+    settings.value.width = chart.clientWidth
 
-    chart.value = createChart(chart, settings.value)
+    chart = createChart(chart, settings.value)
 
-    candleSeries.value = chart.value.addCandlestickSeries()
-    candleSeries.value.setData(props.candles)
+    candleSeries = chart.addCandlestickSeries()
+    candleSeries.setData(props.candles)
 
-    chart.value.timeScale().fitContent()
+    chart.timeScale().fitContent()
 
     if (theme.value === 'light') {
-        chart.value.applyOptions(lightTheme.value.chart)
+        chart.applyOptions(lightTheme.value.chart)
     } else {
-        chart.value.applyOptions(darkTheme.value.chart)
+        chart.applyOptions(darkTheme.value.chart)
     }
 
     updatePositionEntry()
@@ -140,15 +141,15 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-    chart.value = null
-    candleSeries.value = null
+    chart = null
+    candleSeries = null
 })
 
 function updatePositionEntry() {
     const color = positionType.value === 'long' ? '#00AB5C' : '#FF497D'
 
-    if (lines.value.positionEntry) {
-        candleSeries.value.removePriceLine(lines.value.positionEntry)
+    if (lines.positionEntry) {
+        candleSeries.removePriceLine(lines.positionEntry)
     }
 
     if (Number(positionEntry.value) > 0) {
@@ -160,16 +161,17 @@ function updatePositionEntry() {
             axisLabelVisible: true,
             title: 'Entry Price',
         }
-        lines.value.positionEntry = candleSeries.value.createPriceLine(entryPrice)
+
+        lines.positionEntry = candleSeries.createPriceLine(entryPrice)
     }
 }
 
 function updateOrderEntries() {
     const PositionSymbol = firstPosition.value[0].value
 
-    for (const key in lines.value.orderEntries) {
-        candleSeries.value.removePriceLine(lines.value.orderEntries[key])
-        delete lines.value.orderEntries[key]
+    for (const key in lines.orderEntries) {
+        candleSeries.removePriceLine(lines.orderEntries[key])
+        delete lines.orderEntries[key]
     }
 
     props.results.orders.forEach(order => {
@@ -178,19 +180,20 @@ function updateOrderEntries() {
 
         if ((order.status === 'ACTIVE' || order.status === 'QUEUED') && order.symbol === PositionSymbol) {
             const orderPrice = {
-                price: order.price,
-                color,
-                lineWidth: 1,
-                lineStyle: 3,
+                price: Number(order.price),
+                color: color,
+                lineWidth: 1.5,
+                lineStyle: 0,
                 axisLabelVisible: true,
-                title,
+                title: title
             }
-            lines.value.orderEntries[order.id] = candleSeries.value.createPriceLine(orderPrice)
+
+            lines.orderEntries[order.id] = candleSeries.createPriceLine(orderPrice)
         }
     })
 }
 
-function updateCurrentCandle(candle: any) {
+function updateCurrentCandle(candle: LiveCandleData) {
     if (candle === undefined) {
         throw new TypeError('candle is undefined!')
     }
@@ -204,14 +207,14 @@ function updateCurrentCandle(candle: any) {
         return
     }
 
-    candleSeries.value.update(candle)
+    candleSeries.update(candle)
 }
 
 function checkTheme(val: string) {
     if (val === 'light') {
-        chart.value.applyOptions(lightTheme.value.chart)
+        chart.applyOptions(lightTheme.value.chart)
     } else {
-        chart.value.applyOptions(darkTheme.value.chart)
+        chart.applyOptions(darkTheme.value.chart)
     }
 }
 </script>
