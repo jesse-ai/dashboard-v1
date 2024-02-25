@@ -30,7 +30,7 @@ interface ResultsLiveTab {
     generalInfo: any;
     positions: multiplesTablesValue[][];
     orders: ordersEvent[];
-    watchlist: KeyValueObject[];
+    watchlist: [string, string][];
     candles: LiveCandleData[];
     currentCandles: CurrentCandlesObject;
     infoLogs: string;

@@ -155,16 +155,14 @@ export const useLiveStore = defineStore('Live', {
                 data.timestamp
             )}] ${data.message}\n`
         },
-        errorLogEvent(id: number, data: any) {
-            console.log(data)
+        errorLogEvent(id: number, data: { id: string, timestamp: number, message: string }) {
             showNotification('error', data.message)
 
             this.tabs[id].results.errorLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: any) {
-            console.log(data)
+        exceptionEvent(id: number, data: Exception) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
@@ -242,7 +240,7 @@ export const useLiveStore = defineStore('Live', {
         currentCandlesEvent(id: number, data: CurrentCandlesObject) {
             this.tabs[id].results.currentCandles = data
         },
-        watchlistEvent(id: number, data: KeyValueObject[]) {
+        watchlistEvent(id: number, data: [string, string][]) {
             this.tabs[id].results.watchlist = data
         },
         positionsEvent(id: number, data: positionsEvent[]) {
