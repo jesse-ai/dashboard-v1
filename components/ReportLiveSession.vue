@@ -64,7 +64,7 @@ const report = async () => {
         return
     }
 
-    const res = data.value as any
+    const res = data.value as { status: string, message: string }
     if (res.status === 'success') {
         form.value.description = ''
         form.value.email = ''
