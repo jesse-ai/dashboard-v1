@@ -1,5 +1,5 @@
 <template>
-    <div class="select-none">
+    <div id="routes-section" class="select-none">
         <DividerWithButtons title="Routes">
             <div class="w-full flex justify-center">
                 <button type="button" class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-l-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none" @click="addRoute">
@@ -83,7 +83,7 @@
         Extra Routes
        ================================
       -->
-        <Divider v-if="form.extra_routes.length" title="Extra Routes" />
+        <Divider v-if="form.extra_routes.length" class="mt-8 mb-4" title="Extra Routes" />
 
         <div v-for="(r, i) in form.extra_routes" :key="r.exchange + i + r.timeframe" class="flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg mb-4">
             <!-- exchange -->
@@ -141,15 +141,6 @@
                 </Menu>
             </div>
         </div>
-
-        <!-- error section -->
-        <div v-if="totalRoutesError.length" id="error-section" class="text-sm text-red-400 p-2 rounded-lg mb-4">
-            <div v-for="(item, i) in totalRoutesError" :key="i" class="flex justify-start items-center mb-2">
-                <ExclamationTriangleIcon class="-ml-1.5 mr-1 h-5 w-5" />
-
-                <div v-html="item" />
-            </div>
-        </div>
     </div>
 </template>
   
@@ -159,14 +150,12 @@ import {
     DocumentDuplicateIcon,
     TrashIcon,
     ArrowUpCircleIcon,
-    ArrowDownCircleIcon,
-    ExclamationTriangleIcon
+    ArrowDownCircleIcon
 } from '@heroicons/vue/24/solid'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useAuthStore } from '@/stores/authState'
 import { ref, computed, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import type { R } from 'vitest/dist/types-198fd1d9';
 
 const route = useRoute();
 
@@ -178,7 +167,6 @@ const props = defineProps({
 const authStore = useAuthStore();
 const copiedExtraRoutes = ref({ extra_routes: props.form.extra_routes });
 const copiedRoutes = ref({ routes: props.form.routes });
-const totalRoutesError = ref([] as string[]);
 
 const isLive = computed(() => route.name === 'Live');
 
@@ -213,7 +201,6 @@ watchEffect(() => {
     copiedExtraRoutes.value = { extra_routes: props.form.extra_routes };
     copiedRoutes.value = { routes: props.form.routes };
     initiate();
-    checkRoutes();
 });
 
 function allowedToTradeIn(exchangeName: string) {
@@ -222,119 +209,6 @@ function allowedToTradeIn(exchangeName: string) {
         return true;
     }
     return authStore.exchangeInfo[exchangeName].required_live_plan === 'free';
-}
-
-function checkRoutes() {
-    totalRoutesError.value = [];
-    const symbolErrors = [] as string[];
-
-    const ERRORS = {
-        uniqueRoutesErrorMessage: 'each exchange-symbol pair can be traded only once! <br> More info: https://docs.jesse.trade/docs/routes.html#trading-multiple-routes',
-        maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
-        mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
-        timeframeMustBeDifferentErrorMessage: 'Extra routes timeframe and routes timeframe must be different',
-    }
-
-    if (props.form.extra_routes.length > 0) {
-        for (const item of props.form.extra_routes) {
-            if (!symbolErrors.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 9) {
-                symbolErrors.push(ERRORS.maxSymbolLengthErrorMessage)
-            }
-
-            if (!symbolErrors.includes(ERRORS.mustContainDashErrorMessage) && item.symbol.length >= 5) {
-                let checkDash = false
-                for (const item1 of item.symbol.substring(3, 5)) {
-                    if (item1 === '-') {
-                        checkDash = true
-                    }
-                }
-                if (!checkDash) {
-                    symbolErrors.push(ERRORS.mustContainDashErrorMessage)
-                }
-            }
-        }
-    }
-
-    for (const item of props.form.routes) {
-        if (!symbolErrors.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 19) {
-            symbolErrors.push(ERRORS.maxSymbolLengthErrorMessage)
-        }
-
-        if (!symbolErrors.includes(ERRORS.mustContainDashErrorMessage) && item.symbol.length >= 5) {
-            let checkDash = false
-            for (const item1 of item.symbol.substring(3, 5)) {
-                if (item1 === '-') {
-                    checkDash = true
-                }
-            }
-            if (!checkDash) {
-                symbolErrors.push(ERRORS.mustContainDashErrorMessage)
-            }
-        }
-    }
-
-    const routesError = [] as string[]
-    let checkBreakLoop = false
-    const tempRoutes = props.form.routes
-    for (const item of tempRoutes.slice(0, -1)) {
-        if (routesError.includes(ERRORS.uniqueRoutesErrorMessage)) {
-            break
-        }
-        for (const item1 of tempRoutes.slice(tempRoutes.indexOf(item) + 1,)) {
-            if (item.exchange === item1.exchange && item.strategy === item1.strategy && item.symbol === item1.symbol && item.symbol.length !== 0) {
-                routesError.push(ERRORS.uniqueRoutesErrorMessage)
-                checkBreakLoop = false
-                break
-            }
-        }
-        if (checkBreakLoop) {
-            break
-        }
-    }
-
-    let checkBreakExtraLoop = false
-    const tempExtraRoutes = props.form.extra_routes
-    for (const item of tempExtraRoutes.slice(0, -1)) {
-        if (routesError.includes(ERRORS.uniqueRoutesErrorMessage)) {
-            break
-        }
-        for (const item1 of tempExtraRoutes.slice(tempExtraRoutes.indexOf(item) + 1,)) {
-            if (item.exchange === item1.exchange && item.timeframe === item1.timeframe && item.symbol === item1.symbol && item.symbol.length !== 0) {
-                routesError.push(ERRORS.uniqueRoutesErrorMessage)
-                checkBreakExtraLoop = true
-                break
-            }
-        }
-        if (checkBreakExtraLoop) {
-            break
-        }
-    }
-
-    checkBreakExtraLoop = false
-    if (props.form.extra_routes.length > 0) {
-        for (const item of tempExtraRoutes) {
-            if (routesError.includes(ERRORS.timeframeMustBeDifferentErrorMessage)) {
-                break
-            }
-            for (const item1 of props.form.routes) {
-                if (item.exchange === item1.exchange && item.symbol === item1.symbol && item.timeframe === item1.timeframe && item.symbol.length !== 0) {
-                    routesError.push(ERRORS.timeframeMustBeDifferentErrorMessage)
-                    checkBreakExtraLoop = true
-                    break
-                }
-            }
-            if (checkBreakLoop) {
-                break
-            }
-        }
-    }
-
-    for (const item of symbolErrors) {
-        totalRoutesError.value.push(item)
-    }
-    for (const item of routesError) {
-        totalRoutesError.value.push(item)
-    }
 }
 
 function initiate() {
