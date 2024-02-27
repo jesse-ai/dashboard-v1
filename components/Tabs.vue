@@ -2,7 +2,7 @@
     <div class="mb-4">
         <div class="hidden sm:block">
             <nav class="relative rounded-lg shadow flex divide-x divide-gray-200 dark:divide-gray-700" aria-label="props.Tabs">
-                <div v-for="(tab, name, index) in props.tabs" :key="tab.id" :data-cy="'tab' + index" class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
+                <div v-for="(tab, name, index) in props.tabs" :key="tab.id" class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
                     <NuxtLink :to="`/${mode}/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-4 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']">
                         <span>
                             {{ tab.results.executing ? '' : `Tab ${index + 1}` }} {{ tab.results.executing ? `${tab.form.routes[0].symbol}` : `` }} {{ tab.results.executing && !tab.results.showResults ? ' | ' + tab.results.progressbar.current + '%' : '' }} {{ tab.results.showResults ? ' - Results' : '' }}
@@ -12,7 +12,7 @@
                     </NuxtLink>
 
                     <!-- Tab close button -->
-                    <button v-show="Object.keys(props.tabs).length > 1" :data-cy="'tab-close-button' + index" class="absolute right-[1em] focus:outline-none" @click="closeTab(tab.id)">
+                    <button v-show="Object.keys(props.tabs).length > 1" class="absolute right-[1em] focus:outline-none" @click="closeTab(tab.id)">
                         <XMarkIcon class="h-5 w-5 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full" aria-hidden="true" />
                     </button>
                 </div>
@@ -47,8 +47,6 @@ const props = defineProps<{
 const addTab = () => {
     if (String(route.name).includes('backtest')) {
         return useBacktestStore().addTab()
-    } else if (route.name === 'Live') {
-        return useLiveStore().addTab()
     }
 }
 
