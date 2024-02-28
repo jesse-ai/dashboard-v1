@@ -67,7 +67,7 @@
         <template #left>
             <!-- form -->
             <div v-if="!results.booting && !results.monitoring && !results.showResults" data-cy="live-page-content">
-                <Routes :form="form" :results="results" />
+                <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" />
 
                 <Divider class="mt-16 mb-4" title="Options" />
 
@@ -223,6 +223,7 @@ const props = defineProps<{
     results: ResultsLiveTab
 }>()
 
+const totalRoutesError = ref<string[]>([])
 const exceptionReport = ref(false)
 const displayInfo = ref(false)
 const displayErrors = ref(false)
@@ -269,9 +270,29 @@ const orders = computed(() => {
     return arr
 })
 
-const start = liveStore.start
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
+
+const start = (id: number) => {
+    if (totalRoutesError) {
+        if (totalRoutesError.value.length) {
+            var routeSection = document.getElementById("routes-section");
+            if (routeSection) {
+                var offsetTop = routeSection.offsetTop;
+                // scroll to routes section
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            }
+            for (let i = 0; i < totalRoutesError.value.length; i++) {
+                setTimeout(() => {
+                    showNotification('error', totalRoutesError.value[i])
+                }, i * 100)
+            }
+        }
+        return
+    }
+
+    liveStore.start(id)
+}
 
 const stop = (id: number) => {
     terminationConfirmModal.value = false

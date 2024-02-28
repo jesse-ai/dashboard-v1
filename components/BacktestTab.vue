@@ -47,7 +47,7 @@
 
             <!-- Content -->
             <div v-if="!results.executing && !results.showResults">
-                <Routes :form="form" :results="results" />
+                <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" />
 
                 <Divider class="mt-16" title="Options" />
 
@@ -160,12 +160,7 @@ const props = defineProps<{
 }>()
 
 const totalRoutesError = ref<string[]>([])
-const ERRORS = reactive({
-    uniqueRoutesErrorMessage: 'each exchange-symbol pair can be traded only once! More info: https://docs.jesse.trade/docs/routes.html#trading-multiple-routes',
-    maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
-    mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
-    timeframeMustBeDifferentErrorMessage: 'Extra routes timeframe and routes timeframe must be different',
-})
+
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
 
@@ -173,99 +168,44 @@ const backtestStore = useBacktestStore()
 
 const { cancel, rerun, newBacktest } = backtestStore
 
-function checkRoutes() {
-    totalRoutesError.value = [];
-    // check extra routes symbols
-    if (props.form.extra_routes.length > 0) {
-        for (const item of props.form.extra_routes) {
-            if (!totalRoutesError.value.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 9)
-                totalRoutesError.value.push(ERRORS.maxSymbolLengthErrorMessage)
-
-            if (!totalRoutesError.value.includes(ERRORS.mustContainDashErrorMessage) && !item.symbol.includes('-'))
-                totalRoutesError.value.push(ERRORS.mustContainDashErrorMessage)
-        }
-    }
-    // check routes symbols
-    for (const item of props.form.routes) {
-        if (!totalRoutesError.value.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 19)
-            totalRoutesError.value.push(ERRORS.maxSymbolLengthErrorMessage)
-
-        if (!totalRoutesError.value.includes(ERRORS.mustContainDashErrorMessage) && !item.symbol.includes('-')) {
-            totalRoutesError.value.push(ERRORS.mustContainDashErrorMessage)
-        }
-    }
-
-    let checkBreakLoop = false
-    const tempRoutes = props.form.routes
-    for (const item of tempRoutes.slice(0, -1)) {
-        if (totalRoutesError.value.includes(ERRORS.uniqueRoutesErrorMessage) || checkBreakLoop)
-            break
-
-        for (const item1 of tempRoutes.slice(tempRoutes.indexOf(item) + 1,)) {
-            if (item.exchange === item1.exchange && item.strategy === item1.strategy && item.symbol === item1.symbol && item.symbol.length !== 0) {
-                totalRoutesError.value.push(ERRORS.uniqueRoutesErrorMessage)
-                checkBreakLoop = false
-                break
-            }
-        }
-    }
-
-    let checkBreakExtraLoop = false
-    const tempExtraRoutes = props.form.extra_routes
-
-    for (const item of tempExtraRoutes.slice(0, -1)) {
-        if (totalRoutesError.value.includes(ERRORS.uniqueRoutesErrorMessage) || checkBreakExtraLoop)
-            break
-
-        for (const item1 of tempExtraRoutes.slice(tempExtraRoutes.indexOf(item) + 1)) {
-            if (item.exchange === item1.exchange && item.timeframe === item1.timeframe && item.symbol === item1.symbol) {
-                totalRoutesError.value.push(ERRORS.uniqueRoutesErrorMessage)
-                checkBreakExtraLoop = true
-                break
-            }
-        }
-    }
-
-    checkBreakExtraLoop = false
-    if (props.form.extra_routes.length > 0) {
-        for (const item of tempExtraRoutes) {
-            if (totalRoutesError.value.includes(ERRORS.timeframeMustBeDifferentErrorMessage) || checkBreakLoop)
-                break
-
-            for (const item1 of props.form.routes) {
-                if (item.exchange === item1.exchange && item.symbol === item1.symbol && item.timeframe === item1.timeframe) {
-                    totalRoutesError.value.push(ERRORS.timeframeMustBeDifferentErrorMessage)
-                    checkBreakExtraLoop = true
-                    break
-                }
-            }
-        }
-    }
-
-    if (totalRoutesError.value.length) {
-        var routeSection = document.getElementById("routes-section");
-        if (routeSection) {
-            var offsetTop = routeSection.offsetTop;
-            // scroll to routes section
-            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-        }
-        for (let i = 0; i < totalRoutesError.value.length; i++) {
-            setTimeout(() => {
-                showNotification('error', totalRoutesError.value[i])
-            }, i * 100)
-        }
-    }
-    return totalRoutesError.value.length ? true : false
-}
-
 const start = (id: number) => {
-    if (checkRoutes()) return
+    if (totalRoutesError) {
+        if (totalRoutesError.value.length) {
+            var routeSection = document.getElementById("routes-section");
+            if (routeSection) {
+                var offsetTop = routeSection.offsetTop;
+                // scroll to routes section
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            }
+            for (let i = 0; i < totalRoutesError.value.length; i++) {
+                setTimeout(() => {
+                    showNotification('error', totalRoutesError.value[i])
+                }, i * 100)
+            }
+        }
+        return
+    }
 
     backtestStore.start(id)
 }
 
 const startInNewTab = (id: number) => {
-    if (checkRoutes()) return
+    if (totalRoutesError) {
+        if (totalRoutesError.value.length) {
+            var routeSection = document.getElementById("routes-section");
+            if (routeSection) {
+                var offsetTop = routeSection.offsetTop;
+                // scroll to routes section
+                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+            }
+            for (let i = 0; i < totalRoutesError.value.length; i++) {
+                setTimeout(() => {
+                    showNotification('error', totalRoutesError.value[i])
+                }, i * 100)
+            }
+        }
+        return
+    }
 
     backtestStore.startInNewTab(id)
 }
