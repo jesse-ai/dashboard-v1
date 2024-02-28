@@ -244,7 +244,7 @@ function checkRoutes() {
             CheckRoutesSymbol(item);
         }
     }
-    console.log(props.totalRoutesError)
+
     let checkBreakLoop = false
     const tempRoutes = props.form.routes
     for (const item of tempRoutes.slice(0, -1)) {
