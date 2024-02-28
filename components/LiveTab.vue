@@ -274,19 +274,17 @@ const cancel = liveStore.cancel
 const newLive = liveStore.newLive
 
 const start = (id: number) => {
-    if (totalRoutesError) {
-        if (totalRoutesError.value.length) {
-            var routeSection = document.getElementById("routes-section");
-            if (routeSection) {
-                var offsetTop = routeSection.offsetTop;
-                // scroll to routes section
-                window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-            }
-            for (let i = 0; i < totalRoutesError.value.length; i++) {
-                setTimeout(() => {
-                    showNotification('error', totalRoutesError.value[i])
-                }, i * 100)
-            }
+    if (totalRoutesError.value.length) {
+        var routeSection = document.getElementById("routes-section");
+        if (routeSection) {
+            var offsetTop = routeSection.offsetTop;
+            // scroll to routes section
+            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+        }
+        for (let i = 0; i < totalRoutesError.value.length; i++) {
+            setTimeout(() => {
+                showNotification('error', totalRoutesError.value[i])
+            }, i * 100)
         }
         return
     }
