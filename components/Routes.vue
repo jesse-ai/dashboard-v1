@@ -159,15 +159,23 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 
-const props = defineProps({
-    form: {} as any,
-    results: {} as any
-})
+const props = defineProps<{
+    form: BacktestForm | OptimizationForm | FormLiveTab,
+    results: BacktestResults | OptimizationResults | ResultsLiveTab,
+    totalRoutesError: string[]
+}>()
 
 const authStore = useAuthStore();
 const copiedExtraRoutes = ref({ extra_routes: props.form.extra_routes });
 const copiedRoutes = ref({ routes: props.form.routes });
-
+const ERRORS = reactive({
+    uniqueRoutesErrorMessage: 'each exchange-symbol pair can be traded only once! More info: https://docs.jesse.trade/docs/routes.html#trading-multiple-routes',
+    maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
+    mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
+    timeframeMustBeDifferentErrorMessage: 'Extra routes timeframe and routes timeframe must be different',
+    emptyParameter: 'You must fill all the parameters',
+    invalidSymbol: 'Symbol is invalid'
+})
 const isLive = computed(() => route.name === 'Live');
 
 const strategies = computed(() => authStore.strategies);
@@ -201,6 +209,7 @@ watchEffect(() => {
     copiedExtraRoutes.value = { extra_routes: props.form.extra_routes };
     copiedRoutes.value = { routes: props.form.routes };
     initiate();
+    checkRoutes()
 });
 
 function allowedToTradeIn(exchangeName: string) {
@@ -221,6 +230,80 @@ function initiate() {
         timeframe: authStore.jesseSupportedTimeframes[0],
         strategy: authStore.strategies[0],
     });
+}
+
+function checkRoutes() {
+    props.totalRoutesError.splice(0, props.totalRoutesError.length);
+    // check routes symbols
+    for (const item of props.form.routes) {
+        CheckRoutesSymbol(item);
+    }
+    // check extra routes symbols
+    if (props.form.extra_routes.length > 0) {
+        for (const item of props.form.extra_routes) {
+            CheckRoutesSymbol(item);
+        }
+    }
+    console.log(props.totalRoutesError)
+    let checkBreakLoop = false
+    const tempRoutes = props.form.routes
+    for (const item of tempRoutes.slice(0, -1)) {
+        if (props.totalRoutesError.includes(ERRORS.uniqueRoutesErrorMessage) || checkBreakLoop)
+            break
+
+        for (const item1 of tempRoutes.slice(tempRoutes.indexOf(item) + 1,)) {
+            if (item.exchange === item1.exchange && item.strategy === item1.strategy && item.symbol === item1.symbol && item.symbol.length !== 0) {
+                props.totalRoutesError.push(ERRORS.uniqueRoutesErrorMessage)
+                checkBreakLoop = false
+                break
+            }
+        }
+    }
+
+    let checkBreakExtraLoop = false
+    const tempExtraRoutes = props.form.extra_routes
+    for (const item of tempExtraRoutes.slice(0, -1)) {
+        if (props.totalRoutesError.includes(ERRORS.uniqueRoutesErrorMessage) || checkBreakExtraLoop)
+            break
+
+        for (const item1 of tempExtraRoutes.slice(tempExtraRoutes.indexOf(item) + 1)) {
+            if (item.exchange === item1.exchange && item.timeframe === item1.timeframe && item.symbol === item1.symbol) {
+                props.totalRoutesError.push(ERRORS.uniqueRoutesErrorMessage)
+                checkBreakExtraLoop = true
+                break
+            }
+        }
+    }
+
+    checkBreakExtraLoop = false
+    if (props.form.extra_routes.length > 0) {
+        for (const item of tempExtraRoutes) {
+            if (props.totalRoutesError.includes(ERRORS.timeframeMustBeDifferentErrorMessage) || checkBreakLoop)
+                break
+
+            for (const item1 of props.form.routes) {
+                if (item.exchange === item1.exchange && item.symbol === item1.symbol && item.timeframe === item1.timeframe) {
+                    props.totalRoutesError.push(ERRORS.timeframeMustBeDifferentErrorMessage)
+                    checkBreakExtraLoop = true
+                    break
+                }
+            }
+        }
+    }
+}
+
+function CheckRoutesSymbol(item: Route | ExtraRoute) {
+    if (!props.totalRoutesError.includes(ERRORS.emptyParameter) && (item.symbol.length == 0 || item.exchange.length == 0 || item.timeframe.length == 0))
+        props.totalRoutesError.push(ERRORS.emptyParameter)
+    else if (!props.totalRoutesError.includes(ERRORS.emptyParameter)) {
+        if (!props.totalRoutesError.includes(ERRORS.invalidSymbol) && item.symbol.length < 4)
+            props.totalRoutesError.push(ERRORS.invalidSymbol)
+        else if (!props.totalRoutesError.includes(ERRORS.mustContainDashErrorMessage) && !item.symbol.includes('-'))
+            props.totalRoutesError.push(ERRORS.mustContainDashErrorMessage)
+
+        if (!props.totalRoutesError.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 9)
+            props.totalRoutesError.push(ERRORS.maxSymbolLengthErrorMessage)
+    }
 }
 
 function addRoute() {
