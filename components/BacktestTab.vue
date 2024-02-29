@@ -24,11 +24,11 @@
 
         <div class="mt-8">
             <div class="mt-8">
-                <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="sm" variant="solid" label="Cancel" :trailing="false" />
+                <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
             </div>
 
             <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-                <UButton icon="i-heroicons-document-arrow-down" label="Debugging Logs" color="gray" size="sm" variant="solid" :trailing="false" class="w-64 flex justify-center" />
+                <UButton icon="i-heroicons-document-arrow-down" label="Debugging Logs" color="gray" size="xl" variant="solid" :trailing="false" class="w-64 flex justify-center" />
             </a>
         </div>
 
