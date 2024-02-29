@@ -67,11 +67,12 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[tab.id] = tab
             await navigateTo(`/backtest/${tab.id}`)
         },
-        startInNewTab(id: number) {
+        async startInNewTab(id: number) {
             const tab = newTab()
             tab.form = _.cloneDeep(this.tabs[id].form)
             this.tabs[tab.id] = tab
             this.start(tab.id)
+            await navigateTo(`/backtest/${tab.id}`)
         },
         async start(id: number) {
             this.tabs[id].results.progressbar.current = 0
