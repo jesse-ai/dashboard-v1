@@ -137,9 +137,9 @@
             </div>
         </div>
 
-        <DisclosurePanel class="lg:hidden">
+        <DisclosurePanel class="lg:hidden" v-slot="{ close }">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <div v-for="item in navigation" :id="convertToSlug(item.name) + '-page-button'" :key="item.name" :class="[($route.path.startsWith(item.to) && item.to != '/') || ($route.path == '/' && item.to == '/') ? 'bg-gray-200 dark:bg-gray-900' : 'hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200', 'rounded-md']">
+                <div v-for="item in navigation" @click="close" :id="convertToSlug(item.name) + '-page-button'" :key="item.name" :class="[($route.path.startsWith(item.to) && item.to != '/') || ($route.path == '/' && item.to == '/') ? 'bg-gray-200 dark:bg-gray-900' : 'hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200', 'rounded-md']">
                     <nuxt-link :to="item.to" class="text-gray-700 dark:text-gray-300 text-sm font-medium">
                         <div class="flex items-center w-full p-2">
                             <component :is="item.icon" :class="[($route.path.startsWith(item.to) && item.to != '/') || ($route.path == '/' && item.to == '/') ? 'text-gray-700 dark:text-gray-300' : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-400', 'flex-shrink-0 mr-2 h-6 w-6']" aria-hidden="true" />
@@ -163,28 +163,28 @@
 
             <!-- docs, help and strategies links -->
             <div class="px-2 py-2 space-y-1 border-t border-gray-200 dark:border-gray-900">
-                <div class="w-full">
+                <div @click="close" class="w-full">
                     <a href="https://docs.jesse.trade/" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank">
                         <CircleStackIcon class="w-5 h-5 mr-2" />
                         Documentation
                     </a>
                 </div>
 
-                <div class="w-full">
+                <div @click="close" class="w-full">
                     <a href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank">
                         <DocumentTextIcon class="w-5 h-5 mr-2" />
                         Sample Strategies
                     </a>
                 </div>
 
-                <div class="w-full">
+                <div @click="close" class="w-full">
                     <a href="https://jesse.trade/help" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank">
                         <QuestionMarkCircleIcon class="w-5 h-5 mr-2" />
                         Help Center
                     </a>
                 </div>
 
-                <div class="w-full">
+                <div @click="close" class="w-full">
                     <button href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank" @click="about = true">
                         <IdentificationIcon class="w-5 h-5 mr-2" />
                         About
@@ -234,7 +234,6 @@ import {
 
 const store = useAuthStore()
 
-const open = ref(false)
 const settings = ref(false)
 const feedback = ref(false)
 const makeStrategy = ref(false)
