@@ -54,7 +54,7 @@
         <div class="mt-8">
             <UButton v-if="form.debug_mode" icon="i-heroicons-clipboard-document-list" variant="solid" label="View Logs" size="xl" class="flex justify-center w-64" @click="infoLogsModal = true" />
 
-            <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center mt-4" size="xl" icon="i-heroicons-no-symbol" variant="solid" label="Cancel" :trailing="false" />
+            <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center mt-4" size="xl" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" icon="i-heroicons-no-symbol" variant="solid" label="Cancel" :trailing="false" />
         </div>
 
         <!-- exception  -->

@@ -8,7 +8,7 @@
         <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText" />
 
         <div class="mt-8">
-            <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="sm" variant="solid" label="Cancel" :trailing="false" />
+            <UButton @click="cancel(Number($route.params.id))" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
         </div>
 
         <!-- exception  -->
