@@ -24,7 +24,7 @@
 
         <div class="mt-8">
             <div class="mt-8">
-                <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
+                <UButton @click="cancel(Number($route.params.id))" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
             </div>
 
             <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
