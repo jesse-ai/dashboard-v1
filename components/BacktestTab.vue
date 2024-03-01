@@ -50,7 +50,6 @@
                 <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" />
 
                 <Divider class="mt-16" title="Options" />
-
                 <div class="grid grid-cols-1 gap-6 mt-8">
                     <!-- debug mode -->
                     <ToggleButton v-model="form.debug_mode" title="Debug Mode" description="Logs every step of the execution. Very helpful for debugging your strategy but takes a lot longer to execute" />
@@ -160,9 +159,10 @@ const props = defineProps<{
 }>()
 
 const totalRoutesError = ref<string[]>([])
-
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
+const auth_key = useAuthStore().authToken
+const baseURL = ref(useRuntimeConfig().public.apiBaseUrl1)
 
 const backtestStore = useBacktestStore()
 
@@ -203,12 +203,9 @@ const startInNewTab = (id: number) => {
         return
     }
 
-
     backtestStore.startInNewTab(id)
 }
 
-const auth_key = useAuthStore().authToken
-const baseURL = ref(useRuntimeConfig().public.apiBaseUrl1)
 const legacyChartUrl = computed(() => {
     let url = `/download/backtest/chart/${props.results.generalInfo.session_id}?token=${auth_key}`
     if (baseURL.value !== '/') {
@@ -287,5 +284,3 @@ watch(() => props.form.finish_date, (val) => {
     }
 })
 </script>
-  
-  
