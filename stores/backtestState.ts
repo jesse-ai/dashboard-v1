@@ -63,6 +63,9 @@ export const useBacktestStore = defineStore('backtest', {
     persist: true,
     actions: {
         async addTab() {
+            // first update the idCounter
+            idCounter = Number(Object.keys(this.tabs).pop())
+
             const tab = newTab()
             this.tabs[tab.id] = tab
             await navigateTo(`/backtest/${tab.id}`)
@@ -82,8 +85,6 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.exception.error = ''
             this.tabs[id].results.alert.message = ''
 
-            const mainStore = useAuthStore()
-
             // make authState symbols are uppercase
             this.tabs[id].form.routes = this.tabs[id].form.routes.map(route => {
                 return { ...route, symbol: route.symbol.toUpperCase() }
@@ -95,7 +96,7 @@ export const useBacktestStore = defineStore('backtest', {
                 return route
             })
 
-            const { data, error } = await usePostApi('/backtest', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: mainStore.settings.backtest, start_date: this.tabs[id].form.start_date, finish_date: this.tabs[id].form.finish_date, debug_mode: this.tabs[id].form.debug_mode, export_csv: this.tabs[id].form.export_csv, export_chart: this.tabs[id].form.export_chart, export_tradingview: this.tabs[id].form.export_tradingview, export_full_reports: this.tabs[id].form.export_full_reports, export_json: this.tabs[id].form.export_json }, true)
+            const { data, error } = await usePostApi('/backtest', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: useAuthStore().settings.backtest, start_date: this.tabs[id].form.start_date, finish_date: this.tabs[id].form.finish_date, debug_mode: this.tabs[id].form.debug_mode, export_csv: this.tabs[id].form.export_csv, export_chart: this.tabs[id].form.export_chart, export_tradingview: this.tabs[id].form.export_tradingview, export_full_reports: this.tabs[id].form.export_full_reports, export_json: this.tabs[id].form.export_json }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
@@ -107,6 +108,9 @@ export const useBacktestStore = defineStore('backtest', {
             if (this.tabs[id].results.exception.error) {
                 this.tabs[id].results.executing = false
                 return
+            }
+            if (this.tabs[id].results.executing && this.tabs[id].results.progressbar.current == 100) {
+                this.tabs[id].results.executing = false
             }
 
             const { data, error } = await usePostApi('/cancel-backtest', { id }, true)
