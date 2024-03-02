@@ -4,7 +4,8 @@
   <NuxtLayout>
     <Nav v-if="useAuthStore().isAuthenticated" />
 
-    <NuxtPage v-if="useAuthStore().isAuthenticated" />
+    <Loading v-if="useAuthStore().isAuthenticated && useAuthStore().loading" />
+    <NuxtPage v-if="useAuthStore().isAuthenticated && !useAuthStore().loading" />
 
     <Login v-if="!useAuthStore().isAuthenticated" />
   </NuxtLayout>
@@ -20,10 +21,12 @@ const settings = computed(() => useAuthStore().settings)
 const authToken = computed(() => useAuthStore().authToken)
 
 onMounted(() => {
-  useSocketStore().initiate()
-  setTimeout(() => {
-    useAuthStore().initiate()
-  }, 500);
+  if (useAuthStore().isAuthenticated) {
+    useSocketStore().initiate()
+    setTimeout(() => {
+      useAuthStore().initiate()
+    }, 500);
+  }
 });
 
 watch(authToken, (newValue, oldValue) => {
