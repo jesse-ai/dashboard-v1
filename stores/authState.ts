@@ -3,10 +3,10 @@ import { usePostApi } from "~/composables/useApi";
 import { useThrottleFn } from '@vueuse/core';
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-        loading: true,
+        loadingVar: false,
         authToken: '',
         hasLivePluginInstalled: false,
-        systemInfo: {} as any,
+        systemInfo: {} as SystemInfo,
         updateInfo: {} as UpdateInfo,
         planInfo: {} as PlanInfo,
         settings: {
