@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia'
 import { usePostApi } from "~/composables/useApi";
 import { useThrottleFn } from '@vueuse/core';
+
 export const useAuthStore = defineStore('auth', {
     state: () => ({
+        initiated: false,
         loadingVar: false,
         authToken: '',
         hasLivePluginInstalled: false,
@@ -151,6 +153,8 @@ export const useAuthStore = defineStore('auth', {
             const resConfig = postData.value as GetConfigResponse
             // fetch and merge the user's settings from the database
             this.settings = resConfig.data.data
+
+            this.initiated = true
         },
 
         updateConfig: useThrottleFn(async () => {
