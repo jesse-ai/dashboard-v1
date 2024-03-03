@@ -1,26 +1,59 @@
 <template>
-    <div class="w-screen h-screen flex justify-center items-center -mt-16">
-        <div class="w-1/2" ref="animationContainer"></div>
+    <div class="mt-8">
+        <LayoutsSidebar>
+            <template #left>
+                <div v-for="i in 4" :class="i == 1 ? '' : 'mt-8'">
+                    <div class="loading-bar h-6 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+                    <div class="loading-bar2 h-6 bg-gray-200 dark:bg-gray-700 rounded-full mt-4"></div>
+                </div>
+            </template>
+
+            <template #right>
+                <div class="w-full relative animate-pulse h-12 bg-gray-200 dark:bg-gray-700 rounded-full">
+                    <div class="absolute inset-0">
+
+                    </div>
+                </div>
+                <div class="w-full animate-pulse h-12 bg-gray-200 dark:bg-gray-700 rounded-full mt-4"></div>
+            </template>
+        </LayoutsSidebar>
     </div>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import lottie from 'lottie-web';
+<style scoped>
+.loading-bar {
+    width: 0;
+    animation: load 1s infinite, pulse 2s infinite;
+}
 
-const animationContainer = ref(null);
+.loading-bar2 {
+    width: 0;
+    animation: load 4s infinite, pulse 2s infinite;
+}
 
-onMounted(() => {
-    if (animationContainer.value !== null) {
-        lottie.loadAnimation({
-            container: animationContainer.value, // the DOM element that will contain the animation
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: '/_nuxt/assets/json/loading.json' // the path to the animation json
-        })
+@keyframes load {
+    0% {
+        width: 0;
     }
-});
-</script>
 
-<style scoped></style>
+    70% {
+        width: 100%;
+    }
+
+    100% {
+        width: 0;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+</style>
