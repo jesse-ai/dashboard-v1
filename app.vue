@@ -23,9 +23,9 @@ const initiated = computed(() => useAuthStore().initiated)
 
 onMounted(() => {
   if (useAuthStore().isAuthenticated) {
-    if (useAuthStore().initiated) {
+    if (useAuthStore().initiated)
       showLoading.value = false
-    }
+
     useSocketStore().initiate()
     setTimeout(() => {
       useAuthStore().initiate()
