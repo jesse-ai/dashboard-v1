@@ -1,30 +1,33 @@
 <template>
-  <NuxtLayout>
-    <Nav v-if="useAuthStore().isAuthenticated" />
+  <NuxtLoadingIndicator/>
 
-    <Login v-if="showLogin" />
-    <Loading v-if="showLoading" />
-    <NuxtPage v-else />
+  <NuxtLayout>
+    <Nav v-if="useAuthStore().isAuthenticated"/>
+
+    <Login v-if="showLogin"/>
+    <Loading v-if="loading"/>
+    <NuxtPage v-else/>
   </NuxtLayout>
 
-  <UNotifications />
+  <UNotifications/>
 </template>
 
 
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/authState'
-import { useSocketStore } from '@/stores/socketState'
+import {useAuthStore} from '@/stores/authState'
+import {useSocketStore} from '@/stores/socketState'
 
 const showLogin = ref(false)
-const showLoading = ref(true)
+const loading = ref(true)
 const settings = computed(() => useAuthStore().settings)
 const authToken = computed(() => useAuthStore().authToken)
 const initiated = computed(() => useAuthStore().initiated)
 
 onMounted(() => {
   if (useAuthStore().isAuthenticated) {
-    if (useAuthStore().initiated)
-      showLoading.value = false
+    if (useAuthStore().initiated) {
+      loading.value = false
+    }
 
     useSocketStore().initiate()
     setTimeout(() => {
@@ -44,14 +47,14 @@ watch(authToken, (newValue, oldValue) => {
 
 watch(initiated, (newValue, oldValue) => {
   console.log('initiated', newValue)
-  console.log('showLoading', showLoading.value)
+  console.log('loading', loading.value)
   if (newValue) {
     console.log('sdcdscds')
-    showLoading.value = false
+    loading.value = false
   }
 })
 
 watch(settings, (newValue, oldValue) => {
   useAuthStore().updateConfig()
-}, { deep: true })
+}, {deep: true})
 </script>
