@@ -58,7 +58,7 @@ const items = reactive([
         description: 'Learn by watching the creator of Jesse writing strategies step-by-step',
         icon: FilmIcon,
         background: 'bg-yellow-500',
-        url: 'https://jesse.trade/youtube/'
+        url: 'https://jesse.trade/youtube'
     },
     {
         title: 'Discord',
@@ -79,7 +79,7 @@ const items = reactive([
         description: 'Keep up with our latest developments',
         icon: NewspaperIcon,
         background: 'bg-indigo-500',
-        url: 'https://jesse.trade/blog/news'
+        url: 'https://jesse.trade/blog'
     },
     {
         title: 'Roadmap',
@@ -91,4 +91,3 @@ const items = reactive([
 ])
 
 </script>
-  
