@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { usePostApi } from "~/composables/useApi";
 import { useThrottleFn } from '@vueuse/core';
+import {handleError} from "~/composables/notifications";
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -99,9 +100,8 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async initiate() {
             const { data, error } = await usePostApi('/general-info', {}, true)
-
             if (error.value && error.value.statusCode !== 200) {
-                showNotification('error', error.value.data.error)
+                handleError(error)
                 return
             }
 
@@ -147,7 +147,7 @@ export const useAuthStore = defineStore('auth', {
 
             const { data: postData, error: postError } = await usePostApi('/get-config', { current_config: this.settings }, true)
             if (postError.value && postError.value.statusCode !== 200) {
-                showNotification('error', postError.value.data.message)
+                handleError(postError)
                 return
             }
             const resConfig = postData.value as GetConfigResponse
@@ -162,7 +162,7 @@ export const useAuthStore = defineStore('auth', {
             const { data, error } = await usePostApi('/update-config', { current_config: useAuthStore().settings }, true)
 
             if (error.value && error.value.statusCode !== 200) {
-                showNotification('error', error.value.data.message)
+                handleError(error)
             }
         }, 1000,
             true, true

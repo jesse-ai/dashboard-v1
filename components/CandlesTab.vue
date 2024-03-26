@@ -86,11 +86,7 @@ const totalSymbolError = ref<string[]>([])
 const copiedForm = ref<{ symbol: Object }>({ symbol: props.form })
 
 const backtestingExchangeNames = computed(() => authState.backtestingExchangeNames)
-
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
-
-
-useAuthStore().initiate()
 
 watch(copiedForm, () => {
     checkSymbol()
@@ -175,4 +171,3 @@ const forValidate = () => {
 initiate()
 checkSymbol()
 </script>  
-  

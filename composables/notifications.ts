@@ -14,3 +14,21 @@ export function showNotification(type: 'error' | 'success', description: string)
         icon
     });
 }
+
+export function handleError(error: any) {
+    if (error.response) {
+        if (error.response.data && error.response.data.message) {
+            showNotification('error', error.response.data.message)
+        }
+    } else if (error.value) {
+        if (error.value.data && error.value.data.message) {
+            showNotification('error', error.value.data.message)
+        } else if (error.value.data && error.value.data.error) {
+            showNotification('error', error.value.data.error)
+        }
+    } else if (error.message) {
+        showNotification('error', error.message)
+    } else {
+        showNotification('error', 'An error occurred')
+    }
+}
