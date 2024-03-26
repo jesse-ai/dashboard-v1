@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center justify-between">
-        <div class="font-medium text-gray-700 dark:text-gray-200">
+        <div class="font-bold text-gray-700 dark:text-gray-200">
             {{ title }}
         </div>
 
@@ -42,4 +42,3 @@ const decrease = () => {
     numberModel.value = numberModel.value as number - 1;
 }
 </script>
-  
