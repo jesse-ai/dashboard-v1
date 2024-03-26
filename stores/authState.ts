@@ -101,7 +101,7 @@ export const useAuthStore = defineStore('auth', {
             const { data, error } = await usePostApi('/general-info', {}, true)
 
             if (error.value && error.value.statusCode !== 200) {
-                showNotification('error', error.value.data.message)
+                showNotification('error', error.value.data.error)
                 return
             }
 
