@@ -3,7 +3,7 @@
         <div class="hidden sm:block">
             <nav class="relative rounded-lg shadow flex divide-x divide-gray-200 dark:divide-gray-700" aria-label="props.Tabs">
                 <div v-for="(tab, name, index) in props.tabs" :key="tab.id" class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
-                    <NuxtLink :to="`/${mode}/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-800']">
+                    <NuxtLink :to="`/${mode}/${tab.id}`" :class="[tab.id === props.pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-sm bg-white dark:bg-backdrop-dark']">
                         <span>
                             {{ tab.results.executing ? '' : `Tab ${index + 1}` }} {{ tab.results.executing ? `${tab.form.routes[0].symbol}` : `` }} {{ tab.results.executing && !tab.results.showResults ? ' | ' + tab.results.progressbar.current + '%' : '' }} {{ tab.results.showResults ? ' - Results' : '' }}
                         </span>
