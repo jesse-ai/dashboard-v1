@@ -58,7 +58,7 @@
                         <a href="https://docs.jesse.trade/docs/optimize/executing-the-optimize-mode.html" target="_blank" class="font-semibold hover:underline italic">More Details...</a>
                     </p>
                     <br>
-                    <NumberInput v-model="form.optimal_total" title="Optimal number of trades:" />
+                    <NumberInput v-model="form.optimal_total" title="Optimal number of trades:" :default="7" />
                 </div>
 
                 <Divider class="mt-16 mb-4" title="Duration" />
@@ -191,5 +191,4 @@ watch(() => props.form.finish_date, (val) => {
     }
 })
 </script>
-  
   

@@ -222,7 +222,7 @@
 
           <br>
 
-          <NumberInput title="Leverage (x):" v-model="e.futures_leverage"/>
+          <NumberInput title="Leverage (x):" v-model="e.futures_leverage" :default="1"/>
 
           <br>
 
