@@ -1,5 +1,6 @@
 <template>
-    <MultipleValuesTable v-if="ordersTable.length" :data="ordersTable" :header-items="['ID', 'Created', 'Symbol', 'Type', 'Side', 'Price', 'QTY', 'Status']" header />
+    <MultipleValuesTable v-if="ordersTable.length" :data="ordersTable"
+                         :header-items="['ID', 'Created', 'Symbol', 'Type', 'Side', 'Price', 'QTY', 'Status']" header />
 
     <EmptyBox v-else />
 </template>
@@ -32,4 +33,3 @@ const ordersTable = computed(() => {
     return arr
 })
 </script>
-  

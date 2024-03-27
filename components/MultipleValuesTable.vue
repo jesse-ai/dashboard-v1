@@ -6,7 +6,7 @@
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
                         <thead v-if="header" class="bg-gray-100 dark:bg-gray-800 select-none">
                             <tr>
-                                <th v-for="item in headerItems" :key="item" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
+                                <th v-for="item in headerItems" :key="item" scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400">
                                     {{ item }}
                                 </th>
                             </tr>
@@ -48,4 +48,3 @@ const props = defineProps<{
     headerItems: Array<string>;
 }>()
 </script>
-  
