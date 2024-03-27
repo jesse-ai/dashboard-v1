@@ -99,7 +99,7 @@
 
           <a v-if="form.debug_mode" :href="logsUrl"
              class="flex justify-center items-center btn-secondary text-center mb-4 mt-4 w-full">
-            <UButton class="w-full flex justify-center" color="gray" variant="outline" size="xl" label="Debugging Logs"
+            <UButton class="w-full flex justify-center" color="gray" size="xl" variant="solid" label="Debugging Logs"
                      icon="i-heroicons-document-arrow-down" :trailing="false"/>
           </a>
         </div>
@@ -119,8 +119,10 @@
                    variant="solid" label="Start" :trailing="false"/>
 
           <a v-if="form.debug_mode" :href="logsUrl"
-             class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-            <UButton color="gray" variant="outline" label="Debugging Logs" icon="i-heroicons-document-arrow-down"
+             class="flex justify-center items-center btn-secondary text-center my-4 w-full">
+            <UButton color="gray" variant="solid" label="Debugging Logs" icon="i-heroicons-document-arrow-down"
+                     block
+                     size="xl"
                      :trailing="false"/>
           </a>
         </div>
@@ -131,6 +133,7 @@
 
 <script setup lang="ts">
 import {useOptimizationStore} from '@/stores/optimizationState'
+import { useAuthStore } from '@/stores/authState'
 import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/solid'
 import helpers from '@/utils/helpers'
 
@@ -144,12 +147,10 @@ const copiedLogsInfo = ref(false)
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl1)
 const totalRoutesError = ref<string[]>([])
 
-const auth_key = computed(() => sessionStorage.auth_key)
-
+const authKey = computed(() => useAuthStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
-
 let logsUrl = computed(() => {
-  let url = `/download/optimize/log?token=${auth_key.value}`
+  let url = `/download/optimize/log?token=${authKey.value}`
   if (baseURL.value !== '/') {
     url = baseURL.value + url
   }
@@ -158,13 +159,12 @@ let logsUrl = computed(() => {
 
 const {cancel} = useOptimizationStore()
 
-
 const start = (id: number) => {
   if (totalRoutesError.value.length) {
-    var routeSection = document.getElementById("routes-section");
+    let routeSection = document.getElementById("routes-section");
     if (routeSection) {
-      var offsetTop = routeSection.offsetTop;
-      // scroll to routes section
+      let offsetTop = routeSection.offsetTop;
+      // scroll to routes sectionf
       window.scrollTo({top: offsetTop, behavior: 'smooth'});
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
