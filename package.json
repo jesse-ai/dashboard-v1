@@ -24,8 +24,8 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@heroicons/vue": "^2.0.18",
-    "@nuxt/ui": "npm:@nuxt/ui-edge@latest",
+    "@heroicons/vue": "^2.1.3",
+    "@nuxt/ui": "^2.15.0",
     "@pinia/nuxt": "^0.5.1",
     "lightweight-charts": "^4.1.3",
     "lodash": "^4.17.21",

@@ -290,4 +290,3 @@ const openFeedback = () => {
     feedback.value = true
 }
 </script>
-  
