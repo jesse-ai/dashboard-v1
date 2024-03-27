@@ -23,7 +23,7 @@
 let numberModel = defineModel()
 const props = defineProps<{
     title: string;
-    default?: number
+    default: number
 }>()
 
 const setDefault = () => {
