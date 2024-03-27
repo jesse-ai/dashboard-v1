@@ -144,7 +144,7 @@ const props = defineProps<{
 
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
-const baseURL = ref(useRuntimeConfig().public.apiBaseUrl1)
+const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
 
 const authKey = computed(() => useAuthStore().authToken)

@@ -162,7 +162,7 @@ const totalRoutesError = ref<string[]>([])
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
 const auth_key = useAuthStore().authToken
-const baseURL = ref(useRuntimeConfig().public.apiBaseUrl1)
+const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 
 const backtestStore = useBacktestStore()
 

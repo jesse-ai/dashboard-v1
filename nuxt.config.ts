@@ -4,7 +4,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         ssr: false,
         public: {
-            apiBaseUrl1: process.env.NUXT_API_BASE_URL1,
+            apiBaseUrl: process.env.NUXT_API_BASE_URL1,
             appName: 'Jesse',
             appUrl: process.env.APP_URL,
             wsUrl: process.env.VUE_APP_SOCKET_PATH,
