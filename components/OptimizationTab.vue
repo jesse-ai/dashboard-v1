@@ -116,7 +116,7 @@
         <div class="mb-8 w-full">
 
           <UButton @click="newSession" class="w-full flex justify-center" icon="i-heroicons-arrow-uturn-left" size="xl"
-                   variant="solid" label="Start" :trailing="false"/>
+                   variant="solid" label="New Session" :trailing="false"/>
 
           <a v-if="form.debug_mode" :href="logsUrl"
              class="flex justify-center items-center btn-secondary text-center my-4 w-full">
