@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { v4 as uuidv4 } from 'uuid';
 
 const helpers = {
     timestampToTime(timestamp: number) {
@@ -92,6 +93,10 @@ const helpers = {
         } else {
             return 'text-gray-900 dark:text-gray-200'
         }
+    },
+
+    uuid() {
+        return uuidv4()
     }
 }
 
