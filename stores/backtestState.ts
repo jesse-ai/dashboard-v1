@@ -3,15 +3,13 @@ import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useAuthStore } from '@/stores/authState'
 
-let idCounter = 0
-
 /**
  * A function that returns required data for a new tab
  */
 function newTab(): BacktestTab {
     return _.cloneDeep({
-        id: ++idCounter,
-        name: 'Tab 0',
+        id: helpers.uuid(),
+        name: 'Tab',
         form: {
             start_date: '2021-01-01',
             finish_date: '2021-06-01',
@@ -55,29 +53,28 @@ function newTab(): BacktestTab {
 
 export const useBacktestStore = defineStore('backtest', {
     state: () => ({
-        tabs: {
-            1: newTab()
-        } as BacktestTabs,
+        tabs: {} as BacktestTabs,
         backtestForm: {} as BacktestForm
     }),
     persist: true,
     actions: {
         async addTab() {
-            // first update the idCounter
-            idCounter = Number(Object.keys(this.tabs).pop())
-
             const tab = newTab()
             this.tabs[tab.id] = tab
             await navigateTo(`/backtest/${tab.id}`)
         },
-        async startInNewTab(id: number) {
+        closeTab(id: string) {
+            delete this.tabs[id]
+            navigateTo('/backtest')
+        },
+        async startInNewTab(id: string) {
             const tab = newTab()
             tab.form = _.cloneDeep(this.tabs[id].form)
             this.tabs[tab.id] = tab
             this.start(tab.id)
             await navigateTo(`/backtest/${tab.id}`)
         },
-        async start(id: number) {
+        async start(id: string) {
             this.tabs[id].results.progressbar.current = 0
             this.tabs[id].results.executing = true
             this.tabs[id].results.infoLogs = ''
@@ -104,7 +101,7 @@ export const useBacktestStore = defineStore('backtest', {
                 return
             }
         },
-        async cancel(id: number) {
+        async cancel(id: string) {
             if (this.tabs[id].results.exception.error) {
                 this.tabs[id].results.executing = false
                 return
@@ -120,15 +117,14 @@ export const useBacktestStore = defineStore('backtest', {
                 return
             }
         },
-        rerun(id: number) {
+        rerun(id: string) {
             this.tabs[id].results.showResults = false
             this.start(id)
         },
-        newBacktest(id: number) {
+        newBacktest(id: string) {
             this.tabs[id].results.showResults = false
         },
-
-        candlesInfoEvent(id: number, data: CandlesInfoEvent) {
+        candlesInfoEvent(id: string, data: CandlesInfoEvent) {
             const list = [
                 ['Period', data.duration],
                 ['Starting Date', helpers.timestampToDate(
@@ -143,7 +139,7 @@ export const useBacktestStore = defineStore('backtest', {
             }
             this.tabs[id].results.info = list
         },
-        routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
+        routesInfoEvent(id: string, data: RoutesInfoEvent[]) {
             const arr: RouteInfo[][] = []
             data.forEach(item => {
                 arr.push([
@@ -155,25 +151,25 @@ export const useBacktestStore = defineStore('backtest', {
             })
             this.tabs[id].results.routes_info = arr
         },
-        progressbarEvent(id: number, data: ProgressBar) {
+        progressbarEvent(id: string, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
         },
-        infoLogEvent(id: number, data: { timestamp: number, message: string }) {
+        infoLogEvent(id: string, data: { timestamp: number, message: string }) {
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: { error: string, traceback: string }) {
+        exceptionEvent(id: string, data: { error: string, traceback: string }) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        generalInfoEvent(id: number, data: BacktestGeneralInfo) {
+        generalInfoEvent(id: string, data: BacktestGeneralInfo) {
             this.tabs[id].results.generalInfo = data
         },
-        hyperparametersEvent(id: number, data: ArrayItem[]) {
+        hyperparametersEvent(id: string, data: ArrayItem[]) {
             this.tabs[id].results.hyperparameters = data
         },
-        metricsEvent(id: number, data: MetricsEvent) {
+        metricsEvent(id: string, data: MetricsEvent) {
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []
@@ -209,7 +205,7 @@ export const useBacktestStore = defineStore('backtest', {
                 ['Total Losing Trades', data.total_losing_trades]
             ]
         },
-        equityCurveEvent(id: number, data: EquityCurveEvent[]) {
+        equityCurveEvent(id: string, data: EquityCurveEvent[]) {
             this.tabs[id].results.charts.equity_curve = []
 
             if (data !== null) {
@@ -225,13 +221,13 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.executing = false
             this.tabs[id].results.showResults = true
         },
-        terminationEvent(id: number) {
+        terminationEvent(id: string) {
             if (this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
             }
         },
-        alertEvent(id: number, data: { message: string; type: string; }) {
+        alertEvent(id: string, data: { message: string; type: string; }) {
             this.tabs[id].results.alert = data
         },
     }

@@ -31,14 +31,14 @@ interface BacktestForm {
 }
 
 interface BacktestTab {
-    id: number;
+    id: string;
     name: string;
     form: BacktestForm;
     results: BacktestResults;
 }
 
 interface BacktestTabs {
-    [id: number]: BacktestTab;
+    [id: string]: BacktestTab;
 }
 
 interface BacktestGeneralInfo {
