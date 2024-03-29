@@ -1,4 +1,9 @@
 <template>
+  <div>
+    <pre v-for="t in tabs">
+      {{t.id}}
+    </pre>
+  </div>
   <div class="w-full">
     <Tabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
   </div>

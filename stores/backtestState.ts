@@ -56,7 +56,9 @@ export const useBacktestStore = defineStore('backtest', {
         tabs: {} as BacktestTabs,
         backtestForm: {} as BacktestForm
     }),
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
     actions: {
         async addTab() {
             const tab = newTab()

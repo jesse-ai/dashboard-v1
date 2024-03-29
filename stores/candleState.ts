@@ -40,7 +40,9 @@ export const useCandlesStore = defineStore('candles', {
             1: newTab() as CandleTab
         } as CandleTabs
     }),
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
     actions: {
         async addTab() {
             const tab = newTab()

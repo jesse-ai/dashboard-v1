@@ -51,7 +51,9 @@ export const useOptimizationStore = defineStore('optimization', {
             1: newTab()
         } as OptimizationTabs
     }),
-    persist: true,
+    persist: {
+        storage: persistedState.localStorage,
+    },
     actions: {
         async addTab() {
             const tab = newTab()
