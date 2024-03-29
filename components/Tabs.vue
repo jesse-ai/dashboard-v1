@@ -55,10 +55,20 @@ function getTitle(tab: BacktestTab) {
   if (!tab.form.routes.length) {
     return `New Tab`
   }
+
+  // if error, show error
+  if (tab.results.exception.error) {
+    // add emoji
+    return 'Error'
+  }
+
   const firstRoute = tab.form.routes[0]
   const k = `${firstRoute.strategy}-${firstRoute.symbol}-${firstRoute.timeframe}`
   if (tab.results.executing) {
     return `${k} | ${tab.results.progressbar.current}%`
+  }
+  if (tab.results.showResults) {
+    return `${k} | Results`
   }
   return k
 }

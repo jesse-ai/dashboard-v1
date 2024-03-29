@@ -1,9 +1,4 @@
 <template>
-  <div>
-    <pre v-for="t in tabs">
-      {{t.id}}
-    </pre>
-  </div>
   <div class="w-full">
     <Tabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
   </div>
@@ -34,4 +29,9 @@ const currentTab = computed(() => {
   }
   return tabs.value[pageId.value]
 })
+
+// Add a new tab if there are no tabs
+if (Object.keys(tabs.value).length === 0) {
+  backtestStore.addTab()
+}
 </script>
