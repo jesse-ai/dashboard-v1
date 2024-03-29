@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Tabs :page-id="pageId" :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
+    <Tabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
   </div>
 
   <BacktestTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
@@ -11,12 +11,11 @@ import {useBacktestStore} from '@/stores/backtestState'
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 
-const route = useRoute()
 const backtestStore = useBacktestStore()
 
 const tabs = computed(() => backtestStore.tabs)
 
-const pageId = computed(() => route.params.id as string)
+const pageId = computed(() => useRoute().params.id as string)
 
 const currentTab = computed(() => {
   // if can't find it, select and return the first tab
