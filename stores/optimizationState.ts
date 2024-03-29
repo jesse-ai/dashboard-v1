@@ -3,12 +3,10 @@ import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useAuthStore } from '@/stores/authState'
 
-let idCounter = 0
 
 function newTab(): OptimizationTab {
     return _.cloneDeep({
-        id: ++idCounter,
-        name: 'Tab 0',
+        id: helpers.uuid(),
         form: {
             start_date: '2021-01-01',
             finish_date: '2021-06-01',
@@ -47,9 +45,7 @@ function newTab(): OptimizationTab {
 
 export const useOptimizationStore = defineStore('optimization', {
     state: () => ({
-        tabs: {
-            1: newTab()
-        } as OptimizationTabs
+        tabs: {} as OptimizationTabs
     }),
     persist: {
         storage: persistedState.localStorage,
@@ -60,13 +56,13 @@ export const useOptimizationStore = defineStore('optimization', {
             this.tabs[tab.id] = tab
             await navigateTo(`/optimization/${tab.id}`)
         },
-        async startInNewTab(id: number) {
+        async startInNewTab(id: string) {
             const tab = newTab()
             tab.form = _.cloneDeep(this.tabs[id].form)
             this.tabs[tab.id] = tab
             this.start(tab.id)
         },
-        async start(id: number) {
+        async start(id: string) {
             this.tabs[id].results.progressbar.current = 0
             this.tabs[id].results.executing = true
             this.tabs[id].results.infoLogs = ''
@@ -112,7 +108,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 return
             }
         },
-        async cancel(id: number) {
+        async cancel(id: string) {
             // this.tabs[id].results.executing = false
             if (this.tabs[id].results.exception.error) {
                 this.tabs[id].results.executing = false
@@ -126,15 +122,14 @@ export const useOptimizationStore = defineStore('optimization', {
                 return
             }
         },
-        rerun(id: number) {
+        rerun(id: string) {
             this.tabs[id].results.showResults = false
             this.start(id)
         },
-        newOptimization(id: number) {
+        newOptimization(id: string) {
             this.tabs[id].results.showResults = false
         },
-
-        candlesInfoEvent(id: number, data: CandlesInfoEvent) {
+        candlesInfoEvent(id: string, data: CandlesInfoEvent) {
             this.tabs[id].results.info = [
                 ['Period', data.duration],
                 [
@@ -145,7 +140,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 ]
             ]
         },
-        routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
+        routesInfoEvent(id: string, data: RoutesInfoEvent[]) {
             const arr: RouteInfo[][] = []
             data.forEach(item => {
                 arr.push([
@@ -157,20 +152,20 @@ export const useOptimizationStore = defineStore('optimization', {
             })
             this.tabs[id].results.routes_info = arr
         },
-        progressbarEvent(id: number, data: ProgressBar) {
+        progressbarEvent(id: string, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
         },
-        infoLogEvent(id: number, data: any) {
+        infoLogEvent(id: string, data: any) {
             console.log(data)
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: Exception) {
+        exceptionEvent(id: string, data: Exception) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        generalInfoEvent(id: number, data: OptimizationGeneralInfoEvent) {
+        generalInfoEvent(id: string, data: OptimizationGeneralInfoEvent) {
             if (!this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = true
             }
@@ -191,7 +186,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 this.tabs[id].results.generalInfo.push(['Solution length', data.solution_length ? data.solution_length : ''])
             }
         },
-        metricsEvent(id: number, data: MetricsEvent) {
+        metricsEvent(id: string, data: MetricsEvent) {
             // no trades were executed
             if (data === null) {
                 this.tabs[id].results.metrics = []
@@ -226,13 +221,13 @@ export const useOptimizationStore = defineStore('optimization', {
                 ['Total Losing Trades', data.total_losing_trades]
             ]
         },
-        terminationEvent(id: number) {
+        terminationEvent(id: string) {
             if (this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
             }
         },
-        bestCandidatesEvent(id: number, data: bestCandidatesEvent[]) {
+        bestCandidatesEvent(id: string, data: bestCandidatesEvent[]) {
             const arr: multiplesTablesValue[][] = []
             data.forEach((item: bestCandidatesEvent) => {
                 arr.push([
@@ -246,7 +241,7 @@ export const useOptimizationStore = defineStore('optimization', {
             })
             this.tabs[id].results.best_candidates = arr
         },
-        alertEvent(id: number, data: Alert) {
+        alertEvent(id: string, data: Alert) {
             this.tabs[id].results.alert = data
             this.tabs[id].results.executing = false
             this.tabs[id].results.showResults = true

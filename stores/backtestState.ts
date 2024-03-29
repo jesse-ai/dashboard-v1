@@ -3,13 +3,9 @@ import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useAuthStore } from '@/stores/authState'
 
-/**
- * A function that returns required data for a new tab
- */
 function newTab(): BacktestTab {
     return _.cloneDeep({
         id: helpers.uuid(),
-        name: 'Tab',
         form: {
             start_date: '2021-01-01',
             finish_date: '2021-06-01',

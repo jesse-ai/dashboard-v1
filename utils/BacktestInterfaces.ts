@@ -32,7 +32,6 @@ interface BacktestForm {
 
 interface BacktestTab {
     id: string;
-    name: string;
     form: BacktestForm;
     results: BacktestResults;
 }

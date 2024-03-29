@@ -8,12 +8,17 @@
           <component :is="item.icon"
                      :class="[currentTab === item.name ? 'text-indigo-500 dark:text-indigo-400 group-hover:text-indigo-500' : 'text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-400', 'flex-shrink-0 -ml-1 mr-3 h-6 w-6']"
                      aria-hidden="true"/>
-          <span class="truncate">
-                        {{ item.name }}
-                    </span>
+          <span class="truncate">{{ item.name }}</span>
         </button>
       </nav>
     </aside>
+
+    <!-- general settings -->
+    <div v-if="currentTab === 'General'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
+      <Card>
+        <Heading>General</Heading>
+      </Card>
+    </div>
 
     <!-- backtest settings -->
     <div v-if="currentTab === 'Backtest'" class="space-y-6 sm:px-6 lg:px-0 lg:col-span-9 w-full">
@@ -332,17 +337,6 @@ const route = useRoute()
 
 const timeframes = ref(['1m', '3m', '5m', '15m', '30m', '45m', '1h', '2h', '3h', '4h', '6h', '8h', '12h', '1D'])
 let currentTab = ref(['Optimization', 'Backtest', 'Live'].includes(route.name as string) ? route.name : 'Backtest')
-const persistencyOptions = ref([
-  {
-    name: 'Continue Session',
-    description: 'Continue from the previous session using existing data on the exchange'
-  },
-  {
-    name: 'New Session',
-    description: 'Start a fresh sessions. Close existing positions and orders on the exchange'
-  }
-])
-
 const settings = computed(() => store.settings)
 const systemInfo = computed(() => store.systemInfo)
 const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled)
@@ -407,7 +401,6 @@ function allowedToTradeIn(exchangeName: string) {
   if (planInfo.value.plan === 'premium') {
     return true
   }
-
   return exchangeInfo.value[exchangeName].required_live_plan === 'free'
 }
 </script>

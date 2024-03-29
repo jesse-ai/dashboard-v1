@@ -1,10 +1,9 @@
 interface OptimizationTabs {
-    [id: number]: OptimizationTab;
+    [id: string]: OptimizationTab;
 }
 
 interface OptimizationTab {
-    id: number;
-    name: string;
+    id: string;
     form: OptimizationForm;
     results: OptimizationResults;
 }

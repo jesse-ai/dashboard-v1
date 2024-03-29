@@ -1,10 +1,19 @@
+<template>
+  <div/>
+</template>
+
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import {onMounted} from 'vue';
+
+const optimizeStore = useOptimizationStore()
 
 const router = useRouter()
 onMounted(() => {
-    router.push({ path: '/optimization/1' })
+  const keys = Object.keys(optimizeStore.tabs)
+  if (keys.length > 0) {
+    const firstTabKey = keys[0]
+    const firstTab = optimizeStore.tabs[firstTabKey]
+    router.push({path: `/optimization/${firstTab.id}`})
+  }
 })
 </script>
-  

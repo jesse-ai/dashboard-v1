@@ -1,15 +1,12 @@
 interface CandleTabs {
-    [id: number]: CandleTab;
+    [id: string]: CandleTab;
 }
 
 interface CandleTab {
-    id: number;
-    name: string;
+    id: string;
     form: CandleTabForm;
     results: CandleTabResults;
 }
-
-
 
 interface CandleTabForm {
     start_date: string;
@@ -17,6 +14,7 @@ interface CandleTabForm {
     symbol: string;
     debug_mode?: boolean;
 }
+
 interface CandleTabResults {
     showResults: boolean;
     executing: boolean;

@@ -2,12 +2,9 @@ import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
 
-let idCounter = 0
-
 function newTab() {
     return _.cloneDeep({
-        id: ++idCounter,
-        name: 'Tab 0',
+        id: helpers.uuid(),
         form: {
             start_date: '2021-01-01',
             exchange: '',
@@ -36,9 +33,7 @@ function newTab() {
 
 export const useCandlesStore = defineStore('candles', {
     state: () => ({
-        tabs: {
-            1: newTab() as CandleTab
-        } as CandleTabs
+        tabs: {} as CandleTabs
     }),
     persist: {
         storage: persistedState.localStorage,
@@ -49,13 +44,13 @@ export const useCandlesStore = defineStore('candles', {
             this.tabs[tab.id] = tab
             await navigateTo(`/candles/${tab.id}`)
         },
-        startInNewTab(id: number) {
+        startInNewTab(id: string) {
             const tab = newTab()
             tab.form = _.cloneDeep(this.tabs[id].form)
             this.tabs[tab.id] = tab
             this.start(tab.id)
         },
-        async start(id: number) {
+        async start(id: string) {
             this.tabs[id].results.progressbar.current = 0
             this.tabs[id].results.executing = true
             this.tabs[id].results.infoLogs = ''
@@ -70,7 +65,7 @@ export const useCandlesStore = defineStore('candles', {
                 return
             }
         },
-        async cancel(id: number) {
+        async cancel(id: string) {
             if (this.tabs[id].results.exception.error) {
                 this.tabs[id].results.executing = false
                 return
@@ -84,14 +79,14 @@ export const useCandlesStore = defineStore('candles', {
             }
         },
 
-        progressbarEvent(id: number, data: ProgressBar) {
+        progressbarEvent(id: string, data: ProgressBar) {
             this.tabs[id].results.progressbar = data
 
             if (this.tabs[id].results.progressbar.current < 100 && this.tabs[id].results.executing === false) {
                 this.tabs[id].results.executing = true
             }
         },
-        alertEvent(id: number, data: Alert) {
+        alertEvent(id: string, data: Alert) {
             this.tabs[id].results.alert = data
 
             // session is finished:
@@ -100,16 +95,16 @@ export const useCandlesStore = defineStore('candles', {
             this.tabs[id].results.exception.traceback = ''
             this.tabs[id].results.exception.error = ''
         },
-        infoLogEvent(id: number, data: { timestamp: number, message: string }) {
+        infoLogEvent(id: string, data: { timestamp: number, message: string }) {
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
-        exceptionEvent(id: number, data: Exception) {
+        exceptionEvent(id: string, data: Exception) {
             this.tabs[id].results.exception.error = data.error
             this.tabs[id].results.exception.traceback = data.traceback
         },
-        terminationEvent(id: number) {
+        terminationEvent(id: string) {
             if (this.tabs[id].results.executing) {
                 this.tabs[id].results.executing = false
                 showNotification('success', 'Session terminated successfully')
