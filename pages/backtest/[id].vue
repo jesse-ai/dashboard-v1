@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <Tabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
+    <BacktestTabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
   </div>
 
   <BacktestTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
