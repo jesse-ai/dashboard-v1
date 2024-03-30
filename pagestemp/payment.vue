@@ -94,9 +94,6 @@ onMounted(() => {
       const {data, error} = await useFetchApi1(`/orders?id=${id}&token=${token}`, true);
       loading.value = false;
 
-      console.log('data', data)
-      console.log('error', error)
-
       // If there is an error, show it
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)

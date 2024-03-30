@@ -156,7 +156,6 @@ export const useOptimizationStore = defineStore('optimization', {
             this.tabs[id].results.progressbar = data
         },
         infoLogEvent(id: string, data: any) {
-            console.log(data)
             this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`

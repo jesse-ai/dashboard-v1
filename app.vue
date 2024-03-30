@@ -46,10 +46,7 @@ watch(authToken, (newValue, oldValue) => {
 })
 
 watch(initiated, (newValue, oldValue) => {
-  console.log('initiated', newValue)
-  console.log('loading', loading.value)
   if (newValue) {
-    console.log('sdcdscds')
     loading.value = false
   }
 })

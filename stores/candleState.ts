@@ -40,9 +40,13 @@ export const useCandlesStore = defineStore('candles', {
     },
     actions: {
         async addTab() {
-            const tab = newTab()
+            const tab= newTab()
             this.tabs[tab.id] = tab
             await navigateTo(`/candles/${tab.id}`)
+        },
+        closeTab(id: string) {
+            delete this.tabs[id]
+            navigateTo('/candles')
         },
         startInNewTab(id: string) {
             const tab = newTab()

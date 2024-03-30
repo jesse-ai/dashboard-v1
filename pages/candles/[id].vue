@@ -1,13 +1,13 @@
 <template>
-    <div class="w-full">
-        <CandleTabs :page-id="pageId" :tabs="tabs" />
-    </div>
+  <div class="w-full">
+    <CandleTabs :page-id="pageId" :tabs="tabs" @close="candlesStore.closeTab"/>
+  </div>
 
-    <CandlesTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
+  <CandlesTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
 </template>
-  
+
 <script setup lang="ts">
-import { useCandlesStore } from '@/stores/candleState'
+import {useCandlesStore} from '@/stores/candleState'
 
 const candlesStore = useCandlesStore()
 const tabs = computed(() => candlesStore.tabs)
