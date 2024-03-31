@@ -81,6 +81,8 @@ export const useCandlesStore = defineStore('candles', {
                 showNotification('error', error.value.message)
                 return
             }
+
+            this.tabs[id].results.executing = false
         },
 
         progressbarEvent(id: string, data: ProgressBar) {

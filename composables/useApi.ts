@@ -1,4 +1,4 @@
-import { useRuntimeConfig } from "#app/nuxt";
+import {useRuntimeConfig} from "#app/nuxt";
 
 export async function useFetchApi(url: string, authenticated: boolean = false) {
     const apiBaseUrl = useRuntimeConfig().public.apiBaseUrl;
@@ -14,8 +14,12 @@ export async function useFetchApi(url: string, authenticated: boolean = false) {
     const headers = authenticated ? {
         'Authorization': `${useAuthStore().authToken}`
     } : undefined;
-    const { data, error } = await useFetch(`${fullUrl}`, { headers });
-    return { data, error };
+    const {data, error} = await useFetch(`${fullUrl}`, {
+        headers,
+        server: false,
+        lazy: true
+    });
+    return {data, error};
 }
 
 export async function usePostApi(url: string, payload: any, authenticated: boolean = false) {
@@ -34,10 +38,12 @@ export async function usePostApi(url: string, payload: any, authenticated: boole
     } : {
         'Content-Type': 'application/json'
     };
-    const { data, error } = await useFetch(`${fullUrl}`, {
+    const {data, error} = await useFetch(`${fullUrl}`, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: headers,
+        server: false,
+        lazy: true
     });
-    return { data, error };
+    return {data, error};
 }

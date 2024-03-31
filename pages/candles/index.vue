@@ -2,7 +2,6 @@
   <div/>
 </template>
 
-
 <script setup lang="ts">
 const candleStore = useCandlesStore()
 const router = useRouter()

@@ -9,8 +9,9 @@
     <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText"/>
 
     <div class="mt-8">
-      <UButton @click="cancel($route.params.id)" color="gray"
-               :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center"
+      <UButton @click="candlesStore.cancel($route.params.id)" color="gray"
+               :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+               class="w-64 flex justify-center"
                icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false"/>
     </div>
 
@@ -141,7 +142,6 @@ const checkSymbol = () => {
   }
 }
 
-const {cancel} = candlesStore
 const {rerun, newBacktest} = backtestState
 
 const start = (id: string) => {
