@@ -1,10 +1,12 @@
 <template>
-    <OptimizationTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
+  <OptimizationTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
 </template>
-  
+
 <script setup lang="ts">
-import { useOptimizationStore } from '@/stores/optimizationState'
-import { computed, onMounted } from 'vue';
+import {useOptimizationStore} from '@/stores/optimizationState'
+import {computed, onMounted} from 'vue';
+
+useSeoMeta({title: 'Optimization - Jesse'})
 
 const optimizationStore = useOptimizationStore()
 const tabs = computed(() => optimizationStore.tabs)
@@ -30,8 +32,8 @@ if (Object.keys(tabs.value).length === 0) {
 }
 
 onMounted(() => {
-    if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
-      tabs.value[pageId.value].results.executing = false
-    }
+  if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
+    tabs.value[pageId.value].results.executing = false
+  }
 })
 </script>

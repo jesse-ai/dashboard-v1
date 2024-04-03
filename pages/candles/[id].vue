@@ -9,6 +9,8 @@
 <script setup lang="ts">
 import {useCandlesStore} from '@/stores/candleState'
 
+useSeoMeta({title: 'Candles - Jesse'})
+
 const candlesStore = useCandlesStore()
 const tabs = computed(() => candlesStore.tabs)
 const route = useRoute()

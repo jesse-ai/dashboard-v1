@@ -11,6 +11,8 @@ import {useBacktestStore} from '@/stores/backtestState'
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 
+useSeoMeta({title: 'Backtest - Jesse'})
+
 const backtestStore = useBacktestStore()
 
 const tabs = computed(() => backtestStore.tabs)
