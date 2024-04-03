@@ -1,3 +1,2 @@
 User-agent: *
-Disallow: /admin/
-Sitemap: https://jesse.trade/sitemap.xml
+Disallow: /
