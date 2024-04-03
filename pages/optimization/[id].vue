@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import {useOptimizationStore} from '@/stores/optimizationState'
-import {computed, onMounted} from 'vue';
+import {computed} from 'vue';
 
 useSeoMeta({title: 'Optimization - Jesse'})
 
@@ -31,9 +31,8 @@ if (Object.keys(tabs.value).length === 0) {
   optimizationStore.addTab()
 }
 
-onMounted(() => {
-  if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
-    tabs.value[pageId.value].results.executing = false
-  }
-})
+// Stop the execution of the results if the tab is not the current tab
+if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
+  tabs.value[pageId.value].results.executing = false
+}
 </script>

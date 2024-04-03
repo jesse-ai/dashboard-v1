@@ -83,7 +83,7 @@
       <!-- Action Buttons -->
       <div v-if="!results.executing && !results.showResults">
         <div>
-          <UButton @click="start(Number($route.params.id))" class="w-full flex justify-center" icon="i-heroicons-bolt"
+          <UButton @click="start($route.params.id)" class="w-full flex justify-center" icon="i-heroicons-bolt"
                    size="xl" variant="solid" label="Start" :trailing="false"/>
         </div>
       </div>
@@ -92,7 +92,7 @@
       <div v-if="results.executing && !results.showResults"
            class="flex flex-col items-center justify-center select-none">
         <div class="mb-8 w-full">
-          <UButton @click="cancel(Number($route.params.id))" color="gray"
+          <UButton @click="cancel($route.params.id)" color="gray"
                    :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
                    class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid"
                    label="Cancel" :trailing="false"/>
@@ -133,7 +133,7 @@
 
 <script setup lang="ts">
 import {useOptimizationStore} from '@/stores/optimizationState'
-import { useAuthStore } from '@/stores/authState'
+import {useAuthStore} from '@/stores/authState'
 import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/solid'
 import helpers from '@/utils/helpers'
 
@@ -159,7 +159,7 @@ let logsUrl = computed(() => {
 
 const {cancel} = useOptimizationStore()
 
-const start = (id: number) => {
+const start = (id: string) => {
   if (totalRoutesError.value.length) {
     let routeSection = document.getElementById("routes-section");
     if (routeSection) {

@@ -37,7 +37,6 @@
         <Divider title="Exchange"/>
         <USelectMenu v-model="form.exchange" :options="backtestingExchangeNames" size="xl" class="mt-2"/>
 
-
         <!-- symbol -->
         <Divider title="Symbol" class="mt-16"/>
         <UInput v-model="form.symbol" placeholder="ex: BTC-USDT" size="xl" class="mt-2"/>
