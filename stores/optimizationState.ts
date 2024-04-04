@@ -1,20 +1,19 @@
-import { defineStore } from 'pinia'
+import {defineStore} from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import { useAuthStore } from '@/stores/authState'
+import {useAuthStore} from '@/stores/authState'
 
 
-function newTab(): OptimizationTab {
-    return _.cloneDeep({
-        id: helpers.uuid(),
+export const useOptimizationStore = defineStore('optimization', {
+    state: () => ({
         form: {
             start_date: '2021-01-01',
             finish_date: '2021-06-01',
             debug_mode: false,
             export_csv: false,
             export_json: false,
-            routes: [],
-            extra_routes: [],
+            routes: [] as OptimizationRoute[],
+            extra_routes: [] as ExtraRoute[],
             optimal_total: 50,
         },
         results: {
@@ -25,12 +24,12 @@ function newTab(): OptimizationTab {
                 current: 0,
                 estimated_remaining_seconds: 0
             },
-            routes_info: [],
-            best_candidates: [],
-            metrics: [],
-            generalInfo: [],
+            routes_info: [] as any[],
+            best_candidates: [] as any[],
+            metrics: [] as any[],
+            generalInfo: [] as any[],
             infoLogs: '',
-            info: [],
+            info: [] as any[],
             exception: {
                 error: '',
                 traceback: ''
@@ -40,97 +39,79 @@ function newTab(): OptimizationTab {
                 type: ''
             }
         }
-    })
-}
-
-export const useOptimizationStore = defineStore('optimization', {
-    state: () => ({
-        tabs: {} as OptimizationTabs
     }),
     persist: {
         storage: persistedState.localStorage,
     },
     actions: {
-        async addTab() {
-            const tab = newTab()
-            this.tabs[tab.id] = tab
-            await navigateTo(`/optimization/${tab.id}`)
-        },
-        async startInNewTab(id: string) {
-            const tab = newTab()
-            tab.form = _.cloneDeep(this.tabs[id].form)
-            this.tabs[tab.id] = tab
-            this.start(tab.id)
-        },
-        async start(id: string) {
-            this.tabs[id].results.progressbar.current = 0
-            this.tabs[id].results.executing = true
-            this.tabs[id].results.infoLogs = ''
-            this.tabs[id].results.exception.traceback = ''
-            this.tabs[id].results.exception.error = ''
-            this.tabs[id].results.alert.message = ''
-            this.tabs[id].results.alert.type = ''
-            this.tabs[id].results.metrics = []
-            this.tabs[id].results.generalInfo = []
-            this.tabs[id].results.best_candidates = []
-            this.tabs[id].results.routes_info = []
-            this.tabs[id].results.showResults = false
+        async start() {
+            this.results.progressbar.current = 0
+            this.results.executing = true
+            this.results.infoLogs = ''
+            this.results.exception.traceback = ''
+            this.results.exception.error = ''
+            this.results.alert.message = ''
+            this.results.alert.type = ''
+            this.results.metrics = []
+            this.results.generalInfo = []
+            this.results.best_candidates = []
+            this.results.routes_info = []
+            this.results.showResults = false
 
             const authStore = useAuthStore()
 
             // make sure symbols are uppercase
-            this.tabs[id].form.routes = this.tabs[id].form.routes.map(route => {
+            this.form.routes = this.form.routes.map(route => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
             // also for extra_routes
-            this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map(route => {
+            this.form.extra_routes = this.form.extra_routes.map(route => {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
 
             const params = {
-                id,
-                routes: this.tabs[id].form.routes,
-                extra_routes: this.tabs[id].form.extra_routes,
+                id: 'optimization',
+                routes: this.form.routes,
+                extra_routes: this.form.extra_routes,
                 config: authStore.settings.optimization,
-                start_date: this.tabs[id].form.start_date,
-                finish_date: this.tabs[id].form.finish_date,
-                optimal_total: this.tabs[id].form.optimal_total,
-                debug_mode: this.tabs[id].form.debug_mode,
-                export_csv: this.tabs[id].form.export_csv,
-                export_json: this.tabs[id].form.export_json,
+                start_date: this.form.start_date,
+                finish_date: this.form.finish_date,
+                optimal_total: this.form.optimal_total,
+                debug_mode: this.form.debug_mode,
+                export_csv: this.form.export_csv,
+                export_json: this.form.export_json,
             }
 
-            const { data, error } = await usePostApi('/optimization', params, true)
+            const {data, error} = await usePostApi('/optimization', params, true)
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
                 return
             }
         },
-        async cancel(id: string) {
-            // this.tabs[id].results.executing = false
-            if (this.tabs[id].results.exception.error) {
-                this.tabs[id].results.executing = false
+        async cancel() {
+            // this.results.executing = false
+            if (this.results.exception.error) {
+                this.results.executing = false
                 return
             }
-            this.tabs[id].results.executing = false
+            this.results.executing = false
 
-            const { data, error } = await usePostApi('/cancel-optimization', { id }, true)
+            const {data, error} = await usePostApi('/cancel-optimization', {
+                id: 'optimization'
+            }, true)
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)
                 return
             }
         },
         rerun(id: string) {
-            this.tabs[id].results.showResults = false
-            this.start(id)
-        },
-        newOptimization(id: string) {
-            this.tabs[id].results.showResults = false
+            this.results.showResults = false
+            this.start()
         },
         candlesInfoEvent(id: string, data: CandlesInfoEvent) {
-            this.tabs[id].results.info = [
+            this.results.info = [
                 ['Period', data.duration],
                 [
                     'Starting-Ending Date',
@@ -144,55 +125,56 @@ export const useOptimizationStore = defineStore('optimization', {
             const arr: RouteInfo[][] = []
             data.forEach(item => {
                 arr.push([
-                    { value: item.exchange, style: '' },
-                    { value: item.symbol, style: '' },
-                    { value: item.timeframe, style: '' },
-                    { value: item.strategy_name, style: '' },
+                    {value: item.exchange, style: ''},
+                    {value: item.symbol, style: ''},
+                    {value: item.timeframe, style: ''},
+                    {value: item.strategy_name, style: ''},
                 ])
             })
-            this.tabs[id].results.routes_info = arr
+            this.results.routes_info = arr
         },
         progressbarEvent(id: string, data: ProgressBar) {
-            this.tabs[id].results.progressbar = data
+            console.log('progressbarEvent', id, data)
+            this.results.progressbar = data
         },
         infoLogEvent(id: string, data: any) {
-            this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
+            this.results.infoLogs += `[${helpers.timestampToTime(
                 data.timestamp
             )}] ${data.message}\n`
         },
         exceptionEvent(id: string, data: Exception) {
-            this.tabs[id].results.exception.error = data.error
-            this.tabs[id].results.exception.traceback = data.traceback
+            this.results.exception.error = data.error
+            this.results.exception.traceback = data.traceback
         },
         generalInfoEvent(id: string, data: OptimizationGeneralInfoEvent) {
-            if (!this.tabs[id].results.executing) {
-                this.tabs[id].results.executing = true
+            if (!this.results.executing) {
+                this.results.executing = true
             }
 
-            this.tabs[id].results.generalInfo = [
+            this.results.generalInfo = [
                 ['Started at', data.started_at],
                 ['Index', data.index],
                 ['Average strategy execution time', `${_.round(data.average_execution_seconds, 2)} seconds`],
                 ['Trading route', data.trading_route],
             ]
             if ('population_size' in data) {
-                this.tabs[id].results.generalInfo.push(['Population size', data.population_size ? data.population_size : ''])
+                this.results.generalInfo.push(['Population size', data.population_size ? data.population_size : ''])
             }
             if ('iterations' in data) {
-                this.tabs[id].results.generalInfo.push(['Iterations', data.iterations ? data.iterations : ''])
+                this.results.generalInfo.push(['Iterations', data.iterations ? data.iterations : ''])
             }
             if ('solution_length' in data) {
-                this.tabs[id].results.generalInfo.push(['Solution length', data.solution_length ? data.solution_length : ''])
+                this.results.generalInfo.push(['Solution length', data.solution_length ? data.solution_length : ''])
             }
         },
         metricsEvent(id: string, data: MetricsEvent) {
             // no trades were executed
             if (data === null) {
-                this.tabs[id].results.metrics = []
+                this.results.metrics = []
                 return
             }
 
-            this.tabs[id].results.metrics = [
+            this.results.metrics = [
                 ['Total Closed Trades', data.total],
                 ['Total Net Profit', `${_.round(data.net_profit, 2)} (${_.round(data.net_profit_percentage, 2)}%)`],
                 ['Starting => Finishing Balance', `${_.round(data.starting_balance, 2)} => ${_.round(data.finishing_balance, 2)}`],
@@ -221,8 +203,8 @@ export const useOptimizationStore = defineStore('optimization', {
             ]
         },
         terminationEvent(id: string) {
-            if (this.tabs[id].results.executing) {
-                this.tabs[id].results.executing = false
+            if (this.results.executing) {
+                this.results.executing = false
                 showNotification('success', 'Session terminated successfully')
             }
         },
@@ -230,20 +212,20 @@ export const useOptimizationStore = defineStore('optimization', {
             const arr: multiplesTablesValue[][] = []
             data.forEach((item: bestCandidatesEvent) => {
                 arr.push([
-                    { value: `#${item.rank}`, style: '' },
-                    { value: item.dna, style: '', tag: 'code' },
-                    { value: item.fitness, style: '' },
-                    { value: `${item.training_win_rate}% | ${item.testing_win_rate}%`, style: '' },
-                    { value: `${item.training_total_trades} | ${item.testing_total_trades}`, style: '' },
-                    { value: `${item.training_pnl}% | ${item.testing_pnl}%`, style: '' },
+                    {value: `#${item.rank}`, style: ''},
+                    {value: item.dna, style: '', tag: 'code'},
+                    {value: item.fitness, style: ''},
+                    {value: `${item.training_win_rate}% | ${item.testing_win_rate}%`, style: ''},
+                    {value: `${item.training_total_trades} | ${item.testing_total_trades}`, style: ''},
+                    {value: `${item.training_pnl}% | ${item.testing_pnl}%`, style: ''},
                 ])
             })
-            this.tabs[id].results.best_candidates = arr
+            this.results.best_candidates = arr
         },
         alertEvent(id: string, data: Alert) {
-            this.tabs[id].results.alert = data
-            this.tabs[id].results.executing = false
-            this.tabs[id].results.showResults = true
+            this.results.alert = data
+            this.results.executing = false
+            this.results.showResults = true
         },
     }
 })

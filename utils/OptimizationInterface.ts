@@ -1,11 +1,14 @@
-interface OptimizationTabs {
-    [id: string]: OptimizationTab;
-}
-
-interface OptimizationTab {
-    id: string;
-    form: OptimizationForm;
-    results: OptimizationResults;
+interface OptimizationForm {
+    start_date: string;
+    finish_date: string;
+    debug_mode: boolean;
+    export_csv: boolean;
+    export_json: boolean;
+    routes: OptimizationRoute[];
+    extra_routes: ExtraRoute[];
+    optimal_total: number;
+    // add this because of the error
+    symbol?: null
 }
 
 interface OptimizationResults {
@@ -26,18 +29,17 @@ interface OptimizationResults {
     alert: Alert;
 }
 
+interface OptimizationRoute {
+    exchange: string;
+    symbol: string;
+    timeframe: string;
+    strategy: string;
+}
 
-interface OptimizationForm {
-    start_date: string;
-    finish_date: string;
-    debug_mode: boolean;
-    export_csv: boolean;
-    export_json: boolean;
-    routes: any[];
-    extra_routes: any[];
-    optimal_total: number;
-    // add this because of the error
-    symbol?: null
+interface ExtraRoute {
+    exchange: string;
+    symbol: string;
+    timeframe: string;
 }
 
 interface OptimizationGeneralInfoEvent {
