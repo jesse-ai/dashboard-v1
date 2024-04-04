@@ -134,8 +134,13 @@ interface FAQ {
     updated_at: Date;
     views: number;
 }
-// ==================== Make Strategy Response ====================
+// ==================== API Responses ====================
 interface MakeStrategyResponse {
+    message: string;
+    status: string;
+}
+
+interface ClearCandlesDatabaseCacheResponse {
     message: string;
     status: string;
 }
