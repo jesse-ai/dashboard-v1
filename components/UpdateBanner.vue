@@ -14,7 +14,7 @@
           </span>
         </p>
       </div>
-      
+
       <div class="absolute inset-y-0 right-0 pt-1 pr-1 flex items-start sm:pt-1 sm:pr-2 sm:items-start">
         <button type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-0"
                 @click="skip(show.type, show.version)">
@@ -45,8 +45,8 @@ const show = computed(() => {
   }
 
   // fetch skipped versions from the local storage
-  const skippedJesseVersions = store.skippedJesseVersions || []
-  const skippedLivePluginVersions = store.skippedLivePluginVersions || []
+  const skippedJesseVersions = store.skippedJesseVersions
+  const skippedLivePluginVersions = store.skippedLivePluginVersions
 
   if (updateInfo.value.jesse_latest_version > systemInfo.value.jesse_version && !skippedJesseVersions.includes(updateInfo.value.jesse_latest_version)) {
     return {

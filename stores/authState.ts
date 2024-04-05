@@ -78,6 +78,8 @@ export const useAuthStore = defineStore('auth', {
         strategies: [] as string[],
         exchangeInfo: {} as { [key: string]: Exchange },
         jesseSupportedTimeframes: [],
+        skippedJesseVersions: [] as string[],
+        skippedLivePluginVersions: [] as string[],
     }),
     persist: {
         storage: persistedState.localStorage,
