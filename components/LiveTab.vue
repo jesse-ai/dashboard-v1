@@ -249,7 +249,7 @@ import {
   CheckIcon
 } from '@heroicons/vue/24/outline'
 import {useLiveStore} from '~/stores/liveStore'
-import {useAuthStore} from '~/stores/authStore'
+import {useAuthStore} from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{

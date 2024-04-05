@@ -73,7 +73,7 @@
 
 <script setup lang="ts">
 import {useCandlesStore} from '~/stores/candleStore'
-import {useAuthStore} from '~/stores/authStore'
+import {useAuthStore} from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 

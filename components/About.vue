@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from '~/stores/authStore';
+import {useAuthStore} from '~/stores/mainStore';
 
 const about = defineModel();
 const store = useAuthStore();

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from './authStore'
+import { useAuthStore } from './mainStore'
 import socketActions from '@/utils/socketActions'
 
 
@@ -18,7 +18,7 @@ export const useSocketStore = defineStore('socket', {
                     const parsedData = JSON.parse(message.data);
                     const event = parsedData.event
                     const data = parsedData.data
-                    const id = parsedData.id
+                    const idt = parsedData.id
                     const actions = socketActions().get(event)
 
                     if (actions !== undefined) {

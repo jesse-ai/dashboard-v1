@@ -201,7 +201,7 @@ import {
   ArrowDownCircleIcon
 } from '@heroicons/vue/24/solid'
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {useAuthStore} from '~/stores/authStore'
+import {useAuthStore} from '~/stores/mainStore'
 import {ref, computed, watchEffect} from 'vue';
 import {useRoute} from 'vue-router';
 

@@ -284,7 +284,7 @@
 
 <script setup lang="ts">
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {useAuthStore} from '~/stores/authStore'
+import {useAuthStore} from '~/stores/mainStore'
 import {
   ArrowDownTrayIcon,
   ArrowLeftEndOnRectangleIcon,

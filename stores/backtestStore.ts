@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '~/stores/mainStore'
 
 function newTab(): BacktestTab {
     return _.cloneDeep({
