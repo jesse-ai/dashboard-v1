@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import {useCandlesStore} from '@/stores/candleState'
+import {useCandlesStore} from '~/stores/candleStore'
 import {useRouter, useRoute} from 'vue-router'
 import {XMarkIcon, PlusIcon} from '@heroicons/vue/24/outline'
 

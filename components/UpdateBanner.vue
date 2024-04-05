@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import {XMarkIcon} from '@heroicons/vue/24/outline'
-import {useAuthStore} from '@/stores/authState'
+import {useAuthStore} from '~/stores/authStore'
 
 const skipped = ref(false)
 const store = useAuthStore()

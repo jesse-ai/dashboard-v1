@@ -1,7 +1,7 @@
-import { useBacktestStore } from '@/stores/backtestState'
-import { useCandlesStore } from '@/stores/candleState'
-import { useLiveStore } from '@/stores/liveState'
-import { useOptimizationStore } from '@/stores/optimizationState'
+import { useBacktestStore } from '~/stores/backtestStore'
+import { useCandlesStore } from '~/stores/candleStore'
+import { useLiveStore } from '~/stores/liveStore'
+import { useOptimizationStore } from '~/stores/optimizationStore'
 
 export default function () {
     const backtest = useBacktestStore()

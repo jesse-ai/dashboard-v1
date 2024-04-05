@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from './authState'
+import { useAuthStore } from './authStore'
 import socketActions from '@/utils/socketActions'
 
 

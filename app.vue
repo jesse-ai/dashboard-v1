@@ -14,8 +14,8 @@
 
 
 <script setup lang="ts">
-import {useAuthStore} from '@/stores/authState'
-import {useSocketStore} from '@/stores/socketState'
+import {useAuthStore} from '~/stores/authStore'
+import {useSocketStore} from '~/stores/websocketStore'
 
 const showLogin = ref(false)
 const loading = ref(true)

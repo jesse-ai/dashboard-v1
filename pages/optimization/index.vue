@@ -134,7 +134,7 @@
 
 <script setup lang="ts">
 import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/solid'
-import {useOptimizationStore} from '@/stores/optimizationState'
+import {useOptimizationStore} from '~/stores/optimizationStore'
 import {computed} from 'vue';
 
 useSeoMeta({title: 'Optimization - Jesse'})

@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import {CalculatorIcon, CpuChipIcon, CurrencyDollarIcon, InformationCircleIcon} from '@heroicons/vue/24/outline'
-import {useAuthStore} from '@/stores/authState'
+import {useAuthStore} from '~/stores/authStore'
 import BacktestSettings from "~/components/settings/BacktestSettings.vue";
 import OptimizationSetting from "~/components/settings/OptimizationSettings.vue";
 import LiveSettings from "~/components/settings/LiveSettings.vue";

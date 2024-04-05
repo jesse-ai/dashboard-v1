@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import {useLiveStore} from '@/stores/liveState'
+import {useLiveStore} from '~/stores/liveStore'
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 

@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import {useCandlesStore} from '@/stores/candleState'
+import {useCandlesStore} from '~/stores/candleStore'
 
 useSeoMeta({title: 'Candles - Jesse'})
 

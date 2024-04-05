@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import {useBacktestStore} from '@/stores/backtestState'
+import {useBacktestStore} from '~/stores/backtestStore'
 import {useRoute, useRouter} from 'vue-router'
 import {PlusIcon, XMarkIcon} from '@heroicons/vue/24/outline'
 

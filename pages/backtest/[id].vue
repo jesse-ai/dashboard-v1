@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import {useBacktestStore} from '@/stores/backtestState'
+import {useBacktestStore} from '~/stores/backtestStore'
 import {computed} from 'vue';
 import {useRoute} from 'vue-router';
 

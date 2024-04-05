@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import {useAuthStore} from '@/stores/authState'
+import {useAuthStore} from '~/stores/authStore'
 
 
 export const useOptimizationStore = defineStore('optimization', {

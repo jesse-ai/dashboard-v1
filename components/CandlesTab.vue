@@ -72,8 +72,8 @@
 </template>
 
 <script setup lang="ts">
-import {useCandlesStore} from '@/stores/candleState'
-import {useAuthStore} from '@/stores/authState'
+import {useCandlesStore} from '~/stores/candleStore'
+import {useAuthStore} from '~/stores/authStore'
 import helpers from '@/utils/helpers'
 
 

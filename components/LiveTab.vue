@@ -248,8 +248,8 @@ import {
   ClipboardIcon,
   CheckIcon
 } from '@heroicons/vue/24/outline'
-import {useLiveStore} from '@/stores/liveState'
-import {useAuthStore} from '@/stores/authState'
+import {useLiveStore} from '~/stores/liveStore'
+import {useAuthStore} from '~/stores/authStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
