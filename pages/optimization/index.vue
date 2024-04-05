@@ -46,7 +46,7 @@
 
       <!-- Content -->
       <div v-if="!results.executing && !results.showResults">
-        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results"/>
+        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="optimization"/>
 
         <Divider class="mt-16 mb-4" title="Options"/>
 
