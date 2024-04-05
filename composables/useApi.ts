@@ -12,7 +12,7 @@ export async function useFetchApi(url: string, authenticated: boolean = false) {
     }
 
     const headers = authenticated ? {
-        'Authorization': `${useAuthStore().authToken}`
+        'Authorization': `${usemainStore().authToken}`
     } : undefined;
     const {data, error} = await useFetch(`${fullUrl}`, {
         headers,
@@ -33,7 +33,7 @@ export async function usePostApi(url: string, payload: any, authenticated: boole
         fullUrl = url;
     }
     const headers: HeadersInit = authenticated ? {
-        'Authorization': `${useAuthStore().authToken}`,
+        'Authorization': `${usemainStore().authToken}`,
         'Content-Type': 'application/json'
     } : {
         'Content-Type': 'application/json'

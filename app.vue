@@ -8,7 +8,7 @@
     <Loading v-if="loading"/>
     <NuxtPage v-else/>
   </NuxtLayout>
-
+  
   <UNotifications/>
 </template>
 

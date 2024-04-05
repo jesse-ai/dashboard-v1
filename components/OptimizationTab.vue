@@ -46,7 +46,7 @@
 
       <!-- Content -->
       <div v-if="!results.executing && !results.showResults">
-        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="optimization"/>
+        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results"/>
 
         <Divider class="mt-16 mb-4" title="Options"/>
 
@@ -83,7 +83,7 @@
       <!-- Action Buttons -->
       <div v-if="!results.executing && !results.showResults">
         <div>
-          <UButton @click="start()" class="w-full flex justify-center" icon="i-heroicons-bolt"
+          <UButton @click="start($route.params.id)" class="w-full flex justify-center" icon="i-heroicons-bolt"
                    size="xl" variant="solid" label="Start" :trailing="false"/>
         </div>
       </div>
@@ -92,7 +92,7 @@
       <div v-if="results.executing && !results.showResults"
            class="flex flex-col items-center justify-center select-none">
         <div class="mb-8 w-full">
-          <UButton @click="cancel()" color="gray"
+          <UButton @click="cancel($route.params.id)" color="gray"
                    :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
                    class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid"
                    label="Cancel" :trailing="false"/>
@@ -129,24 +129,18 @@
       </div>
     </template>
   </LayoutsSidebar>
-
 </template>
 
 <script setup lang="ts">
+import {useOptimizationStore} from '@/stores/optimizationState'
+import {usemainStore} from '@/stores/mainStore'
 import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/solid'
-import {useOptimizationStore} from '~/stores/optimizationStore'
-import {computed} from 'vue';
+import helpers from '@/utils/helpers'
 
-useSeoMeta({title: 'Optimization - Jesse'})
-
-const optimizationStore = useOptimizationStore()
-const form = computed(() => optimizationStore.form)
-const results = computed(() => optimizationStore.results)
-const route = useRoute()
-
-// if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
-//   tabs.value[pageId.value].results.executing = false
-// }
+const props = defineProps<{
+  form: OptimizationForm;
+  results: OptimizationResults;
+}>();
 
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
@@ -154,7 +148,7 @@ const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
 
 const authKey = computed(() => usemainStore().authToken)
-const remainingTimeText = computed(() => helpers.remainingTimeText(results.value.progressbar.estimated_remaining_seconds))
+const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 let logsUrl = computed(() => {
   let url = `/download/optimize/log?token=${authKey.value}`
   if (baseURL.value !== '/') {
@@ -170,7 +164,7 @@ const start = (id: string) => {
     let routeSection = document.getElementById("routes-section");
     if (routeSection) {
       let offsetTop = routeSection.offsetTop;
-      // scroll to routes section
+      // scroll to routes sectionf
       window.scrollTo({top: offsetTop, behavior: 'smooth'});
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
@@ -181,11 +175,12 @@ const start = (id: string) => {
     return
   }
 
-  useOptimizationStore().start()
+
+  useOptimizationStore().start(id)
 }
 
 function copyInfoLogs() {
-  navigator.clipboard.writeText(results.value.infoLogs)
+  navigator.clipboard.writeText(props.results.infoLogs)
   showNotification('success', 'Info copied successfully')
   copiedLogsInfo.value = true
 
@@ -195,24 +190,24 @@ function copyInfoLogs() {
 }
 
 function newSession() {
-  results.value.showResults = false
-  results.value.executing = false
-  results.value.progressbar.current = 0
-  results.value.progressbar.estimated_remaining_seconds = 0
-  results.value.alert.message = ''
-  results.value.alert.type = ''
+  props.results.showResults = false
+  props.results.executing = false
+  props.results.progressbar.current = 0
+  props.results.progressbar.estimated_remaining_seconds = 0
+  props.results.alert.message = ''
+  props.results.alert.type = ''
 }
 
-// make sure finish_date is always greater than start_date
-watch(() => form.value.start_date, (val) => {
-  if (form.value.finish_date < val) {
-    form.value.finish_date = val
+watch(() => props.form.start_date, (val) => {
+  if (props.form.finish_date < val) {
+    props.form.finish_date = val
   }
 })
 
-watch(() => form.value.finish_date, (val) => {
-  if (form.value.start_date > val) {
-    form.value.start_date = val
+watch(() => props.form.finish_date, (val) => {
+  if (props.form.start_date > val) {
+    props.form.start_date = val
   }
 })
 </script>
+  

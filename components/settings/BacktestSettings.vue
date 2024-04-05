@@ -78,6 +78,6 @@
 
 <script setup lang="ts">
 import _ from 'lodash'
-const store = useAuthStore()
+const store = usemainStore()
 const settings = computed(() => store.settings)
 </script>

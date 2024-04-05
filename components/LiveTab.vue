@@ -268,10 +268,10 @@ const reportWithoutExceptionModal = ref(false)
 const infoLogsModal = ref(false)
 const errorLogsModal = ref(false)
 const terminationConfirmModal = ref(false)
-const authStore = useMainStore()
+const mainStore = useMainStore()
 const liveStore = useLiveStore()
 
-const planInfo = computed(() => authStore.planInfo)
+const planInfo = computed(() => mainStore.planInfo)
 
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {

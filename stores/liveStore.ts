@@ -87,7 +87,7 @@ export const useLiveStore = defineStore('Live', {
         async start(id: number) {
             this.reset(id)
 
-            const authStore = useMainStore()
+            const mainStore = useMainStore()
 
             // make sure symbols are uppercase
             this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: Route) => {
@@ -99,7 +99,7 @@ export const useLiveStore = defineStore('Live', {
                 route.symbol = route.symbol.toUpperCase()
                 return route
             })
-            const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: authStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
+            const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: mainStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)

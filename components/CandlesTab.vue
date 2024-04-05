@@ -78,7 +78,7 @@ import helpers from '@/utils/helpers'
 
 
 const candlesStore = useCandlesStore()
-const authState = useMainStore()
+const mainStore = useMainStore()
 const backtestState = useBacktestStore()
 
 const props = defineProps<{
@@ -93,7 +93,7 @@ const exceptionReport = ref(false)
 const totalSymbolError = ref<string[]>([])
 const copiedForm = ref<{ symbol: Object }>({symbol: props.form})
 
-const backtestingExchangeNames = computed(() => authState.backtestingExchangeNames)
+const backtestingExchangeNames = computed(() => mainStore.backtestingExchangeNames)
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 
 watch(copiedForm, () => {

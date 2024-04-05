@@ -214,7 +214,7 @@ const props = defineProps<{
   totalRoutesError: string[]
 }>()
 
-const authStore = useMainStore();
+const mainStore = useMainStore();
 const copiedExtraRoutes = ref({extra_routes: props.form.extra_routes});
 const copiedRoutes = ref({routes: props.form.routes});
 const ERRORS = reactive({
@@ -225,19 +225,19 @@ const ERRORS = reactive({
   emptyParameter: 'You must fill all the parameters',
   invalidSymbol: 'Symbol is invalid'
 })
-const strategies = computed(() => authStore.strategies);
+const strategies = computed(() => mainStore.strategies);
 
 const exchanges = computed(() => {
   const arr = [];
 
-  for (const key in authStore.exchangeInfo) {
+  for (const key in mainStore.exchangeInfo) {
     if (props.mode === 'live') {
-      if (authStore.exchangeInfo[key].modes.live_trading) {
-        arr.push(authStore.exchangeInfo[key]);
+      if (mainStore.exchangeInfo[key].modes.live_trading) {
+        arr.push(mainStore.exchangeInfo[key]);
       }
     } else {
-      if (authStore.exchangeInfo[key].modes.backtesting) {
-        arr.push(authStore.exchangeInfo[key]);
+      if (mainStore.exchangeInfo[key].modes.backtesting) {
+        arr.push(mainStore.exchangeInfo[key]);
       }
     }
   }
@@ -258,11 +258,11 @@ watchEffect(() => {
 function allowedToTradeIn(exchangeName: string) {
   if (props.mode !== 'backtest') return true;
 
-  if (authStore.planInfo.plan === 'premium') {
+  if (mainStore.planInfo.plan === 'premium') {
     return true;
   }
 
-  return authStore.exchangeInfo[exchangeName].required_live_plan === 'free';
+  return mainStore.exchangeInfo[exchangeName].required_live_plan === 'free';
 }
 
 function initiate() {
@@ -272,8 +272,8 @@ function initiate() {
   props.form.routes.push({
     exchange: exchanges.value[0].name,
     symbol: 'BTC-USDT',
-    timeframe: authStore.jesseSupportedTimeframes[0],
-    strategy: authStore.strategies[0],
+    timeframe: mainStore.jesseSupportedTimeframes[0],
+    strategy: mainStore.strategies[0],
   });
 }
 
@@ -355,8 +355,8 @@ function addRoute() {
   props.form.routes.push({
     exchange: props.form.routes[props.form.routes.length - 1].exchange,
     symbol: '',
-    timeframe: authStore.jesseSupportedTimeframes[0],
-    strategy: authStore.strategies[0],
+    timeframe: mainStore.jesseSupportedTimeframes[0],
+    strategy: mainStore.strategies[0],
   });
 }
 
@@ -364,7 +364,7 @@ function addExtraRoute() {
   props.form.extra_routes.push({
     exchange: props.form.routes[props.form.routes.length - 1].exchange,
     symbol: '',
-    timeframe: authStore.jesseSupportedTimeframes[0],
+    timeframe: mainStore.jesseSupportedTimeframes[0],
   });
 }
 
@@ -446,16 +446,16 @@ function getSupportedTimeframes(exchange: string) {
   }
 
   if (route.name !== 'Live') {
-    return authStore.jesseSupportedTimeframes;
+    return mainStore.jesseSupportedTimeframes;
   }
-  if (authStore.settings.live.generate_candles_from_1m) {
-    return authStore.jesseSupportedTimeframes;
+  if (mainStore.settings.live.generate_candles_from_1m) {
+    return mainStore.jesseSupportedTimeframes;
   }
-  if (!authStore.exchangeInfo[exchange]) {
+  if (!mainStore.exchangeInfo[exchange]) {
     return [];
   }
 
-  return authStore.exchangeInfo[exchange].supported_timeframes;
+  return mainStore.exchangeInfo[exchange].supported_timeframes;
 
 
 }

@@ -58,7 +58,7 @@ export const useOptimizationStore = defineStore('optimization', {
             this.results.routes_info = []
             this.results.showResults = false
 
-            const authStore = useMainStore()
+            const mainStore = useMainStore()
 
             // make sure symbols are uppercase
             this.form.routes = this.form.routes.map(route => {
@@ -75,7 +75,7 @@ export const useOptimizationStore = defineStore('optimization', {
                 id: 'optimization',
                 routes: this.form.routes,
                 extra_routes: this.form.extra_routes,
-                config: authStore.settings.optimization,
+                config: mainStore.settings.optimization,
                 start_date: this.form.start_date,
                 finish_date: this.form.finish_date,
                 optimal_total: this.form.optimal_total,
