@@ -1,7 +1,7 @@
 import {defineStore} from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 
 
 export const useOptimizationStore = defineStore('optimization', {
@@ -58,7 +58,7 @@ export const useOptimizationStore = defineStore('optimization', {
             this.results.routes_info = []
             this.results.showResults = false
 
-            const authStore = useAuthStore()
+            const authStore = useMainStore()
 
             // make sure symbols are uppercase
             this.form.routes = this.form.routes.map(route => {

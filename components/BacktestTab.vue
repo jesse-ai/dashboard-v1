@@ -184,7 +184,7 @@
 <script setup lang="ts">
 import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/outline'
 import {useBacktestStore} from '~/stores/backtestStore'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
@@ -195,7 +195,7 @@ const props = defineProps<{
 const totalRoutesError = ref<string[]>([])
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
-const auth_key = useAuthStore().authToken
+const auth_key = useMainStore().authToken
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 
 const backtestStore = useBacktestStore()

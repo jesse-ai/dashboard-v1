@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import {FlagIcon, XCircleIcon, ClipboardIcon, CheckIcon} from '@heroicons/vue/24/outline';
 
 const props = defineProps({
@@ -100,7 +100,7 @@ const props = defineProps({
 
 const exceptionReport = defineModel()
 
-const store = useAuthStore()
+const store = useMainStore()
 const form = reactive({
   description: '',
   attachLogs: true,

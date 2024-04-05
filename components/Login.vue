@@ -35,13 +35,13 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 
 const open = ref(true)
 const form = reactive({
   password: undefined,
 })
-const store = useAuthStore()
+const store = useMainStore()
 
 const setAuth = (token: string) => {
   store.setAuthToken(token)

@@ -73,12 +73,12 @@
 
 <script setup lang="ts">
 import {useCandlesStore} from '~/stores/candleStore'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 
 const candlesStore = useCandlesStore()
-const authState = useAuthStore()
+const authState = useMainStore()
 const backtestState = useBacktestStore()
 
 const props = defineProps<{

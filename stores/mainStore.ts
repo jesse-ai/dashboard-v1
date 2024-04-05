@@ -3,7 +3,7 @@ import { usePostApi } from "~/composables/useApi";
 import { useThrottleFn } from '@vueuse/core';
 import {handleError} from "~/composables/notifications";
 
-export const useAuthStore = defineStore('auth', {
+export const useMainStore = defineStore('main', {
     state: () => ({
         initiated: false,
         loadingVar: false,
@@ -170,8 +170,8 @@ export const useAuthStore = defineStore('auth', {
         },
 
         updateConfig: useThrottleFn(async () => {
-            if (!useAuthStore().settings) return
-            const { data, error } = await usePostApi('/update-config', { current_config: useAuthStore().settings }, true)
+            if (!useMainStore().settings) return
+            const { data, error } = await usePostApi('/update-config', { current_config: useMainStore().settings }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 handleError(error)

@@ -29,13 +29,13 @@
 
 <script setup lang="ts">
 import {CalculatorIcon, CpuChipIcon, CurrencyDollarIcon, InformationCircleIcon} from '@heroicons/vue/24/outline'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import BacktestSettings from "~/components/settings/BacktestSettings.vue";
 import OptimizationSetting from "~/components/settings/OptimizationSettings.vue";
 import LiveSettings from "~/components/settings/LiveSettings.vue";
 import GeneralSettings from "~/components/settings/GeneralSettings.vue";
 
-const store = useAuthStore()
+const store = useMainStore()
 const route = useRoute()
 
 let currentTab = ref(['Optimization', 'Backtest', 'Live'].includes(route.name as string) ? route.name : 'Backtest')

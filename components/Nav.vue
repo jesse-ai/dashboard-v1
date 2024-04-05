@@ -284,7 +284,7 @@
 
 <script setup lang="ts">
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import {
   ArrowDownTrayIcon,
   ArrowLeftEndOnRectangleIcon,
@@ -305,7 +305,7 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/outline'
 
-const store = useAuthStore()
+const store = useMainStore()
 
 const settings = ref(false)
 const feedback = ref(false)

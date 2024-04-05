@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from '~/stores/mainStore';
+import {useMainStore} from '~/stores/mainStore';
 
 const about = defineModel();
-const store = useAuthStore();
+const store = useMainStore();
 const systemInfo = computed(() => store.systemInfo);
 
 const tableData = computed(() => {

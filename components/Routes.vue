@@ -201,7 +201,7 @@ import {
   ArrowDownCircleIcon
 } from '@heroicons/vue/24/solid'
 import {Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import {ref, computed, watchEffect} from 'vue';
 import {useRoute} from 'vue-router';
 
@@ -214,7 +214,7 @@ const props = defineProps<{
   totalRoutesError: string[]
 }>()
 
-const authStore = useAuthStore();
+const authStore = useMainStore();
 const copiedExtraRoutes = ref({extra_routes: props.form.extra_routes});
 const copiedRoutes = ref({routes: props.form.routes});
 const ERRORS = reactive({

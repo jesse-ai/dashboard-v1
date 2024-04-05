@@ -249,7 +249,7 @@ import {
   CheckIcon
 } from '@heroicons/vue/24/outline'
 import {useLiveStore} from '~/stores/liveStore'
-import {useAuthStore} from '~/stores/mainStore'
+import {useMainStore} from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
@@ -268,7 +268,7 @@ const reportWithoutExceptionModal = ref(false)
 const infoLogsModal = ref(false)
 const errorLogsModal = ref(false)
 const terminationConfirmModal = ref(false)
-const authStore = useAuthStore()
+const authStore = useMainStore()
 const liveStore = useLiveStore()
 
 const planInfo = computed(() => authStore.planInfo)

@@ -31,11 +31,11 @@
 </template>
 
 <script setup lang="ts">
-import {useAuthStore} from '~/stores/mainStore';
+import {useMainStore} from '~/stores/mainStore';
 
 const loadingBtn = ref(false);
 const makeStrategy = defineModel()
-const store = useAuthStore();
+const store = useMainStore();
 const form = reactive({
   name: '',
 });

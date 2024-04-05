@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import { useAuthStore } from '~/stores/mainStore'
+import { useMainStore } from '~/stores/mainStore'
 
 let idCounter = 0
 
@@ -87,7 +87,7 @@ export const useLiveStore = defineStore('Live', {
         async start(id: number) {
             this.reset(id)
 
-            const authStore = useAuthStore()
+            const authStore = useMainStore()
 
             // make sure symbols are uppercase
             this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: Route) => {

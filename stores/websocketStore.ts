@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { useAuthStore } from './mainStore'
+import { useMainStore } from './mainStore'
 import socketActions from '@/utils/socketActions'
 
 
@@ -10,7 +10,7 @@ export const useSocketStore = defineStore('socket', {
     }),
     actions: {
         initiate() {
-            this.socket = new WebSocket(`${useRuntimeConfig().public.wsUrl}?token=${useAuthStore().authToken}`);
+            this.socket = new WebSocket(`${useRuntimeConfig().public.wsUrl}?token=${useMainStore().authToken}`);
             this.socket.addEventListener('open', (event) => {
                 this.isConnected = true
 
