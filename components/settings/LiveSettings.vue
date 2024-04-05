@@ -123,18 +123,20 @@
 
     <Card v-if="Object.keys(settings.live.exchanges).length">
       <Heading class="mb-8">Exchanges</Heading>
-      {{ settings.live.exchanges }}
+
       <div v-for="(e, index) in settings.live.exchanges" :key="index">
         <Divider :title="e.name" class="mb-4"/>
-        {{ e }}
-        <RadioGroups v-if="e.type === 'futures'"
-                     title="Leverage Mode:" v-model="e.futures_leverage_mode" :options="['cross', 'isolated']"/>
 
-        <br>
+        <RadioGroups v-if="store.exchangeInfo[e.name].type === 'futures'"
+                     class="mb-4"
+                     title="Leverage Mode:"
+                     v-model="e.futures_leverage_mode"
+                     :options="['cross', 'isolated']"/>
 
-        <NumberInput title="Leverage (x):" v-model="e.futures_leverage" :default="1"/>
-
-        <br>
+        <NumberInput
+            v-if="store.exchangeInfo[e.name].type === 'futures'"
+            class="mb-4"
+            title="Leverage (x):" v-model="e.futures_leverage" :default="1"/>
 
         <p>Balances and fees will be fetched from the exchange in live trading. But for <b>paper trading</b> you can
           set them here:</p>

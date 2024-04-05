@@ -90,12 +90,22 @@ export const useAuthStore = defineStore('auth', {
                     arr.push(key)
                 }
             }
-            // sort arr's items by name alphabetically
+            // sort ar's items by name alphabetically
+            return arr.sort()
+        },
+        liveTradingExchangeNames(): string[] {
+            const arr = []
+            for (const key in this.exchangeInfo) {
+                if (this.exchangeInfo[key].modes.live_trading) {
+                    arr.push(key)
+                }
+            }
+            // sort ar's items by name alphabetically
             return arr.sort()
         },
         isAuthenticated(): boolean {
             return this.authToken !== ''
-        }
+        },
     },
     actions: {
         async initiate() {
