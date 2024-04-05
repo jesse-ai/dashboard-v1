@@ -80,7 +80,7 @@ export const useBacktestStore = defineStore('backtest', {
             this.tabs[id].results.exception.error = ''
             this.tabs[id].results.alert.message = ''
 
-            // make authState symbols are uppercase
+            // make sure symbols are uppercase
             this.tabs[id].form.routes = this.tabs[id].form.routes.map(route => {
                 return { ...route, symbol: route.symbol.toUpperCase() }
             })
