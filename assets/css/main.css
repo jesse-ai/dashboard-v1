@@ -31,18 +31,6 @@ h3,
     @apply text-base font-semibold;
 }
 
-.btn-nav {
-    @apply ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none
-}
-
-.btn-primary {
-    @apply font-medium select-none items-center px-2.5 py-1.5 border border-transparent rounded shadow-sm text-white bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none dark:text-black text-base tracking-wide;
-}
-
-.btn-link {
-    @apply font-medium select-none items-center hover:underline focus:outline-none text-base tracking-wide;
-}
-
 select {
     @apply pr-8 appearance-none bg-[url('assets/imgs/dropdown-light.png')] dark:bg-[url('assets/imgs/dropdown-dark.png')] bg-no-repeat bg-[center_right_14px] bg-[length:16px_16px];
 }

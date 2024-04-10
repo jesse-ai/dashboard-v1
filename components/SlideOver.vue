@@ -17,7 +17,7 @@
                                         <div class="ml-3 h-7 flex items-center">
                                             <slot name="buttons" />
 
-                                            <button id="slideover-close-button" class="btn-nav" @click="model = false">
+                                            <button id="slideover-close-button" class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none" @click="model = false">
                                                 <XMarkIcon class="h-6 w-6" aria-hidden="true" />
                                             </button>
                                         </div>
@@ -38,7 +38,7 @@
         </Dialog>
     </TransitionRoot>
 </template>
-  
+
 <script setup lang="ts">
 import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
@@ -56,4 +56,3 @@ const props = defineProps({
     }
 })
 </script>
-  

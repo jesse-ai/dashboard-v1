@@ -3,21 +3,17 @@
     <div class="inline-block px-4 pt-5 pb-4">
       <div class="w-full flex justify-between items-center">
         <div class="flex items-center">
-          <div v-if="type === 'info'"
-               class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-            <InformationCircleIcon check-icon :class="colors.text" class="h-7 w-7" aria-hidden="true"/>
+          <div v-if="type === 'info'" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+            <InformationCircleIcon check-icon :class="colors.text" class="h-7 w-7" aria-hidden="true" />
           </div>
-          <div v-else-if="type === 'danger'"
-               class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-            <NoSymbolIcon check-icon :class="colors.text" class="h-7 w-7" aria-hidden="true"/>
+          <div v-else-if="type === 'danger'" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+            <NoSymbolIcon check-icon :class="colors.text" class="h-7 w-7" aria-hidden="true" />
           </div>
-          <div v-else-if="type === 'success'"
-               class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
-            <CheckIcon :class="colors.text" class="h-7 w-7" aria-hidden="true"/>
+          <div v-else-if="type === 'success'" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+            <CheckIcon :class="colors.text" class="h-7 w-7" aria-hidden="true" />
           </div>
-          <div v-else
-               class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
-            <ExclamationTriangleIcon :class="colors.text" check-icon class="h-7 w-7 " aria-hidden="true"/>
+          <div v-else class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+            <ExclamationTriangleIcon :class="colors.text" check-icon class="h-7 w-7 " aria-hidden="true" />
           </div>
 
           <!-- title -->
@@ -26,7 +22,7 @@
           </h3>
         </div>
 
-        <UButton icon="i-heroicons-x-mark" variant="link" color="gray" class="btn-nav" @click="model = false"/>
+        <UButton icon="i-heroicons-x-mark" variant="link" color="gray" class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none" @click="model = false" />
       </div>
 
       <div :class="[description ? '' : 'items-center', 'flex items-start justify-start']">
@@ -41,19 +37,15 @@
 
       <div class="mt-5 sm:mt-4 flex justify-end">
         <!-- action button which must insert in main component -->
-        <UButton variant="link" color="gray"
-                 class="mr-4"
-                 size="lg"
-                 :label="type === 'danger' ? 'Cancel' : 'Close'"
-                 @click="model = false"/>
-        <slot/>
+        <UButton variant="link" color="gray" class="mr-4" size="lg" :label="type === 'danger' ? 'Cancel' : 'Close'" @click="model = false" />
+        <slot />
       </div>
     </div>
   </UModal>
 </template>
 
 <script setup lang="ts">
-import {NoSymbolIcon, ExclamationTriangleIcon, CheckIcon, InformationCircleIcon} from '@heroicons/vue/24/outline'
+import { NoSymbolIcon, ExclamationTriangleIcon, CheckIcon, InformationCircleIcon } from '@heroicons/vue/24/outline'
 
 const model = defineModel()
 
