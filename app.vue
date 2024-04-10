@@ -1,21 +1,23 @@
 <template>
-  <NuxtLoadingIndicator/>
+  <ClientOnly>
+    <NuxtLoadingIndicator />
 
-  <NuxtLayout>
-    <Nav v-if="useMainStore().isAuthenticated"/>
+    <NuxtLayout>
+      <Nav v-if="useMainStore().isAuthenticated" />
 
-    <Login v-if="showLogin"/>
-    <Loading v-if="loading"/>
-    <NuxtPage v-else/>
-  </NuxtLayout>
-  
-  <UNotifications/>
+      <Login v-if="showLogin" />
+      <Loading v-else-if="loading" />
+      <NuxtPage v-else />
+    </NuxtLayout>
+
+    <UNotifications />
+  </ClientOnly>
 </template>
 
 
 <script setup lang="ts">
-import {useMainStore} from '~/stores/mainStore'
-import {useSocketStore} from '~/stores/websocketStore'
+import { useMainStore } from '~/stores/mainStore'
+import { useSocketStore } from '~/stores/websocketStore'
 
 const showLogin = ref(false)
 const loading = ref(true)
@@ -23,21 +25,19 @@ const settings = computed(() => useMainStore().settings)
 const authToken = computed(() => useMainStore().authToken)
 const initiated = computed(() => useMainStore().initiated)
 
-onMounted(() => {
-  if (useMainStore().isAuthenticated) {
-    if (useMainStore().initiated) {
-      loading.value = false
-    }
-
-    useSocketStore().initiate()
-    setTimeout(() => {
-      useMainStore().initiate()
-    }, 500);
-  } else {
-    showLogin.value = true
-    useMainStore().initiated = false
+if (useMainStore().isAuthenticated) {
+  if (useMainStore().initiated) {
+    loading.value = false
   }
-});
+
+  useSocketStore().initiate()
+  setTimeout(() => {
+    useMainStore().initiate()
+  }, 500);
+} else {
+  showLogin.value = true
+  useMainStore().initiated = false
+}
 
 watch(authToken, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -53,5 +53,5 @@ watch(initiated, (newValue, oldValue) => {
 
 watch(settings, (newValue, oldValue) => {
   useMainStore().updateConfig()
-}, {deep: true})
+}, { deep: true })
 </script>
