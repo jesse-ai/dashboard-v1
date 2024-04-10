@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
-import { usemainStore } from '@/stores/mainStore'
+import { useMainStore } from '@/stores/mainStore'
 
 function newTab(): BacktestTab {
     return _.cloneDeep({
@@ -91,7 +91,7 @@ export const useBacktestStore = defineStore('backtest', {
                 return route
             })
 
-            const { data, error } = await usePostApi('/backtest', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: usemainStore().settings.backtest, start_date: this.tabs[id].form.start_date, finish_date: this.tabs[id].form.finish_date, debug_mode: this.tabs[id].form.debug_mode, export_csv: this.tabs[id].form.export_csv, export_chart: this.tabs[id].form.export_chart, export_tradingview: this.tabs[id].form.export_tradingview, export_full_reports: this.tabs[id].form.export_full_reports, export_json: this.tabs[id].form.export_json }, true)
+            const { data, error } = await usePostApi('/backtest', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: useMainStore().settings.backtest, start_date: this.tabs[id].form.start_date, finish_date: this.tabs[id].form.finish_date, debug_mode: this.tabs[id].form.debug_mode, export_csv: this.tabs[id].form.export_csv, export_chart: this.tabs[id].form.export_chart, export_tradingview: this.tabs[id].form.export_tradingview, export_full_reports: this.tabs[id].form.export_full_reports, export_json: this.tabs[id].form.export_json }, true)
 
             if (error.value && error.value.statusCode !== 200) {
                 showNotification('error', error.value.data.message)

@@ -112,7 +112,7 @@
 
 <script setup lang="ts">
 import { useOptimizationStore } from '@/stores/optimizationState'
-import { usemainStore } from '@/stores/mainStore'
+import { useMainStore } from '@/stores/mainStore'
 import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/solid'
 import helpers from '@/utils/helpers'
 
@@ -126,7 +126,7 @@ const copiedLogsInfo = ref(false)
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
 
-const authKey = computed(() => usemainStore().authToken)
+const authKey = computed(() => useMainStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 let logsUrl = computed(() => {
   let url = `/download/optimize/log?token=${authKey.value}`

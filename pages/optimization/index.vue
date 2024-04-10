@@ -132,7 +132,7 @@ const copiedLogsInfo = ref(false)
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
 
-const authKey = computed(() => usemainStore().authToken)
+const authKey = computed(() => useMainStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(results.value.progressbar.estimated_remaining_seconds))
 let logsUrl = computed(() => {
   let url = `/download/optimize/log?token=${authKey.value}`
