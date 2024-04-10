@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import { useOptimizationStore } from '@/stores/optimizationState'
+import { useOptimizationStore } from '@/stores/optimizationStore'
 import { useMainStore } from '@/stores/mainStore'
 import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/solid'
 import helpers from '@/utils/helpers'
@@ -155,7 +155,7 @@ const start = (id: string) => {
   }
 
 
-  useOptimizationStore().start(id)
+  useOptimizationStore().start()
 }
 
 function copyInfoLogs() {
