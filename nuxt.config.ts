@@ -18,7 +18,7 @@ export default defineNuxtConfig({
         'nuxt-vitest',
         '@nuxtjs/tailwindcss',
         '@nuxtjs/color-mode',
-        '@nuxtjs/eslint-module'
+        '@nuxt/eslint'
     ],
     css: [
         '@/assets/css/main.css'
@@ -27,8 +27,5 @@ export default defineNuxtConfig({
         options: {
             hashMode: true
         }
-    },
-    eslint: {
-        'lintOnStart': false
     }
 })
