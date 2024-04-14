@@ -43,15 +43,15 @@
       </p>
       <br>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <UCheckbox label="Order Submission" v-model="settings.live.logging['order_submission']" />
-        <UCheckbox label="Order Cancellation" v-model="settings.live.logging['order_cancellation']" />
-        <UCheckbox label="Order Execution" v-model="settings.live.logging['order_execution']" />
-        <UCheckbox label="Position Opened" v-model="settings.live.logging['position_opened']" />
-        <UCheckbox label="Position Increased" v-model="settings.live.logging['position_increased']" />
-        <UCheckbox label="Position Reduced" v-model="settings.live.logging['position_reduced']" />
-        <UCheckbox label="Position Closed" v-model="settings.live.logging['position_closed']" />
-        <UCheckbox label="1m candles" v-model="settings.live.logging['shorter_period_candles']" />
-        <UCheckbox label="Trading Candles" v-model="settings.live.logging['trading_candles']" />
+        <UCheckbox v-model="settings.live.logging['order_submission']" label="Order Submission" />
+        <UCheckbox v-model="settings.live.logging['order_cancellation']" label="Order Cancellation" />
+        <UCheckbox v-model="settings.live.logging['order_execution']" label="Order Execution" />
+        <UCheckbox v-model="settings.live.logging['position_opened']" label="Position Opened" />
+        <UCheckbox v-model="settings.live.logging['position_increased']" label="Position Increased" />
+        <UCheckbox v-model="settings.live.logging['position_reduced']" label="Position Reduced" />
+        <UCheckbox v-model="settings.live.logging['position_closed']" label="Position Closed" />
+        <UCheckbox v-model="settings.live.logging['shorter_period_candles']" label="1m candles" />
+        <UCheckbox v-model="settings.live.logging['trading_candles']" label="Trading Candles" />
       </div>
     </Card>
 
@@ -79,7 +79,7 @@
       </p>
       <br>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <UCheckbox label="Enable Notifications" v-model="settings.live.notifications['enabled']" />
+        <UCheckbox v-model="settings.live.notifications['enabled']" label="Enable Notifications" />
       </div>
       <br>
 
@@ -89,14 +89,14 @@
         </p>
         <br>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <UCheckbox label="Errors" v-model="settings.live.notifications.events['errors']" />
-          <UCheckbox label="Session Start" v-model="settings.live.notifications.events['started_session']" />
-          <UCheckbox label="Session Termination" v-model="settings.live.notifications.events['terminated_session']" />
-          <UCheckbox label="Order Submission" v-model="settings.live.notifications.events['submitted_orders']" />
-          <UCheckbox label="Order Cancellation" v-model="settings.live.notifications.events['cancelled_orders']" />
-          <UCheckbox label="Order Execution" v-model="settings.live.notifications.events['executed_orders']" />
-          <UCheckbox label="Opened Positions" v-model="settings.live.notifications.events['opened_position']" />
-          <UCheckbox label="Updated Position" v-model="settings.live.notifications.events['updated_position']" />
+          <UCheckbox v-model="settings.live.notifications.events['errors']" label="Errors" />
+          <UCheckbox v-model="settings.live.notifications.events['started_session']" label="Session Start" />
+          <UCheckbox v-model="settings.live.notifications.events['terminated_session']" label="Session Termination" />
+          <UCheckbox v-model="settings.live.notifications.events['submitted_orders']" label="Order Submission" />
+          <UCheckbox v-model="settings.live.notifications.events['cancelled_orders']" label="Order Cancellation" />
+          <UCheckbox v-model="settings.live.notifications.events['executed_orders']" label="Order Execution" />
+          <UCheckbox v-model="settings.live.notifications.events['opened_position']" label="Opened Positions" />
+          <UCheckbox v-model="settings.live.notifications.events['updated_position']" label="Updated Position" />
         </div>
 
         <br>
@@ -126,12 +126,20 @@
       <div v-for="(e, index) in settings.live.exchanges" :key="index">
         <Divider :title="e.name" class="mb-4" />
 
-        <RadioGroups v-if="store.exchangeInfo[e.name].type === 'futures'" class="mb-4" title="Leverage Mode:" v-model="e.futures_leverage_mode" :options="['cross', 'isolated']" />
+        <RadioGroups
+          v-if="store.exchangeInfo[e.name].type === 'futures'" v-model="e.futures_leverage_mode"
+          class="mb-4" title="Leverage Mode:"
+          :options="['cross', 'isolated']" />
 
-        <NumberInput v-if="store.exchangeInfo[e.name].type === 'futures'" class="mb-4" title="Leverage (x):" v-model="e.futures_leverage" :default="1" />
+        <NumberInput
+          v-if="store.exchangeInfo[e.name].type === 'futures'" v-model="e.futures_leverage"
+          class="mb-4" title="Leverage (x):"
+          :default="1" />
 
-        <p>Balances and fees will be fetched from the exchange in live trading. But for <b>paper trading</b> you can
-          set them here:</p>
+        <p>
+          Balances and fees will be fetched from the exchange in live trading. But for <b>paper trading</b> you can
+          set them here:
+        </p>
 
         <br>
 
@@ -152,7 +160,7 @@
 </template>
 
 <script setup lang="ts">
-import _ from "lodash";
+import _ from 'lodash'
 
 const store = useMainStore()
 const settings = computed(() => store.settings)

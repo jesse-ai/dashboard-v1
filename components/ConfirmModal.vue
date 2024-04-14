@@ -22,7 +22,10 @@
           </h3>
         </div>
 
-        <UButton icon="i-heroicons-x-mark" variant="link" color="gray" class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none" @click="model = false" />
+        <UButton
+          icon="i-heroicons-x-mark" variant="link"
+          color="gray" class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+          @click="model = false" />
       </div>
 
       <div :class="[description ? '' : 'items-center', 'flex items-start justify-start']">
@@ -37,7 +40,10 @@
 
       <div class="mt-5 sm:mt-4 flex justify-end">
         <!-- action button which must insert in main component -->
-        <UButton variant="link" color="gray" class="mr-4" size="lg" :label="type === 'danger' ? 'Cancel' : 'Close'" @click="model = false" />
+        <UButton
+          variant="link" color="gray"
+          class="mr-4" size="lg"
+          :label="type === 'danger' ? 'Cancel' : 'Close'" @click="model = false" />
         <slot />
       </div>
     </div>
@@ -50,9 +56,9 @@ import { NoSymbolIcon, ExclamationTriangleIcon, CheckIcon, InformationCircleIcon
 const model = defineModel()
 
 const props = defineProps<{
-  title: String;
-  description?: String;
-  type: String;
+  title: string
+  description?: string
+  type: string
 }>()
 
 const colors = computed(() => {

@@ -14,20 +14,21 @@
       <br>
 
       <div class="flex justify-end items-center">
-        <UButton @click="clearCacheConfirmation = true" color="rose" size="xl" variant="outline">
+        <UButton color="rose" size="xl" variant="outline" @click="clearCacheConfirmation = true">
           Clear Browser Cache
         </UButton>
       </div>
 
       <!-- Clear Cache Confirmation Modal -->
-      <ConfirmModal title="Clear Browser Cache"
-                    description="Are you sure you want to clear the cache? This will remove all the data stored in the browser cache and reload the app."
-                    type="info" v-model="clearCacheConfirmation">
-        <UButton @click="clearCache"
-                 variant="solid"
-                 color="rose"
-                 size="lg"
-                 label="Clear Browser Cache"/>
+      <ConfirmModal
+        v-model="clearCacheConfirmation" title="Clear Browser Cache"
+        description="Are you sure you want to clear the cache? This will remove all the data stored in the browser cache and reload the app." type="info"
+      >
+        <UButton
+          variant="solid" color="rose"
+          label="Clear Browser Cache" size="lg"
+          @click="clearCache"
+        />
       </ConfirmModal>
     </Card>
 
@@ -45,40 +46,39 @@
       <br>
 
       <div class="flex justify-end items-center">
-        <UButton @click="clearCandleDatabaseCacheConfirmation = true" color="rose" size="xl" variant="outline">
+        <UButton color="rose" size="xl" variant="outline" @click="clearCandleDatabaseCacheConfirmation = true">
           Clear Database Cache
         </UButton>
       </div>
 
       <!-- Clear Cache Confirmation Modal -->
-      <ConfirmModal title="Clear Database Cache"
-                    description="Are you sure you want to clear the candle database cache?"
-                    type="info" v-model="clearCandleDatabaseCacheConfirmation">
-        <UButton @click="clearCandleDatabaseCache"
-                 variant="solid"
-                 color="rose"
-                 size="lg"
-                 label="Clear Database Cache"/>
+      <ConfirmModal
+        v-model="clearCandleDatabaseCacheConfirmation" title="Clear Database Cache"
+        description="Are you sure you want to clear the candle database cache?" type="info">
+        <UButton
+          variant="solid" color="rose"
+          size="lg" label="Clear Database Cache"
+          @click="clearCandleDatabaseCache" />
       </ConfirmModal>
     </Card>
   </div>
 </template>
 
 <script setup lang="ts">
-import {usePostApi} from "~/composables/useApi";
-import {handleError} from "~/composables/notifications";
+import { usePostApi } from '~/composables/useApi'
+import { handleError } from '~/composables/notifications'
 
 const clearCacheConfirmation = ref(false)
 const clearCandleDatabaseCacheConfirmation = ref(false)
 
-function clearCache() {
+function clearCache () {
   localStorage.clear()
   location.reload()
   clearCacheConfirmation.value = false
 }
 
-async function clearCandleDatabaseCache() {
-  const {data, error} = await usePostApi('/clear-candles-database-cache', {}, true)
+async function clearCandleDatabaseCache () {
+  const { data, error } = await usePostApi('/clear-candles-database-cache', {}, true)
 
   if (error.value) {
     handleError(error.value)
@@ -90,7 +90,8 @@ async function clearCandleDatabaseCache() {
   if (res.status === 'success') {
     clearCandleDatabaseCacheConfirmation.value = false
     showNotification('success', res.message)
-  } else {
+  }
+  else {
     showNotification('error', 'Failed to clear the candle database cache')
   }
 }

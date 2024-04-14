@@ -1,32 +1,32 @@
 <template>
-    <div :class="classes">
-        <span>{{ progress }}%</span>
-        <div class="left-half-clipper">
-            <div class="first50-bar" />
-            <div class="value-bar" />
-        </div>
+  <div :class="classes">
+    <span>{{ progress }}%</span>
+    <div class="left-half-clipper">
+      <div class="first50-bar" />
+      <div class="value-bar" />
     </div>
+  </div>
 </template>
-  
-  
+
+
 <script setup lang="ts">
 const props = defineProps<{
-    progress: number;
+  progress: number
 }>()
 
 const classes = computed(() => {
-    let arr = 'progress-circle'
-    if (props.progress > 50) {
-        arr += ' over50'
-    }
+  let arr = 'progress-circle'
+  if (props.progress > 50) {
+    arr += ' over50'
+  }
 
-    arr += ` p${Math.round(props.progress)}`
+  arr += ` p${Math.round(props.progress)}`
 
-    return arr
+  return arr
 })
 </script>
-  
-  
+
+
 <style scoped>
 .progress-circle {
     font-size: 40px;
@@ -525,4 +525,3 @@ const classes = computed(() => {
     transform: rotate(360deg);
 }
 </style>
-  

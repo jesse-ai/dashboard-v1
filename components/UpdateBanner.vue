@@ -4,21 +4,23 @@
       <div class="pr-16 sm:text-center sm:px-16">
         <p class="font-medium">
           <span class="md:inline">
-              {{ show.message }}
+            {{ show.message }}
           </span>
 
           <span class="block sm:ml-2 sm:inline-block">
-              <a href="https://docs.jesse.trade/docs/getting-started/update.html" target="_blank"
-                 class="font-bold underline"> Update Guide <span aria-hidden="true">&rarr;</span>
+            <a
+              href="https://docs.jesse.trade/docs/getting-started/update.html" target="_blank"
+              class="font-bold underline"> Update Guide <span aria-hidden="true">&rarr;</span>
             </a>
           </span>
         </p>
       </div>
 
       <div class="absolute inset-y-0 right-0 pt-1 pr-1 flex items-start sm:pt-1 sm:pr-2 sm:items-start">
-        <button type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-0"
-                @click="skip(show.type, show.version)">
-          <XMarkIcon class="h-6 w-6" aria-hidden="true"/>
+        <button
+          type="button" class="flex p-2 rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-0"
+          @click="skip(show.type, show.version)">
+          <XMarkIcon class="h-6 w-6" aria-hidden="true" />
         </button>
       </div>
     </div>
@@ -26,8 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import {XMarkIcon} from '@heroicons/vue/24/outline'
-import {useMainStore} from '~/stores/mainStore'
+import { XMarkIcon } from '@heroicons/vue/24/outline'
+import { useMainStore } from '~/stores/mainStore'
 
 const skipped = ref(false)
 const store = useMainStore()

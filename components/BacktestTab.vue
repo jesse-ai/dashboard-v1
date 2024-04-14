@@ -24,7 +24,7 @@
 
     <div class="mt-8">
       <div class="mt-8">
-        <UButton @click="cancel($route.params.id)" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
+        <UButton @click="cancel($route.params.id as string)" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
       </div>
 
       <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
@@ -104,10 +104,10 @@
     <template #right>
       <!-- Action Buttons -->
       <div v-if="!results.executing">
-        <div v-if="results.showResults">
-          <UButton @click="rerun($route.params.id)" class="w-full flex justify-center" icon="i-heroicons-arrow-path" size="xl" variant="solid" label="Rerun" :trailing="false" />
+          <div v-if="results.showResults">
+          <UButton @click="rerun($route.params.id as string)" class="w-full flex justify-center" icon="i-heroicons-arrow-path" size="xl" variant="solid" label="Rerun" :trailing="false" />
 
-          <UButton @click="newBacktest($route.params.id)" class="w-full flex justify-center mt-4" color="green" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="New session" :trailing="false" />
+          <UButton @click="newBacktest($route.params.id as string)" class="w-full flex justify-center mt-4" color="green" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="New session" :trailing="false" />
 
           <a v-if="form.debug_mode" :href="logsUrl" target="_blank" class="">
             <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="Debugging Logs" :trailing="false" />
@@ -139,9 +139,9 @@
         </div>
 
         <div v-else>
-          <UButton @click="start($route.params.id)" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
+          <UButton @click="start($route.params.id as string)" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
 
-          <UButton @click="startInNewTab($route.params.id)" class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-plus" size="xl" variant="solid" label="Start in a new tab" :trailing="false" />
+          <UButton @click="startInNewTab($route.params.id as string)" class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-plus" size="xl" variant="solid" label="Start in a new tab" :trailing="false" />
         </div>
       </div>
     </template>

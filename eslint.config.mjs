@@ -31,6 +31,7 @@ export default withNuxt(
       '@stylistic/no-extra-semi': 'warn',
       'vue/no-mutating-props': 'off',
       'vue/no-v-html': 'off',
+      'vue/multi-word-component-names': 0
     },
   },
 )

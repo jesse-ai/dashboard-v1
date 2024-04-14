@@ -1,15 +1,15 @@
 <template>
   <div class="w-full">
-    <CandleTabs :page-id="pageId" :tabs="tabs" @close="candlesStore.closeTab"/>
+    <CandleTabs :page-id="pageId" :tabs="tabs" @close="candlesStore.closeTab" />
   </div>
 
-  <CandlesTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
+  <CandlesTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
 </template>
 
 <script setup lang="ts">
-import {useCandlesStore} from '~/stores/candleStore'
+import { useCandlesStore } from '~/stores/candleStore'
 
-useSeoMeta({title: 'Candles - Jesse'})
+useSeoMeta({ title: 'Candles - Jesse' })
 
 const candlesStore = useCandlesStore()
 const tabs = computed(() => candlesStore.tabs)

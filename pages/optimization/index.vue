@@ -18,12 +18,15 @@
     <template #left>
       <!-- alert -->
       <div v-if="results.alert.message" class="mb-8">
-        <UAlert color="teal" icon="i-heroicons-check-circle" variant="soft" :title="results.alert.message" @close="results.alert.message = ''" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" />
+        <UAlert
+          color="teal" icon="i-heroicons-check-circle"
+          variant="soft" :title="results.alert.message"
+          :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" @close="results.alert.message = ''" />
       </div>
 
       <!-- exception  -->
       <div v-if="results.exception.error && results.executing" class="mb-8">
-        <Exception :title="results.exception.error" :content="results.exception.traceback" mode="optimize" v-model="exceptionReport" />
+        <Exception v-model="exceptionReport" :title="results.exception.error" :content="results.exception.traceback" mode="optimize" />
       </div>
 
       <!-- Execution -->
@@ -64,9 +67,15 @@
         <Divider class="mt-16 mb-4" title="Duration" />
 
         <div class="flex items-center select-none flex-1 mb-4">
-          <UInput v-model="form.start_date" type="date" variant="outline" size="xl" class="w-full mr-2" />
+          <UInput
+            v-model="form.start_date" type="date"
+            variant="outline" size="xl"
+            class="w-full mr-2" />
 
-          <UInput v-model="form.finish_date" type="date" variant="outline" size="xl" class="w-full ml-2" />
+          <UInput
+            v-model="form.finish_date" type="date"
+            variant="outline" size="xl"
+            class="w-full ml-2" />
         </div>
       </div>
     </template>
@@ -75,17 +84,30 @@
       <!-- Action Buttons -->
       <div v-if="!results.executing && !results.showResults">
         <div>
-          <UButton @click="start()" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center" icon="i-heroicons-bolt"
+            size="xl" variant="solid"
+            label="Start" :trailing="false"
+            @click="start()" />
         </div>
       </div>
 
       <!-- Execution -->
       <div v-if="results.executing && !results.showResults" class="flex flex-col items-center justify-center select-none">
         <div class="mb-8 w-full">
-          <UButton @click="cancel()" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-full flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
+          <UButton
+            color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+            class="w-full flex justify-center" icon="i-heroicons-no-symbol"
+            size="xl" variant="solid"
+            label="Cancel" :trailing="false"
+            @click="cancel()" />
 
           <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 mt-4 w-full">
-            <UButton class="w-full flex justify-center" color="gray" size="xl" variant="solid" label="Debugging Logs" icon="i-heroicons-document-arrow-down" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center" color="gray"
+              size="xl" variant="solid"
+              label="Debugging Logs" icon="i-heroicons-document-arrow-down"
+              :trailing="false" />
           </a>
         </div>
 
@@ -98,34 +120,35 @@
       <!-- Show Results -->
       <div v-if="results.showResults">
         <div class="mb-8 w-full">
-
-          <UButton @click="newSession" class="w-full flex justify-center" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="New Session" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center" icon="i-heroicons-arrow-uturn-left"
+            size="xl" variant="solid"
+            label="New Session" :trailing="false"
+            @click="newSession" />
 
           <a v-if="form.debug_mode" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center my-4 w-full">
-            <UButton color="gray" variant="solid" label="Debugging Logs" icon="i-heroicons-document-arrow-down" block size="xl" :trailing="false" />
+            <UButton
+              color="gray" variant="solid"
+              label="Debugging Logs" icon="i-heroicons-document-arrow-down"
+              block size="xl"
+              :trailing="false" />
           </a>
         </div>
       </div>
     </template>
   </LayoutsSidebar>
-
 </template>
 
 <script setup lang="ts">
 import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/solid'
+import { computed } from 'vue'
 import { useOptimizationStore } from '~/stores/optimizationStore'
-import { computed } from 'vue';
 
 useSeoMeta({ title: 'Optimization - Jesse' })
 
 const optimizationStore = useOptimizationStore()
 const form = computed(() => optimizationStore.form)
 const results = computed(() => optimizationStore.results)
-const route = useRoute()
-
-// if (tabs.value[pageId.value] && tabs.value[pageId.value].results.executing) {
-//   tabs.value[pageId.value].results.executing = false
-// }
 
 const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
@@ -134,7 +157,7 @@ const totalRoutesError = ref<string[]>([])
 
 const authKey = computed(() => useMainStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(results.value.progressbar.estimated_remaining_seconds))
-let logsUrl = computed(() => {
+const logsUrl = computed(() => {
   let url = `/download/optimize/log?token=${authKey.value}`
   if (baseURL.value !== '/') {
     url = baseURL.value + url
@@ -144,13 +167,13 @@ let logsUrl = computed(() => {
 
 const { cancel } = useOptimizationStore()
 
-const start = (id: string) => {
+const start = () => {
   if (totalRoutesError.value.length) {
-    let routeSection = document.getElementById("routes-section");
+    const routeSection = document.getElementById('routes-section')
     if (routeSection) {
-      let offsetTop = routeSection.offsetTop;
+      const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {
@@ -163,7 +186,7 @@ const start = (id: string) => {
   useOptimizationStore().start()
 }
 
-function copyInfoLogs() {
+function copyInfoLogs () {
   navigator.clipboard.writeText(results.value.infoLogs)
   showNotification('success', 'Info copied successfully')
   copiedLogsInfo.value = true
@@ -173,7 +196,7 @@ function copyInfoLogs() {
   }, 3000)
 }
 
-function newSession() {
+function newSession () {
   results.value.showResults = false
   results.value.executing = false
   results.value.progressbar.current = 0

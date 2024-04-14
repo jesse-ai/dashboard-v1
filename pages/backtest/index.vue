@@ -1,5 +1,5 @@
 <template>
-  <div/>
+  <div />
 </template>
 
 <script setup lang="ts">
@@ -9,8 +9,9 @@ const keys = Object.keys(backtestStore.tabs)
 if (keys.length > 0) {
   const firstTabKey = keys[0]
   const firstTab = backtestStore.tabs[firstTabKey]
-  router.push({path: `/backtest/${firstTab.id}`})
-} else {
+  router.push({ path: `/backtest/${firstTab.id}` })
+}
+else {
   backtestStore.addTab()
 }
 </script>

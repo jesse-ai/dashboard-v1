@@ -8,15 +8,15 @@
       </p>
       <br>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <UCheckbox label="Order Submission" v-model="settings.backtest.logging['order_submission']" />
-        <UCheckbox label="Order Cancellation" v-model="settings.backtest.logging['order_cancellation']" />
-        <UCheckbox label="Order Execution" v-model="settings.backtest.logging['order_execution']" />
-        <UCheckbox label="Position Opened" v-model="settings.backtest.logging['position_opened']" />
-        <UCheckbox label="Position Increased" v-model="settings.backtest.logging['position_increased']" />
-        <UCheckbox label="Position Reduced" v-model="settings.backtest.logging['position_reduced']" />
-        <UCheckbox label="Position Closed" v-model="settings.backtest.logging['position_closed']" />
-        <UCheckbox label="1m candles" v-model="settings.backtest.logging['shorter_period_candles']" />
-        <UCheckbox label="Trading Candles" v-model="settings.backtest.logging['trading_candles']" />
+        <UCheckbox v-model="settings.backtest.logging['order_submission']" label="Order Submission" />
+        <UCheckbox v-model="settings.backtest.logging['order_cancellation']" label="Order Cancellation" />
+        <UCheckbox v-model="settings.backtest.logging['order_execution']" label="Order Execution" />
+        <UCheckbox v-model="settings.backtest.logging['position_opened']" label="Position Opened" />
+        <UCheckbox v-model="settings.backtest.logging['position_increased']" label="Position Increased" />
+        <UCheckbox v-model="settings.backtest.logging['position_reduced']" label="Position Reduced" />
+        <UCheckbox v-model="settings.backtest.logging['position_closed']" label="Position Closed" />
+        <UCheckbox v-model="settings.backtest.logging['shorter_period_candles']" label="1m candles" />
+        <UCheckbox v-model="settings.backtest.logging['trading_candles']" label="Trading Candles" />
       </div>
     </Card>
 
@@ -59,14 +59,14 @@
 
         <br>
 
-        <RadioGroups title="Type:" v-model="e.type" :options="['spot', 'futures']" />
+        <RadioGroups v-model="e.type" title="Type:" :options="['spot', 'futures']" />
 
         <br>
 
         <div v-if="e.type === 'futures'">
-          <RadioGroups title="Leverage Mode:" v-model="e.futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
+          <RadioGroups v-model="e.futures_leverage_mode" title="Leverage Mode:" :options="['cross', 'isolated']" default="isolated" />
           <br>
-          <NumberInput v-if="e.type === 'futures'" title="Leverage (x):" v-model="e.futures_leverage" :default="1" />
+          <NumberInput v-if="e.type === 'futures'" v-model="e.futures_leverage" title="Leverage (x):" :default="1" />
           <br>
         </div>
       </div>
@@ -77,6 +77,7 @@
 
 <script setup lang="ts">
 import _ from 'lodash'
+
 const store = useMainStore()
 const settings = computed(() => store.settings)
 </script>

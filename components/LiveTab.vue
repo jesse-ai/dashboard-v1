@@ -39,8 +39,11 @@
   </SlideOver>
 
   <!-- session termination modal -->
-  <ConfirmModal title="Termination Confirm" description="Are you sure you want to terminate this session?" type="info" v-model="terminationConfirmModal">
-    <UButton @click="stop(Number($route.params.id))" variant="solid" color="red" class="flex justify-center" label="Terminate" />
+  <ConfirmModal v-model="terminationConfirmModal" title="Termination Confirm" description="Are you sure you want to terminate this session?" type="info">
+    <UButton
+      variant="solid" color="red"
+      class="flex justify-center" label="Terminate"
+      @click="stop(Number($route.params.id))" />
   </ConfirmModal>
 
   <!-- Execution -->
@@ -52,14 +55,26 @@
     <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText" />
 
     <div class="mt-8">
-      <UButton v-if="form.debug_mode" icon="i-heroicons-clipboard-document-list" variant="solid" label="View Logs" size="xl" class="flex justify-center w-64" @click="infoLogsModal = true" />
+      <UButton
+        v-if="form.debug_mode" icon="i-heroicons-clipboard-document-list"
+        variant="solid" label="View Logs"
+        size="xl" class="flex justify-center w-64"
+        @click="infoLogsModal = true" />
 
-      <UButton @click="cancel(Number($route.params.id))" color="gray" class="w-64 flex justify-center mt-4" size="xl" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" icon="i-heroicons-no-symbol" variant="solid" label="Cancel" :trailing="false" />
+      <UButton
+        color="gray" class="w-64 flex justify-center mt-4"
+        size="xl" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+        icon="i-heroicons-no-symbol" variant="solid"
+        label="Cancel" :trailing="false"
+        @click="cancel(Number($route.params.id))" />
     </div>
 
     <!-- exception  -->
     <div v-if="results.exception.error" class="mx-auto container mt-8">
-      <Exception :title="results.exception.error" :content="results.exception.traceback" mode="live" :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" v-model="exceptionReport" />
+      <Exception
+        v-model="exceptionReport" :title="results.exception.error"
+        :content="results.exception.traceback" mode="live"
+        :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" />
     </div>
   </div>
 
@@ -74,7 +89,10 @@
         <div class="grid grid-cols-1 gap-6">
           <ToggleButton :object="form" name="debug_mode" title="Debug Mode" description="Logs more details, helpful for debugging. Not recommended for beginners." />
 
-          <ToggleButton :object="form" name="paper_mode" title="Paper Trade" :disabled="planInfo.plan !== 'premium'" :disabled-guide="planInfo.plan !== 'premium' ? 'Premium plan required' : ''" description="Trade in real-time using actual exchange data with PAPER money." />
+          <ToggleButton
+            :object="form" name="paper_mode"
+            title="Paper Trade" :disabled="planInfo.plan !== 'premium'"
+            :disabled-guide="planInfo.plan !== 'premium' ? 'Premium plan required' : ''" description="Trade in real-time using actual exchange data with PAPER money." />
         </div>
       </div>
 
@@ -82,20 +100,23 @@
       <div v-if="results.monitoring">
         <!-- exception  -->
         <div v-if="results.exception.error" class="mb-8">
-          <Exception :title="results.exception.error" :content="results.exception.traceback" mode="live" :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" />
+          <Exception
+            :title="results.exception.error" :content="results.exception.traceback"
+            mode="live" :debug-mode="form.debug_mode"
+            :session-id="results.generalInfo.session_id" />
         </div>
 
-        <!-- Candlesticks chart-->
+        <!-- Candlesticks chart -->
         <div>
           <CandlesChart v-if="results.candles && results.candles.length" :candles="results.candles" :results="results" :form="form" />
         </div>
 
-        <!--tables-->
+        <!-- tables -->
         <Divider class="mb-4" :class="results.candles && results.candles.length ? 'mt-16' : ''" title="Routes" />
         <MultipleValuesTable :data="results.routes" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
         <Divider class="mt-12 mb-4" title="Positions" />
-        <MultipleValuesTable :data="results.positions" :headerItems="['Symbol', 'QTY', 'Entry', 'Price', 'Liq Price', 'PNL']" header />
+        <MultipleValuesTable :data="results.positions" :header-items="['Symbol', 'QTY', 'Entry', 'Price', 'Liq Price', 'PNL']" header />
 
         <DividerWithButtons class="mt-12 mb-4" title="Orders">
           <button type="button" class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none" @click="ordersModal = true">
@@ -104,7 +125,7 @@
           </button>
         </DividerWithButtons>
 
-        <MultipleValuesTable :data="orders" :headerItems="['Created', 'Symbol', 'Type', 'Side', 'Price', 'QTY', 'Status']" header />
+        <MultipleValuesTable :data="orders" :header-items="['Created', 'Symbol', 'Type', 'Side', 'Price', 'QTY', 'Status']" header />
       </div>
     </template>
 
@@ -112,22 +133,39 @@
       <!-- Action Buttons -->
       <div v-if="!results.booting">
         <div v-if="results.monitoring" class="mt-8 lg:mt-0">
-          <UButton v-if="results.finished" class="w-full flex justify-center" variant="solid" icon="i-heroicons-plus" size="xl" label="New session" @click="newLive(Number($route.params.id))" />
+          <UButton
+            v-if="results.finished" class="w-full flex justify-center"
+            variant="solid" icon="i-heroicons-plus"
+            size="xl" label="New session"
+            @click="newLive(Number($route.params.id))" />
 
-          <UButton v-else class="w-full flex justify-center" variant="solid" color="gray" icon="i-heroicons-no-symbol" size="xl" :label="results.terminating ? 'Terminating...' : 'Terminate'" @click="terminationConfirmModal = true" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" />
+          <UButton
+            v-else class="w-full flex justify-center"
+            variant="solid" color="gray"
+            icon="i-heroicons-no-symbol" size="xl"
+            :label="results.terminating ? 'Terminating...' : 'Terminate'" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+            @click="terminationConfirmModal = true" />
 
           <!-- report button -->
-          <UButton v-if="results.monitoring || results.finished" class="w-full flex justify-center mt-4" variant="solid" color="gray" icon="i-heroicons-flag" size="xl" label="Report" @click="reportWithoutExceptionModal = true" />
+          <UButton
+            v-if="results.monitoring || results.finished" class="w-full flex justify-center mt-4"
+            variant="solid" color="gray"
+            icon="i-heroicons-flag" size="xl"
+            label="Report" @click="reportWithoutExceptionModal = true" />
         </div>
 
         <div v-else data-cy="live-action-button">
-          <UButton @click="start(Number($route.params.id))" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center" icon="i-heroicons-bolt"
+            size="xl" variant="solid"
+            label="Start" :trailing="false"
+            @click="start(Number($route.params.id))" />
         </div>
       </div>
 
       <hr v-if="results.monitoring" class="my-8 border-2 dark:border-gray-600 rounded-full">
 
-      <!-- general info table-->
+      <!-- general info table -->
       <dl v-if="results.monitoring" class="grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6 select-none">
         <div class="flex justify-between items-center">
           <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Current Time:</div>
@@ -216,7 +254,6 @@
 import {
   RectangleStackIcon,
   ClipboardDocumentListIcon,
-  PlusIcon,
   ClipboardIcon,
   CheckIcon
 } from '@heroicons/vue/24/outline'
@@ -225,7 +262,7 @@ import { useMainStore } from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
-  form: FormLiveTab;
+  form: FormLiveTab
   results: ResultsLiveTab
 }>()
 
@@ -285,11 +322,11 @@ const newLive = liveStore.newLive
 
 const start = (id: number) => {
   if (totalRoutesError.value.length) {
-    var routeSection = document.getElementById("routes-section");
+    const routeSection = document.getElementById('routes-section')
     if (routeSection) {
-      var offsetTop = routeSection.offsetTop;
+      const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {

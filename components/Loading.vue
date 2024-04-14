@@ -1,9 +1,9 @@
 <template>
   <UContainer>
     <div class="mt-8">
-      <div v-for="i in 6" :class="i === 1 ? '' : 'mt-8'">
-        <div class="loading-bar h-6 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
-        <div class="loading-bar2 h-6 bg-gray-200 dark:bg-gray-700 rounded-full mt-4"></div>
+      <div v-for="i in 6" :key="i" :class="i === 1 ? '' : 'mt-8'">
+        <div class="loading-bar h-6 bg-gray-200 dark:bg-gray-700 rounded-full" />
+        <div class="loading-bar2 h-6 bg-gray-200 dark:bg-gray-700 rounded-full mt-4" />
       </div>
     </div>
   </UContainer>

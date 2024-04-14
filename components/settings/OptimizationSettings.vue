@@ -10,10 +10,10 @@
       </div>
     </Card>
 
-    <!-- Fitness Function-->
+    <!-- Fitness Function -->
     <Card>
       <Heading>Fitness Function</Heading>
-      <RadioGroups title="Ratio:" v-model="settings.optimization.ratio" :options="['sharpe', 'calmar', 'sortino', 'omega']" />
+      <RadioGroups v-model="settings.optimization.ratio" title="Ratio:" :options="['sharpe', 'calmar', 'sortino', 'omega']" />
     </Card>
 
     <!-- Data -->
@@ -40,7 +40,6 @@
         used.
       </p>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 my-4">
-
         <UFormGroup label="Starting Capital" name="Starting Capital">
           <UInput v-model="settings.optimization.exchange.balance" typ="number" step="1000" />
         </UFormGroup>
@@ -52,23 +51,23 @@
 
       <br>
 
-      <RadioGroups title="Type:" v-model="settings.optimization.exchange.type" :options="['spot', 'futures']" default="futures" />
+      <RadioGroups v-model="settings.optimization.exchange.type" title="Type:" :options="['spot', 'futures']" default="futures" />
 
       <br>
 
       <div v-if="settings.optimization.exchange.type === 'futures'">
-        <RadioGroups title="Leverage Mode:" v-model="settings.optimization.exchange.futures_leverage_mode" :options="['cross', 'isolated']" default="isolated" />
+        <RadioGroups v-model="settings.optimization.exchange.futures_leverage_mode" title="Leverage Mode:" :options="['cross', 'isolated']" default="isolated" />
 
         <br>
 
-        <NumberInput title="Leverage (x):" v-model="settings.optimization.exchange.futures_leverage" :default="1" />
+        <NumberInput v-model="settings.optimization.exchange.futures_leverage" title="Leverage (x):" :default="1" />
       </div>
     </Card>
   </div>
 </template>
 
 <script setup lang="ts">
-import _ from "lodash";
+import _ from 'lodash'
 
 const store = useMainStore()
 const settings = computed(() => store.settings)

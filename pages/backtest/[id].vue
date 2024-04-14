@@ -1,17 +1,17 @@
 <template>
   <div class="w-full">
-    <BacktestTabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab"/>
+    <BacktestTabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab" />
   </div>
 
-  <BacktestTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results"/>
+  <BacktestTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
 </template>
 
 <script setup lang="ts">
-import {useBacktestStore} from '~/stores/backtestStore'
-import {computed} from 'vue';
-import {useRoute} from 'vue-router';
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useBacktestStore } from '~/stores/backtestStore'
 
-useSeoMeta({title: 'Backtest - Jesse'})
+useSeoMeta({ title: 'Backtest - Jesse' })
 
 const backtestStore = useBacktestStore()
 

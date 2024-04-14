@@ -2,28 +2,29 @@
   <div class="container select-none">
     <div class="text-center mt-16">
       <h3>
-        Need help? Check out the <a href="http://docs.jesse.trade"
-                                    class="text-indigo-600 dark:text-indigo-400 hover:underline" target="_blank">
-        docs
-      </a>
+        Need help? Check out the <a
+          href="http://docs.jesse.trade"
+          class="text-indigo-600 dark:text-indigo-400 hover:underline" target="_blank">
+          docs
+        </a>
         or search the help center:
       </h3>
     </div>
 
-    <HelpSearch/>
+    <HelpSearch />
 
     <div>
       <ul role="list" class="border-gray-200 py-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
         <li v-for="(item, itemIdx) in items" :key="itemIdx" class="flow-root">
           <div
-              class="relative -m-2 p-2 flex items-center space-x-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:ring-2 focus-within:ring-indigo-500">
+            class="relative -m-2 p-2 flex items-center space-x-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 focus-within:ring-2 focus-within:ring-indigo-500">
             <div :class="[item.background, 'flex-shrink-0 flex items-center justify-center h-16 w-16 rounded-lg']">
-              <component :is="item.icon" class="h-6 w-6 text-white" aria-hidden="true"/>
+              <component :is="item.icon" class="h-6 w-6 text-white" aria-hidden="true" />
             </div>
             <div>
               <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">
                 <a :href="item.url" target="_blank" class="focus:outline-none">
-                  <span class="absolute inset-0" aria-hidden="true"/>
+                  <span class="absolute inset-0" aria-hidden="true" />
                   {{ item.title }}<span aria-hidden="true"> &rarr;</span>
                 </a>
               </h3>
@@ -46,7 +47,7 @@ import {
   CodeBracketIcon
 } from '@heroicons/vue/24/outline'
 
-useSeoMeta({title: 'Dashboard - Jesse'})
+useSeoMeta({ title: 'Dashboard - Jesse' })
 
 const items = reactive([
   {
@@ -92,5 +93,4 @@ const items = reactive([
     url: 'https://docs.jesse.trade/docs/roadmap.html'
   },
 ])
-
 </script>
