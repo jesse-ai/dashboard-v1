@@ -27,5 +27,10 @@ export default defineNuxtConfig({
     options: {
       hashMode: true,
     },
+  },
+  eslint: {
+    config: {
+      stylistic: true
+    }
   }
 })

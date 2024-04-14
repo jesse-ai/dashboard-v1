@@ -25,7 +25,7 @@ export default withNuxt(
       'vue/max-attributes-per-line': ['error', {
         singleline: 4,
         multiline: {
-          max: 1,
+          max: 2,
         },
       }],
       '@stylistic/no-extra-semi': 'warn',
