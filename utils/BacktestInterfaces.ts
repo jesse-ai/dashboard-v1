@@ -1,46 +1,48 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 interface BacktestResults {
-    showResults: boolean;
-    executing: boolean;
-    logsModal: boolean;
-    progressbar: ProgressBar;
-    routes_info: RouteInfo[][];
-    metrics: ArrayItems;
-    hyperparameters: ArrayItems;
-    generalInfo: BacktestGeneralInfo;
-    infoLogs: string;
-    exception: Exception;
-    charts: {
-        equity_curve: EquityCurve[];
-    };
-    alert: Alert;
-    info: ArrayItems
+  showResults: boolean
+  executing: boolean
+  logsModal: boolean
+  progressbar: ProgressBar
+  routes_info: RouteInfo[][]
+  metrics: ArrayItems
+  hyperparameters: ArrayItems
+  generalInfo: BacktestGeneralInfo
+  infoLogs: string
+  exception: Exception
+  charts: {
+    equity_curve: EquityCurve[]
+  }
+  alert: Alert
+  info: ArrayItems
 }
 
 interface BacktestForm {
-    start_date: string;
-    finish_date: string;
-    debug_mode: boolean;
-    export_chart: boolean;
-    export_tradingview: boolean;
-    export_full_reports: boolean;
-    export_csv: boolean;
-    export_json: boolean;
-    routes: Route[];
-    extra_routes: ExtraRoute[];
-    symbol?: string;
+  start_date: string
+  finish_date: string
+  debug_mode: boolean
+  export_chart: boolean
+  export_tradingview: boolean
+  export_full_reports: boolean
+  export_csv: boolean
+  export_json: boolean
+  routes: Route[]
+  extra_routes: ExtraRoute[]
+  symbol?: string
 }
 
 interface BacktestTab {
-    id: string;
-    form: BacktestForm;
-    results: BacktestResults;
+  id: string
+  form: BacktestForm
+  results: BacktestResults
 }
 
 interface BacktestTabs {
-    [id: string]: BacktestTab;
+  [id: string]: BacktestTab
 }
 
 interface BacktestGeneralInfo {
-    debug_mode?: boolean;
-    session_id?: string;
+  debug_mode?: boolean
+  session_id?: string
 }

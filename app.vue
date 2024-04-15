@@ -33,8 +33,9 @@ if (useMainStore().isAuthenticated) {
   useSocketStore().initiate()
   setTimeout(() => {
     useMainStore().initiate()
-  }, 500);
-} else {
+  }, 500)
+}
+else {
   showLogin.value = true
   useMainStore().initiated = false
 }
@@ -45,13 +46,13 @@ watch(authToken, (newValue, oldValue) => {
   }
 })
 
-watch(initiated, (newValue, oldValue) => {
+watch(initiated, (newValue) => {
   if (newValue) {
     loading.value = false
   }
 })
 
-watch(settings, (newValue, oldValue) => {
+watch(settings, () => {
   useMainStore().updateConfig()
 }, { deep: true })
 </script>

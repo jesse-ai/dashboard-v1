@@ -1,4 +1,5 @@
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 interface CandleTabs {
   [id: string]: CandleTab
 }

@@ -18,7 +18,7 @@ export const useSocketStore = defineStore('socket', {
           const parsedData = JSON.parse(message.data)
           const event = parsedData.event
           const data = parsedData.data
-          const id = parsedData.id
+          const id = parsedData.id as string
           const actions = socketActions().get(event)
 
           if (actions !== undefined) {

@@ -61,7 +61,7 @@ export const useCandlesStore = defineStore('candles', {
       this.tabs[id].results.exception.traceback = ''
       this.tabs[id].results.exception.error = ''
       this.tabs[id].results.alert.message = ''
-
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
       const { data, error } = await usePostApi('/import-candles', { id, exchange: this.tabs[id].form.exchange, symbol: this.tabs[id].form.symbol, start_date: this.tabs[id].form.start_date }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -74,7 +74,7 @@ export const useCandlesStore = defineStore('candles', {
         this.tabs[id].results.executing = false
         return
       }
-
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
       const { data, error } = await usePostApi('/cancel-import-candles', { id }, true)
 
       if (error.value && error.value.statusCode !== 200) {
