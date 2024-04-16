@@ -24,17 +24,29 @@
 
     <div class="mt-8">
       <div class="mt-8">
-        <UButton @click="cancel($route.params.id as string)" color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }" class="w-64 flex justify-center" icon="i-heroicons-no-symbol" size="xl" variant="solid" label="Cancel" :trailing="false" />
+        <UButton
+          color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+          class="w-64 flex justify-center" icon="i-heroicons-no-symbol"
+          size="xl" variant="solid"
+          label="Cancel" :trailing="false"
+          @click="cancel($route.params.id as string)" />
       </div>
 
       <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-        <UButton icon="i-heroicons-document-arrow-down" label="Debugging Logs" color="gray" size="xl" variant="solid" :trailing="false" class="w-64 flex justify-center" />
+        <UButton
+          icon="i-heroicons-document-arrow-down" label="Debugging Logs"
+          color="gray" size="xl"
+          variant="solid" :trailing="false"
+          class="w-64 flex justify-center" />
       </a>
     </div>
 
     <!-- exception  -->
     <div v-if="results.exception.error && results.executing" class="mx-auto container mt-8">
-      <Exception :title="results.exception.error" :content="results.exception.traceback" mode="backtest" :debug-mode="form.debug_mode" :session-id="String(results.generalInfo.session_id)" v-model="exceptionReport" />
+      <Exception
+        v-model="exceptionReport" :title="results.exception.error"
+        :content="results.exception.traceback" mode="backtest"
+        :debug-mode="form.debug_mode" :session-id="String(results.generalInfo.session_id)" />
     </div>
   </div>
 
@@ -42,7 +54,10 @@
     <template #left>
       <!-- alert -->
       <div v-if="results.showResults && results.alert.message" class="mb-10">
-        <UAlert color="teal" icon="i-heroicons-check-circle" :title="results.alert.message" @close="results.alert.message = ''" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }" />
+        <UAlert
+          color="teal" icon="i-heroicons-check-circle"
+          :title="results.alert.message" :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }"
+          @close="results.alert.message = ''" />
       </div>
 
       <!-- Content -->
@@ -73,9 +88,15 @@
         <Divider class="mt-16" title="Duration" />
 
         <div class="flex items-center select-none flex-1 my-4">
-          <UInput v-model="form.start_date" type="date" variant="outline" size="xl" class="w-full mr-2" />
+          <UInput
+            v-model="form.start_date" type="date"
+            variant="outline" size="xl"
+            class="w-full mr-2" />
 
-          <UInput v-model="form.finish_date" type="date" variant="outline" size="xl" class="w-full ml-2" />
+          <UInput
+            v-model="form.finish_date" type="date"
+            variant="outline" size="xl"
+            class="w-full ml-2" />
         </div>
       </div>
 
@@ -104,33 +125,65 @@
     <template #right>
       <!-- Action Buttons -->
       <div v-if="!results.executing">
-          <div v-if="results.showResults">
-          <UButton @click="rerun($route.params.id as string)" class="w-full flex justify-center" icon="i-heroicons-arrow-path" size="xl" variant="solid" label="Rerun" :trailing="false" />
+        <div v-if="results.showResults">
+          <UButton
+            class="w-full flex justify-center" icon="i-heroicons-arrow-path"
+            size="xl" variant="solid"
+            label="Rerun" :trailing="false"
+            @click="rerun($route.params.id as string)" />
 
-          <UButton @click="newBacktest($route.params.id as string)" class="w-full flex justify-center mt-4" color="green" icon="i-heroicons-arrow-uturn-left" size="xl" variant="solid" label="New session" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center mt-4" color="green"
+            icon="i-heroicons-arrow-uturn-left" size="xl"
+            variant="solid" label="New session"
+            :trailing="false" @click="newBacktest($route.params.id as string)" />
 
           <a v-if="form.debug_mode" :href="logsUrl" target="_blank" class="">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="Debugging Logs" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="Debugging Logs"
+              :trailing="false" />
           </a>
 
           <a v-if="form.export_chart && hasExecutedTrades" :href="legacyChartUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label=" Legacy Chart" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label=" Legacy Chart"
+              :trailing="false" />
           </a>
 
           <a v-if="form.export_full_reports && hasExecutedTrades" :href="fullReportsUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="QuantStats Report" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="QuantStats Report"
+              :trailing="false" />
           </a>
 
           <a v-if="form.export_csv && hasExecutedTrades" :href="csvUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="CVS" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="CVS"
+              :trailing="false" />
           </a>
 
           <a v-if="form.export_json && hasExecutedTrades" :href="jsonUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center w-full">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="JSON" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="JSON"
+              :trailing="false" />
           </a>
 
           <a v-if="form.export_tradingview && hasExecutedTrades" :href="tradingviewUrl" target="_blank" class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-            <UButton class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-document-arrow-down" size="xl" variant="solid" label="TradingView Pine Editor" :trailing="false" />
+            <UButton
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="TradingView Pine Editor"
+              :trailing="false" />
           </a>
 
           <hr class="my-8 border-2 dark:border-gray-600 rounded-full">
@@ -139,9 +192,17 @@
         </div>
 
         <div v-else>
-          <UButton @click="start($route.params.id as string)" class="w-full flex justify-center" icon="i-heroicons-bolt" size="xl" variant="solid" label="Start" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center" icon="i-heroicons-bolt"
+            size="xl" variant="solid"
+            label="Start" :trailing="false"
+            @click="start($route.params.id as string)" />
 
-          <UButton @click="startInNewTab($route.params.id as string)" class="w-full flex justify-center mt-4" color="gray" icon="i-heroicons-plus" size="xl" variant="solid" label="Start in a new tab" :trailing="false" />
+          <UButton
+            class="w-full flex justify-center mt-4" color="gray"
+            icon="i-heroicons-plus" size="xl"
+            variant="solid" label="Start in a new tab"
+            :trailing="false" @click="startInNewTab($route.params.id as string)" />
         </div>
       </div>
     </template>
@@ -155,8 +216,8 @@ import { useMainStore } from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
-  form: BacktestForm;
-  results: BacktestResults;
+  form: BacktestForm
+  results: BacktestResults
 }>()
 
 const totalRoutesError = ref<string[]>([])
@@ -171,11 +232,11 @@ const { cancel, rerun, newBacktest } = backtestStore
 
 const start = (id: string) => {
   if (totalRoutesError.value.length) {
-    let routeSection = document.getElementById("routes-section");
+    const routeSection = document.getElementById('routes-section')
     if (routeSection) {
-      let offsetTop = routeSection.offsetTop;
+      const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {
@@ -190,11 +251,11 @@ const start = (id: string) => {
 
 const startInNewTab = (id: string) => {
   if (totalRoutesError.value.length) {
-    let routeSection = document.getElementById("routes-section");
+    const routeSection = document.getElementById('routes-section')
     if (routeSection) {
-      let offsetTop = routeSection.offsetTop;
+      const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {
@@ -263,7 +324,7 @@ watchEffect(() => {
   useBacktestStore().backtestForm = props.form
 })
 
-function copyInfoLogs() {
+function copyInfoLogs () {
   navigator.clipboard.writeText(props.results.infoLogs)
   showNotification('success', 'Info copied successfully')
   copiedLogsInfo.value = true

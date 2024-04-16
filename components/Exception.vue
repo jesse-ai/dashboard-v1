@@ -150,7 +150,7 @@ const report = async () => {
     description: form.description,
     email: form.email,
     traceback: props.content,
-    mode: props.mode,
+    mode: props.mode as string,
     attach_logs: form.attachLogs,
     session_id: props.sessionId
   }, true)

@@ -24,7 +24,7 @@ export async function useFetchApi (url: string, authenticated: boolean = false) 
   return { data, error }
 }
 
-export async function usePostApi (url: string, payload: any, authenticated: boolean = false) {
+export async function usePostApi (url: string, payload: PostApiPayloadInterface, authenticated: boolean = false) {
   const apiBaseUrl = useRuntimeConfig().public.apiBaseUrl
   if (!apiBaseUrl) {
     throw new Error('apiBaseUrl is not defined')

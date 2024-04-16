@@ -122,10 +122,6 @@ interface AuthResponse {
   auth_token: string
 }
 // ==================== FAQ Response ====================
-interface FAQResponse {
-  data?: FAQ[]
-}
-
 interface FAQ {
   id: number
   title: string
@@ -146,4 +142,8 @@ interface MakeStrategyResponse {
 interface ClearCandlesDatabaseCacheResponse {
   message: string
   status: string
+}
+
+interface PostApiPayloadInterface {
+  [key: string]: string | number | boolean | Route[] | ExtraRoute[] | Backtest | Settings
 }

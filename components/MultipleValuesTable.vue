@@ -14,8 +14,8 @@
 
             <tbody v-if="data.length">
               <tr v-for="(d, index) in data" :key="index" class="text-gray-900 dark:text-gray-200" :class="index % 2 === 0 ? 'bg-white dark:bg-backdrop-dark' : 'bg-gray-50 dark:bg-gray-700'">
-                <td v-for="(item, subIndex) in d" :key="item" class="px-6 py-4 whitespace-nowrap text-sm font-medium" :class="d[subIndex].style">
-                  <Tooltip v-if="d[subIndex].tooltip" :title="d[subIndex].tooltip">
+                <td v-for="(item, subIndex) in d" :key="subIndex" class="px-6 py-4 whitespace-nowrap text-sm font-medium" :class="d[subIndex].style">
+                  <Tooltip v-if="d[subIndex].tooltip" :title="d[subIndex].tooltip as string">
                     <code v-if="d[subIndex].tag === 'code'" class="rounded border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 select-text text-sm dark:text-gray-300 w-full px-4 sm:px-6 py-2" v-text="d[subIndex].value === 0 ? '' : d[subIndex].value" />
                     <pre v-else-if="d[subIndex].tag === 'pre'" class="whitespace-pre-line rounded border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 select-text text-sm dark:text-gray-300 w-full px-4 sm:px-6 py-2" v-text="d[subIndex].value === 0 ? '' : d[subIndex].value" />
                     <span v-else v-text="d[subIndex].value === 0 ? '' : d[subIndex].value" />
@@ -44,7 +44,7 @@
 <script setup lang="ts">
 defineProps<{
   header: boolean
-  data: Array<any>
+  data: multiplesTablesValue[][]
   headerItems: Array<string>
 }>()
 </script>

@@ -74,10 +74,9 @@ import _ from 'lodash'
 const showResults = ref(false)
 const loading = ref(false)
 const error = ref(false)
-const results = ref<any>([])
+const results = ref<FAQ[]>([])
 const typing = ref(false)
 const query = ref('')
-
 watch(query, _.debounce(() => {
   typing.value = false
 }, 1000))
@@ -106,7 +105,7 @@ const searchProducts = async (item: string) => {
     return
   }
 
-  const resConfig = reqData.value as FAQResponse
+  const resConfig = reqData.value as FAQ[]
 
   showResults.value = true
   results.value = resConfig
