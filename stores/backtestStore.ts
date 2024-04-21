@@ -3,7 +3,7 @@ import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useMainStore } from '~/stores/mainStore'
 
-function newTab (): BacktestTab {
+function newTab(): BacktestTab {
   return _.cloneDeep({
     id: helpers.uuid(),
     form: {
@@ -56,23 +56,23 @@ export const useBacktestStore = defineStore('backtest', {
     storage: persistedState.localStorage,
   },
   actions: {
-    async addTab () {
+    async addTab() {
       const tab = newTab()
       this.tabs[tab.id] = tab
       await navigateTo(`/backtest/${tab.id}`)
     },
-    closeTab (id: string) {
+    closeTab(id: string) {
       delete this.tabs[id]
       navigateTo('/backtest')
     },
-    async startInNewTab (id: string) {
+    async startInNewTab(id: string) {
       const tab = newTab()
       tab.form = _.cloneDeep(this.tabs[id].form)
       this.tabs[tab.id] = tab
       this.start(tab.id)
       await navigateTo(`/backtest/${tab.id}`)
     },
-    async start (id: string) {
+    async start(id: string) {
       this.tabs[id].results.progressbar.current = 0
       this.tabs[id].results.executing = true
       this.tabs[id].results.infoLogs = ''
@@ -91,7 +91,7 @@ export const useBacktestStore = defineStore('backtest', {
         return route
       })
 
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/backtest', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: useMainStore().settings.backtest, start_date: this.tabs[id].form.start_date, finish_date: this.tabs[id].form.finish_date, debug_mode: this.tabs[id].form.debug_mode, export_csv: this.tabs[id].form.export_csv, export_chart: this.tabs[id].form.export_chart, export_tradingview: this.tabs[id].form.export_tradingview, export_full_reports: this.tabs[id].form.export_full_reports, export_json: this.tabs[id].form.export_json }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -100,7 +100,7 @@ export const useBacktestStore = defineStore('backtest', {
         return
       }
     },
-    async cancel (id: string) {
+    async cancel(id: string) {
       if (this.tabs[id].results.exception.error) {
         this.tabs[id].results.executing = false
         return
@@ -108,7 +108,7 @@ export const useBacktestStore = defineStore('backtest', {
       if (this.tabs[id].results.executing && this.tabs[id].results.progressbar.current == 100) {
         this.tabs[id].results.executing = false
       }
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/cancel-backtest', { id }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -116,14 +116,14 @@ export const useBacktestStore = defineStore('backtest', {
         return
       }
     },
-    rerun (id: string) {
+    rerun(id: string) {
       this.tabs[id].results.showResults = false
       this.start(id)
     },
-    newBacktest (id: string) {
+    newBacktest(id: string) {
       this.tabs[id].results.showResults = false
     },
-    candlesInfoEvent (id: string, data: CandlesInfoEvent) {
+    candlesInfoEvent(id: string, data: CandlesInfoEvent) {
       const list = [
         ['Period', data.duration],
         ['Starting Date', helpers.timestampToDate(
@@ -138,7 +138,7 @@ export const useBacktestStore = defineStore('backtest', {
       }
       this.tabs[id].results.info = list
     },
-    routesInfoEvent (id: string, data: RoutesInfoEvent[]) {
+    routesInfoEvent(id: string, data: RoutesInfoEvent[]) {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
@@ -150,25 +150,25 @@ export const useBacktestStore = defineStore('backtest', {
       })
       this.tabs[id].results.routes_info = arr
     },
-    progressbarEvent (id: string, data: ProgressBar) {
+    progressbarEvent(id: string, data: ProgressBar) {
       this.tabs[id].results.progressbar = data
     },
-    infoLogEvent (id: string, data: { timestamp: number, message: string }) {
+    infoLogEvent(id: string, data: { timestamp: number, message: string }) {
       this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
-    exceptionEvent (id: string, data: { error: string, traceback: string }) {
+    exceptionEvent(id: string, data: { error: string, traceback: string }) {
       this.tabs[id].results.exception.error = data.error
       this.tabs[id].results.exception.traceback = data.traceback
     },
-    generalInfoEvent (id: string, data: BacktestGeneralInfo) {
+    generalInfoEvent(id: string, data: BacktestGeneralInfo) {
       this.tabs[id].results.generalInfo = data
     },
-    hyperparametersEvent (id: string, data: ArrayItem[]) {
+    hyperparametersEvent(id: string, data: ArrayItem[]) {
       this.tabs[id].results.hyperparameters = data
     },
-    metricsEvent (id: string, data: MetricsEvent) {
+    metricsEvent(id: string, data: MetricsEvent) {
       // no trades were executed
       if (data === null) {
         this.tabs[id].results.metrics = []
@@ -204,7 +204,7 @@ export const useBacktestStore = defineStore('backtest', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    equityCurveEvent (id: string, data: EquityCurveEvent[]) {
+    equityCurveEvent(id: string, data: EquityCurveEvent[]) {
       this.tabs[id].results.charts.equity_curve = []
 
       if (data !== null) {
@@ -220,13 +220,13 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[id].results.executing = false
       this.tabs[id].results.showResults = true
     },
-    terminationEvent (id: string) {
+    terminationEvent(id: string) {
       if (this.tabs[id].results.executing) {
         this.tabs[id].results.executing = false
         showNotification('success', 'Session terminated successfully')
       }
     },
-    alertEvent (id: string, data: { message: string, type: string }) {
+    alertEvent(id: string, data: { message: string, type: string }) {
       this.tabs[id].results.alert = data
     },
   }

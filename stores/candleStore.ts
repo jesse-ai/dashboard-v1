@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import _ from 'lodash'
 import helpers from '@/utils/helpers'
 
-function newTab () {
+function newTab() {
   return _.cloneDeep({
     id: helpers.uuid(),
     form: {
@@ -39,29 +39,29 @@ export const useCandlesStore = defineStore('candles', {
     storage: persistedState.localStorage,
   },
   actions: {
-    async addTab () {
+    async addTab() {
       const tab = newTab()
       this.tabs[tab.id] = tab
       await navigateTo(`/candles/${tab.id}`)
     },
-    closeTab (id: string) {
+    closeTab(id: string) {
       delete this.tabs[id]
       navigateTo('/candles')
     },
-    startInNewTab (id: string) {
+    startInNewTab(id: string) {
       const tab = newTab()
       tab.form = _.cloneDeep(this.tabs[id].form)
       this.tabs[tab.id] = tab
       this.start(tab.id)
     },
-    async start (id: string) {
+    async start(id: string) {
       this.tabs[id].results.progressbar.current = 0
       this.tabs[id].results.executing = true
       this.tabs[id].results.infoLogs = ''
       this.tabs[id].results.exception.traceback = ''
       this.tabs[id].results.exception.error = ''
       this.tabs[id].results.alert.message = ''
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/import-candles', { id, exchange: this.tabs[id].form.exchange, symbol: this.tabs[id].form.symbol, start_date: this.tabs[id].form.start_date }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -69,12 +69,12 @@ export const useCandlesStore = defineStore('candles', {
         return
       }
     },
-    async cancel (id: string) {
+    async cancel(id: string) {
       if (this.tabs[id].results.exception.error) {
         this.tabs[id].results.executing = false
         return
       }
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/cancel-import-candles', { id }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -85,14 +85,14 @@ export const useCandlesStore = defineStore('candles', {
       this.tabs[id].results.executing = false
     },
 
-    progressbarEvent (id: string, data: ProgressBar) {
+    progressbarEvent(id: string, data: ProgressBar) {
       this.tabs[id].results.progressbar = data
 
       if (this.tabs[id].results.progressbar.current < 100 && this.tabs[id].results.executing === false) {
         this.tabs[id].results.executing = true
       }
     },
-    alertEvent (id: string, data: Alert) {
+    alertEvent(id: string, data: Alert) {
       this.tabs[id].results.alert = data
 
       // session is finished:
@@ -101,16 +101,16 @@ export const useCandlesStore = defineStore('candles', {
       this.tabs[id].results.exception.traceback = ''
       this.tabs[id].results.exception.error = ''
     },
-    infoLogEvent (id: string, data: { timestamp: number, message: string }) {
+    infoLogEvent(id: string, data: { timestamp: number, message: string }) {
       this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
-    exceptionEvent (id: string, data: Exception) {
+    exceptionEvent(id: string, data: Exception) {
       this.tabs[id].results.exception.error = data.error
       this.tabs[id].results.exception.traceback = data.traceback
     },
-    terminationEvent (id: string) {
+    terminationEvent(id: string) {
       if (this.tabs[id].results.executing) {
         this.tabs[id].results.executing = false
         showNotification('success', 'Session terminated successfully')

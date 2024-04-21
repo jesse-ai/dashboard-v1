@@ -44,7 +44,7 @@ export const useOptimizationStore = defineStore('optimization', {
     storage: persistedState.localStorage,
   },
   actions: {
-    async start () {
+    async start() {
       this.results.progressbar.current = 0
       this.results.executing = true
       this.results.infoLogs = ''
@@ -83,21 +83,21 @@ export const useOptimizationStore = defineStore('optimization', {
         export_csv: this.form.export_csv,
         export_json: this.form.export_json,
       }
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/optimization', params, true)
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
         return
       }
     },
-    async cancel () {
+    async cancel() {
       // this.results.executing = false
       if (this.results.exception.error) {
         this.results.executing = false
         return
       }
       this.results.executing = false
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/cancel-optimization', {
         id: 'optimization'
       }, true)
@@ -106,11 +106,11 @@ export const useOptimizationStore = defineStore('optimization', {
         return
       }
     },
-    rerun () {
+    rerun() {
       this.results.showResults = false
       this.start()
     },
-    candlesInfoEvent (data: CandlesInfoEvent) {
+    candlesInfoEvent(data: CandlesInfoEvent) {
       this.results.info = [
         ['Period', data.duration],
         [
@@ -121,7 +121,7 @@ export const useOptimizationStore = defineStore('optimization', {
         ]
       ]
     },
-    routesInfoEvent (id: string, data: RoutesInfoEvent[]) {
+    routesInfoEvent(id: string, data: RoutesInfoEvent[]) {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
@@ -133,20 +133,20 @@ export const useOptimizationStore = defineStore('optimization', {
       })
       this.results.routes_info = arr
     },
-    progressbarEvent (id: string, data: ProgressBar) {
+    progressbarEvent(id: string, data: ProgressBar) {
       console.log('progressbarEvent', id, data)
       this.results.progressbar = data
     },
-    infoLogEvent (id: string, data: any) {
+    infoLogEvent(id: string, data: any) {
       this.results.infoLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
-    exceptionEvent (id: string, data: Exception) {
+    exceptionEvent(id: string, data: Exception) {
       this.results.exception.error = data.error
       this.results.exception.traceback = data.traceback
     },
-    generalInfoEvent (id: string, data: OptimizationGeneralInfoEvent) {
+    generalInfoEvent(id: string, data: OptimizationGeneralInfoEvent) {
       if (!this.results.executing) {
         this.results.executing = true
       }
@@ -167,7 +167,7 @@ export const useOptimizationStore = defineStore('optimization', {
         this.results.generalInfo.push(['Solution length', data.solution_length ? data.solution_length : ''])
       }
     },
-    metricsEvent (id: string, data: MetricsEvent) {
+    metricsEvent(id: string, data: MetricsEvent) {
       // no trades were executed
       if (data === null) {
         this.results.metrics = []
@@ -202,13 +202,13 @@ export const useOptimizationStore = defineStore('optimization', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    terminationEvent () {
+    terminationEvent() {
       if (this.results.executing) {
         this.results.executing = false
         showNotification('success', 'Session terminated successfully')
       }
     },
-    bestCandidatesEvent (id: string, data: bestCandidatesEvent[]) {
+    bestCandidatesEvent(id: string, data: bestCandidatesEvent[]) {
       const arr: multiplesTablesValue[][] = []
       data.forEach((item: bestCandidatesEvent) => {
         arr.push([
@@ -222,7 +222,7 @@ export const useOptimizationStore = defineStore('optimization', {
       })
       this.results.best_candidates = arr
     },
-    alertEvent (id: string, data: Alert) {
+    alertEvent(id: string, data: Alert) {
       this.results.alert = data
       this.results.executing = false
       this.results.showResults = true

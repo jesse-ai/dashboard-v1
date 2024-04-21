@@ -85,7 +85,7 @@ export const useMainStore = defineStore('main', {
     storage: persistedState.localStorage,
   },
   getters: {
-    backtestingExchangeNames (): string[] {
+    backtestingExchangeNames(): string[] {
       const arr = []
       for (const key in this.exchangeInfo) {
         if (this.exchangeInfo[key].modes.backtesting) {
@@ -95,7 +95,7 @@ export const useMainStore = defineStore('main', {
       // sort ar's items by name alphabetically
       return arr.sort()
     },
-    liveTradingExchangeNames (): string[] {
+    liveTradingExchangeNames(): string[] {
       const arr = []
       for (const key in this.exchangeInfo) {
         if (this.exchangeInfo[key].modes.live_trading) {
@@ -105,12 +105,12 @@ export const useMainStore = defineStore('main', {
       // sort ar's items by name alphabetically
       return arr.sort()
     },
-    isAuthenticated (): boolean {
+    isAuthenticated(): boolean {
       return this.authToken !== ''
     },
   },
   actions: {
-    async initiate () {
+    async initiate() {
       const { data, error } = await usePostApi('/general-info', {}, true)
       if (error && error.value && error.value.statusCode !== 200) {
         handleError(error)
@@ -171,7 +171,7 @@ export const useMainStore = defineStore('main', {
 
     updateConfig: useThrottleFn(async () => {
       if (!useMainStore().settings) return
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/update-config', { current_config: useMainStore().settings }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -181,7 +181,7 @@ export const useMainStore = defineStore('main', {
     true, true
     ),
 
-    setAuthToken (token: string) {
+    setAuthToken(token: string) {
       this.authToken = token
     },
   }

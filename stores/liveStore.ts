@@ -5,7 +5,7 @@ import { useMainStore } from '~/stores/mainStore'
 
 let idCounter = 0
 
-function newTab (): LiveTab {
+function newTab(): LiveTab {
   return _.cloneDeep({
     id: ++idCounter,
     session_id: '',
@@ -56,18 +56,18 @@ export const useLiveStore = defineStore('Live', {
     } as LiveTabs
   }),
   actions: {
-    async addTab () {
+    async addTab() {
       const tab = newTab()
       this.tabs[tab.id] = tab
       await navigateTo(`/live/${tab.id}`)
     },
-    startInNewTab (id: number) {
+    startInNewTab(id: number) {
       const tab = newTab()
       tab.form = _.cloneDeep(this.tabs[id].form)
       this.tabs[tab.id] = tab
       this.start(tab.id)
     },
-    reset (id: number) {
+    reset(id: number) {
       this.tabs[id].results.progressbar.current = 0
       this.tabs[id].results.booting = true
       this.tabs[id].results.finished = false
@@ -84,7 +84,7 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.currentCandles = {}
       this.tabs[id].results.watchlist = []
     },
-    async start (id: number) {
+    async start(id: number) {
       this.reset(id)
 
       const mainStore = useMainStore()
@@ -99,7 +99,7 @@ export const useLiveStore = defineStore('Live', {
         route.symbol = route.symbol.toUpperCase()
         return route
       })
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+
       const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: mainStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -107,8 +107,7 @@ export const useLiveStore = defineStore('Live', {
         return
       }
     },
-    async cancel (id: number) {
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    async cancel(id: number) {
       const { data, error } = await usePostApi('/cancel-live', { id, paper_mode: this.tabs[id].form.paper_mode }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -118,8 +117,7 @@ export const useLiveStore = defineStore('Live', {
 
       this.tabs[id].results.booting = false
     },
-    async stop (id: number) {
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    async stop(id: number) {
       const { data, error } = await usePostApi('/cancel-live', { id, paper_mode: this.tabs[id].form.paper_mode }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -128,17 +126,17 @@ export const useLiveStore = defineStore('Live', {
       }
       this.tabs[id].results.terminating = true
     },
-    newLive (id: number) {
+    newLive(id: number) {
       this.tabs[id].results.monitoring = false
       this.tabs[id].results.finished = false
     },
-    candlesInfoEvent (id: number, data: CandlesInfoEvent) {
+    candlesInfoEvent(id: number, data: CandlesInfoEvent) {
       this.tabs[id].results.info = [
         ['Period', data.duration],
         ['Starting-Ending Date', `${helpers.timestampToDate(data.starting_time)} => ${helpers.timestampToDate(data.finishing_time)}`]
       ]
     },
-    routesInfoEvent (id: number, data: RoutesInfoEvent[]) {
+    routesInfoEvent(id: number, data: RoutesInfoEvent[]) {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
@@ -150,26 +148,26 @@ export const useLiveStore = defineStore('Live', {
       })
       this.tabs[id].results.routes_info = arr
     },
-    progressbarEvent (id: number, data: ProgressBar) {
+    progressbarEvent(id: number, data: ProgressBar) {
       this.tabs[id].results.progressbar = data
     },
-    infoLogEvent (id: number, data: { timestamp: number, message: string }) {
+    infoLogEvent(id: number, data: { timestamp: number, message: string }) {
       this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
-    errorLogEvent (id: number, data: { id: string, timestamp: number, message: string }) {
+    errorLogEvent(id: number, data: { id: string, timestamp: number, message: string }) {
       showNotification('error', data.message)
 
       this.tabs[id].results.errorLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
-    exceptionEvent (id: number, data: Exception) {
+    exceptionEvent(id: number, data: Exception) {
       this.tabs[id].results.exception.error = data.error
       this.tabs[id].results.exception.traceback = data.traceback
     },
-    generalInfoEvent (id: number, data: LiveGeneralInfoEvent) {
+    generalInfoEvent(id: number, data: LiveGeneralInfoEvent) {
       this.tabs[id].results.generalInfo = data
 
       // set routes in both form.routes (maybe page was refreshed)
@@ -193,7 +191,7 @@ export const useLiveStore = defineStore('Live', {
         this.fetchLogs(id)
       }
     },
-    async fetchCandles (id: number) {
+    async fetchCandles(id: number) {
       const { data, error } = await usePostApi('/get-candles', { id, exchange: this.tabs[id].form.routes[0].exchange, symbol: this.tabs[id].form.routes[0].symbol, timeframe: this.tabs[id].form.routes[0].timeframe }, true)
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
@@ -202,7 +200,7 @@ export const useLiveStore = defineStore('Live', {
       const res = data.value as GetCandlesResponse
       this.tabs[id].results.candles = res.data
     },
-    async fetchLogs (id: number) {
+    async fetchLogs(id: number) {
       // info logs
       const { data, error } = await usePostApi('/get-logs', { id, session_id: this.tabs[id].results.generalInfo.session_id, type: 'info' }, true)
 
@@ -240,13 +238,13 @@ export const useLiveStore = defineStore('Live', {
         )}] ${data.message}\n`
       })
     },
-    currentCandlesEvent (id: number, data: CurrentCandlesObject) {
+    currentCandlesEvent(id: number, data: CurrentCandlesObject) {
       this.tabs[id].results.currentCandles = data
     },
-    watchlistEvent (id: number, data: [string, string][]) {
+    watchlistEvent(id: number, data: [string, string][]) {
       this.tabs[id].results.watchlist = data
     },
-    positionsEvent (id: number, data: positionsEvent[]) {
+    positionsEvent(id: number, data: positionsEvent[]) {
       this.tabs[id].results.positions = []
 
       for (const item of data) {
@@ -261,10 +259,10 @@ export const useLiveStore = defineStore('Live', {
         ])
       }
     },
-    ordersEvent (id: number, data: ordersEvent[]) {
+    ordersEvent(id: number, data: ordersEvent[]) {
       this.tabs[id].results.orders = data
     },
-    metricsEvent (id: number, data: MetricsEvent) {
+    metricsEvent(id: number, data: MetricsEvent) {
       this.tabs[id].results.metrics = [
         ['Total Closed Trades', data.total],
         ['Total Net Profit', `${_.round(data.net_profit, 2)} (${_.round(data.net_profit_percentage, 2)}%)`],
@@ -293,7 +291,7 @@ export const useLiveStore = defineStore('Live', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    equityCurveEvent (id: number, data: EquityCurveEvent[]) {
+    equityCurveEvent(id: number, data: EquityCurveEvent[]) {
       this.tabs[id].results.charts.equity_curve = []
       data.forEach((item: { balance: number, timestamp: number }) => {
         this.tabs[id].results.charts.equity_curve.push({
@@ -306,10 +304,10 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.booting = false
       this.tabs[id].results.showResults = true
     },
-    unexpectedTerminationEvent (id: number) {
+    unexpectedTerminationEvent(id: number) {
       this.tabs[id].results.finished = true
     },
-    terminationEvent (id: number) {
+    terminationEvent(id: number) {
       if (!this.tabs[id].results.finished) {
         this.tabs[id].results.finished = true
         this.tabs[id].results.terminating = false
