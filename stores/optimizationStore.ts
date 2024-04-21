@@ -84,7 +84,9 @@ export const useOptimizationStore = defineStore('optimization', {
         export_json: this.form.export_json,
       }
 
-      const { data, error } = await usePostApi('/optimization', params, true)
+      const { data, error } = await usePostApi(
+        '/optimization', params, true
+      )
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
         return
@@ -110,7 +112,7 @@ export const useOptimizationStore = defineStore('optimization', {
       this.results.showResults = false
       this.start()
     },
-    candlesInfoEvent(data: CandlesInfoEvent) {
+    candlesInfoEvent(id: string, data: CandlesInfoEvent) {
       this.results.info = [
         ['Period', data.duration],
         [
@@ -202,7 +204,7 @@ export const useOptimizationStore = defineStore('optimization', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    terminationEvent() {
+    terminationEvent(id: string,) {
       if (this.results.executing) {
         this.results.executing = false
         showNotification('success', 'Session terminated successfully')
