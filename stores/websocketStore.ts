@@ -32,7 +32,7 @@ export const useSocketStore = defineStore('socket', {
       this.reconnectAttempts = 0
     },
     reconnect() {
-      if (this.reconnectAttempts < 20) { // limit the number of reconnection attempts
+      if (this.reconnectAttempts < 10) { // limit the number of reconnection attempts
         setTimeout(() => {
           this.reconnectAttempts++
           this.initiate()
@@ -51,11 +51,13 @@ export const useSocketStore = defineStore('socket', {
         }
       }
       catch (error) {
-        console.error('Error parsing message data:', error)
+        console.error('Error parsing websocket message data:', error)
+        showNotification('error', 'Error parsing websocket message data')
       }
     },
     handleError(error: Event) {
       showNotification('error', 'An error occurred with the websocket connection')
+      console.error('[Websocket ERROR]:', error)
       this.reconnect()
     }
   }

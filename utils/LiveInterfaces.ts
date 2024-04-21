@@ -1,9 +1,9 @@
 interface LiveTabs {
-  [id: number]: LiveTab
+  [id: string]: LiveTab
 }
 
 interface LiveTab {
-  id: number
+  id: string
   session_id: string
   name: string
   form: FormLiveTab
