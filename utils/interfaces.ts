@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
+
+
 
 // ==================== general info ====================
 interface GeneralInfoResponse {
@@ -142,8 +142,4 @@ interface MakeStrategyResponse {
 interface ClearCandlesDatabaseCacheResponse {
   message: string
   status: string
-}
-
-interface PostApiPayloadInterface {
-  [key: string]: string | number | boolean | Route[] | ExtraRoute[] | Backtest | Settings
 }
