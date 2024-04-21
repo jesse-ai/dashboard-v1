@@ -220,13 +220,13 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[id].results.executing = false
       this.tabs[id].results.showResults = true
     },
-    terminationEvent(id: string) {
+    terminationEvent(id: string, data: any) {
       if (this.tabs[id].results.executing) {
         this.tabs[id].results.executing = false
         showNotification('success', 'Session terminated successfully')
       }
     },
-    alertEvent(id: string, data: { message: string, type: string }) {
+    alertEvent(id: string, data: Alert) {
       this.tabs[id].results.alert = data
     },
   }

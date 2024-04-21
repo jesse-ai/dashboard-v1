@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 interface LiveTabs {
   [id: number]: LiveTab
 }
@@ -127,4 +125,10 @@ interface CurrentCandlesObject {
 interface GetCandlesResponse {
   id: string
   data: LiveCandleData[]
+}
+
+interface WebSocketData {
+  id: string
+  event: string
+  data: any
 }
