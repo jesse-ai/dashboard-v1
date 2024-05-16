@@ -50,7 +50,6 @@ function newTab(): BacktestTab {
 export const useBacktestStore = defineStore('backtest', {
   state: () => ({
     tabs: {} as BacktestTabs,
-    backtestForm: {} as BacktestForm
   }),
   persist: {
     storage: persistedState.localStorage,

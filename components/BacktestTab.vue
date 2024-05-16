@@ -358,10 +358,6 @@ const hasExecutedTrades = computed(() => props.results.metrics.length > 0)
 
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 
-watchEffect(() => {
-  useBacktestStore().backtestForm = props.form
-})
-
 function copyInfoLogs() {
   navigator.clipboard.writeText(props.results.infoLogs)
   showNotification('success', 'Info copied successfully')
