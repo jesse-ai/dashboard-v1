@@ -43,7 +43,7 @@
     <UButton
       variant="solid" color="red"
       class="flex justify-center" label="Terminate"
-      @click="stop(Number($route.params.id))" />
+      @click="stop($route.params.id)" />
   </ConfirmModal>
 
   <!-- Execution -->
@@ -66,7 +66,7 @@
         size="xl" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
         icon="i-heroicons-no-symbol" variant="solid"
         label="Cancel" :trailing="false"
-        @click="cancel(Number($route.params.id))" />
+        @click="cancel($route.params.id)" />
     </div>
 
     <!-- exception  -->
@@ -137,7 +137,7 @@
             v-if="results.finished" class="w-full flex justify-center"
             variant="solid" icon="i-heroicons-plus"
             size="xl" label="New session"
-            @click="newLive(Number($route.params.id))" />
+            @click="newLive($route.params.id)" />
 
           <UButton
             v-else class="w-full flex justify-center"
@@ -159,7 +159,7 @@
             class="w-full flex justify-center" icon="i-heroicons-bolt"
             size="xl" variant="solid"
             label="Start" :trailing="false"
-            @click="start(Number($route.params.id))" />
+            @click="start($route.params.id)" />
         </div>
       </div>
 
