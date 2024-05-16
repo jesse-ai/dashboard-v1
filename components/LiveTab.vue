@@ -43,7 +43,7 @@
     <UButton
       variant="solid" color="red"
       class="flex justify-center" label="Terminate"
-      @click="stop($route.params.id)" />
+      @click="stop($route.params.id as string)" />
   </ConfirmModal>
 
   <!-- Execution -->
@@ -66,7 +66,7 @@
         size="xl" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
         icon="i-heroicons-no-symbol" variant="solid"
         label="Cancel" :trailing="false"
-        @click="cancel($route.params.id)" />
+        @click="cancel($route.params.id as string)" />
     </div>
 
     <!-- exception  -->
@@ -137,7 +137,7 @@
             v-if="results.finished" class="w-full flex justify-center"
             variant="solid" icon="i-heroicons-plus"
             size="xl" label="New session"
-            @click="newLive($route.params.id)" />
+            @click="newLive($route.params.id as string)" />
 
           <UButton
             v-else class="w-full flex justify-center"
@@ -159,7 +159,7 @@
             class="w-full flex justify-center" icon="i-heroicons-bolt"
             size="xl" variant="solid"
             label="Start" :trailing="false"
-            @click="start($route.params.id)" />
+            @click="start($route.params.id as string)" />
         </div>
       </div>
 
@@ -320,7 +320,7 @@ const orders = computed(() => {
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
 
-const start = (id: number) => {
+const start = (id: string) => {
   if (totalRoutesError.value.length) {
     const routeSection = document.getElementById('routes-section')
     if (routeSection) {
@@ -339,7 +339,7 @@ const start = (id: number) => {
   liveStore.start(id)
 }
 
-const stop = (id: number) => {
+const stop = (id: string) => {
   terminationConfirmModal.value = false
   liveStore.stop(id)
 }
