@@ -2,55 +2,57 @@
   <!-- Debugger Logs -->
   <SlideOver v-if="form.debug_mode" v-model="results.logsModal" title="Logs">
     <template #default>
-      <Logs :logs="results.infoLogs"/>
+      <Logs :logs="results.infoLogs" />
     </template>
 
     <template #buttons>
       <button
-          class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
-          @click="copyInfoLogs">
-        <CheckIcon v-if="copiedLogsInfo" class="h-6 w-6" aria-hidden="true"/>
-        <ClipboardIcon v-if="!copiedLogsInfo && results.infoLogs.length != 0" class="h-6 w-6" aria-hidden="true"/>
+        class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+        @click="copyInfoLogs">
+        <CheckIcon v-if="copiedLogsInfo" class="h-6 w-6" aria-hidden="true" />
+        <ClipboardIcon v-if="!copiedLogsInfo && results.infoLogs.length != 0" class="h-6 w-6" aria-hidden="true" />
       </button>
       <input id="copy-info-logs" type="hidden" :value="results.infoLogs">
     </template>
   </SlideOver>
 
   <!-- Execution -->
-  <div v-if="results.executing && !results.showResults"
-       class="flex flex-col items-center justify-center select-none mt-[10%]">
+  <div
+    v-if="results.executing && !results.showResults"
+    class="flex flex-col items-center justify-center select-none mt-[10%]">
     <div>
-      <CircleProgressbar :progress="results.progressbar.current"/>
+      <CircleProgressbar :progress="results.progressbar.current" />
     </div>
 
-    <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText"/>
+    <h3 v-if="!results.exception.error" class="mt-8 animate-pulse" v-text="remainingTimeText" />
 
     <div class="mt-8">
       <div class="mt-8">
         <UButton
-            color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
-            class="w-64 flex justify-center" icon="i-heroicons-no-symbol"
-            size="xl" variant="solid"
-            label="Cancel" :trailing="false"
-            @click="cancel($route.params.id as string)"/>
+          color="gray" :ui="{ color: { gray: { solid: 'text-rose-500 dark:text-rose-400' } } }"
+          class="w-64 flex justify-center" icon="i-heroicons-no-symbol"
+          size="xl" variant="solid"
+          label="Cancel" :trailing="false"
+          @click="cancel($route.params.id as string)" />
       </div>
 
-      <a v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl"
-         class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
+      <a
+        v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl"
+        class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
         <UButton
-            icon="i-heroicons-document-arrow-down" label="Debugging Logs"
-            color="gray" size="xl"
-            variant="solid" :trailing="false"
-            class="w-64 flex justify-center"/>
+          icon="i-heroicons-document-arrow-down" label="Debugging Logs"
+          color="gray" size="xl"
+          variant="solid" :trailing="false"
+          class="w-64 flex justify-center" />
       </a>
     </div>
 
     <!-- exception  -->
     <div v-if="results.exception.error && results.executing" class="mx-auto container mt-8">
       <Exception
-          v-model="exceptionReport" :title="results.exception.error"
-          :content="results.exception.traceback" mode="backtest"
-          :debug-mode="form.debug_mode" :session-id="String(results.generalInfo.session_id)"/>
+        v-model="exceptionReport" :title="results.exception.error"
+        :content="results.exception.traceback" mode="backtest"
+        :debug-mode="form.debug_mode" :session-id="String(results.generalInfo.session_id)" />
     </div>
   </div>
 
@@ -59,75 +61,84 @@
       <!-- alert -->
       <div v-if="results.showResults && results.alert.message" class="mb-10">
         <UAlert
-            color="teal" icon="i-heroicons-check-circle"
-            :title="results.alert.message"
-            :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }"
-            @close="results.alert.message = ''"/>
+          color="teal" icon="i-heroicons-check-circle"
+          variant="soft"
+          :title="results.alert.message"
+          :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }"
+          @close="results.alert.message = ''" />
       </div>
 
       <!-- Content -->
       <div v-if="!results.executing && !results.showResults">
-        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="backtest"/>
+        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="backtest" />
 
-        <Divider class="mt-16" title="Duration"/>
+        <Divider class="mt-16" title="Duration" />
         <div class="flex items-center select-none flex-1 my-4">
           <UInput
-              v-model="form.start_date" type="date"
-              variant="outline" size="xl"
-              class="w-full mr-2"/>
+            v-model="form.start_date" type="date"
+            variant="outline" size="xl"
+            class="w-full mr-2" />
 
           <UInput
-              v-model="form.finish_date" type="date"
-              variant="outline" size="xl"
-              class="w-full ml-2"/>
+            v-model="form.finish_date" type="date"
+            variant="outline" size="xl"
+            class="w-full ml-2" />
         </div>
 
-        <Divider class="mt-16" title="Options"/>
+        <Divider class="mt-16" title="Options" />
         <div class="grid grid-cols-1 gap-6 mt-8">
           <!-- debug mode -->
-          <ToggleButton v-model="form.debug_mode" title="Debug Mode"
-                        description="Logs every step of the execution. Very helpful for debugging your strategy but takes a lot longer to execute"/>
+          <ToggleButton
+            v-model="form.debug_mode" title="Debug Mode"
+            description="Logs every step of the execution. Very helpful for debugging your strategy but takes a lot longer to execute" />
 
           <!-- export chart -->
-          <ToggleButton v-model="form.export_chart" title="Export Charts"
-                        description="Exports charts for your portfolio's daily balance."/>
+          <ToggleButton
+            v-model="form.export_chart" title="Export Charts"
+            description="Exports charts for your portfolio's daily balance." />
 
           <!-- export trading view -->
-          <ToggleButton v-model="form.export_tradingview" title="Export Tradingview"
-                        description="Exports the executed trades in a format accepted by TradingView's Pine Editor. Useful to look at the executed orders on their chart."/>
+          <ToggleButton
+            v-model="form.export_tradingview" title="Export Tradingview"
+            description="Exports the executed trades in a format accepted by TradingView's Pine Editor. Useful to look at the executed orders on their chart." />
 
           <!-- export full reports -->
-          <ToggleButton v-model="form.export_full_reports" title="Export QuantStats reports"
-                        description="Exports a HTML file generated by QuantStats library."/>
+          <ToggleButton
+            v-model="form.export_full_reports" title="Export QuantStats reports"
+            description="Exports a HTML file generated by QuantStats library." />
 
           <!-- export csv -->
-          <ToggleButton v-model="form.export_csv" title="Export CSV"
-                        description="Exports executed trades in a CSV format"/>
+          <ToggleButton
+            v-model="form.export_csv" title="Export CSV"
+            description="Exports executed trades in a CSV format" />
 
           <!-- export json -->
-          <ToggleButton v-model="form.export_json" title="Export JSON"
-                        description="Exports executed trades in a JSON format"/>
+          <ToggleButton
+            v-model="form.export_json" title="Export JSON"
+            description="Exports executed trades in a JSON format" />
         </div>
       </div>
 
       <!-- Results -->
       <div v-if="results.showResults" class="w-full mx-auto">
         <div>
-          <Divider title="Routes" class="mb-4"/>
-          <MultipleValuesTable :data="results.routes_info"
-                               :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header/>
+          <Divider title="Routes" class="mb-4" />
+          <MultipleValuesTable
+            :data="results.routes_info"
+            :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
-          <Divider v-if="results.hyperparameters.length" class="mt-16 mb-4" title="Hyperparameters"/>
-          <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters"/>
+          <Divider v-if="results.hyperparameters.length" class="mt-16 mb-4" title="Hyperparameters" />
+          <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
 
-          <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Equity Curve"/>
-          <EquityCurve v-if="hasExecutedTrades" :equity-curve="results.charts.equity_curve"/>
+          <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Equity Curve" />
+          <EquityCurve v-if="hasExecutedTrades" :equity-curve="results.charts.equity_curve" />
 
-          <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Performance"/>
-          <KeyValueTable v-if="hasExecutedTrades" :data="results.metrics"/>
+          <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Performance" />
+          <KeyValueTable v-if="hasExecutedTrades" :data="results.metrics" />
 
-          <div v-if="!hasExecutedTrades"
-               class="text-yellow-500 border-yellow-400 bg-yellow-50 dark:bg-gray-700 dark:text-yellow-400 mt-16 text-center text-2xl rounded border-2 border-dashed dark:border-gray-800 py-16 select-none">
+          <div
+            v-if="!hasExecutedTrades"
+            class="text-yellow-500 border-yellow-400 bg-yellow-50 dark:bg-gray-700 dark:text-yellow-400 mt-16 text-center text-2xl rounded border-2 border-dashed dark:border-gray-800 py-16 select-none">
             No trades were executed via this strategy!
           </div>
         </div>
@@ -139,87 +150,97 @@
       <div v-if="!results.executing">
         <div v-if="results.showResults">
           <UButton
-              class="w-full flex justify-center" icon="i-heroicons-arrow-path"
-              size="xl" variant="solid"
-              label="Rerun" :trailing="false"
-              @click="rerun($route.params.id as string)"/>
+            class="w-full flex justify-center" icon="i-heroicons-arrow-path"
+            size="xl" variant="solid"
+            label="Rerun" :trailing="false"
+            @click="rerun($route.params.id as string)" />
 
           <UButton
-              class="w-full flex justify-center mt-4" color="green"
-              icon="i-heroicons-arrow-uturn-left" size="xl"
-              variant="solid" label="New session"
-              :trailing="false" @click="newBacktest($route.params.id as string)"/>
+            class="w-full flex justify-center mt-4" color="green"
+            icon="i-heroicons-arrow-uturn-left" size="xl"
+            variant="solid" label="New session"
+            :trailing="false" @click="newBacktest($route.params.id as string)" />
 
           <a v-if="form.debug_mode" :href="logsUrl" target="_blank" class="">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label="Debugging Logs"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="Debugging Logs"
+              :trailing="false" />
           </a>
 
-          <a v-if="form.export_chart && hasExecutedTrades" :href="legacyChartUrl" target="_blank"
-             class="flex justify-center items-center btn-secondary text-center w-full">
+          <a
+            v-if="form.export_chart && hasExecutedTrades" :href="legacyChartUrl"
+            target="_blank"
+            class="flex justify-center items-center btn-secondary text-center w-full">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label=" Legacy Chart"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label=" Legacy Chart"
+              :trailing="false" />
           </a>
 
-          <a v-if="form.export_full_reports && hasExecutedTrades" :href="fullReportsUrl" target="_blank"
-             class="flex justify-center items-center btn-secondary text-center w-full">
+          <a
+            v-if="form.export_full_reports && hasExecutedTrades" :href="fullReportsUrl"
+            target="_blank"
+            class="flex justify-center items-center btn-secondary text-center w-full">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label="QuantStats Report"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="QuantStats Report"
+              :trailing="false" />
           </a>
 
-          <a v-if="form.export_csv && hasExecutedTrades" :href="csvUrl" target="_blank"
-             class="flex justify-center items-center btn-secondary text-center w-full">
+          <a
+            v-if="form.export_csv && hasExecutedTrades" :href="csvUrl"
+            target="_blank"
+            class="flex justify-center items-center btn-secondary text-center w-full">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label="CVS"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="CVS"
+              :trailing="false" />
           </a>
 
-          <a v-if="form.export_json && hasExecutedTrades" :href="jsonUrl" target="_blank"
-             class="flex justify-center items-center btn-secondary text-center w-full">
+          <a
+            v-if="form.export_json && hasExecutedTrades" :href="jsonUrl"
+            target="_blank"
+            class="flex justify-center items-center btn-secondary text-center w-full">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label="JSON"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="JSON"
+              :trailing="false" />
           </a>
 
-          <a v-if="form.export_tradingview && hasExecutedTrades" :href="tradingviewUrl" target="_blank"
-             class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
+          <a
+            v-if="form.export_tradingview && hasExecutedTrades" :href="tradingviewUrl"
+            target="_blank"
+            class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
             <UButton
-                class="w-full flex justify-center mt-4" color="gray"
-                icon="i-heroicons-document-arrow-down" size="xl"
-                variant="solid" label="TradingView Pine Editor"
-                :trailing="false"/>
+              class="w-full flex justify-center mt-4" color="gray"
+              icon="i-heroicons-document-arrow-down" size="xl"
+              variant="solid" label="TradingView Pine Editor"
+              :trailing="false" />
           </a>
 
           <hr class="my-8 border-2 dark:border-gray-600 rounded-full">
 
-          <KeyValueTableSimple :data="results.info"/>
+          <KeyValueTableSimple :data="results.info" />
         </div>
 
         <div v-else>
           <UButton
-              class="w-full flex justify-center" icon="i-heroicons-bolt"
-              size="xl" variant="solid"
-              label="Start" :trailing="false"
-              @click="start($route.params.id as string)"/>
+            class="w-full flex justify-center" icon="i-heroicons-bolt"
+            size="xl" variant="solid"
+            label="Start" :trailing="false"
+            @click="start($route.params.id as string)" />
 
           <UButton
-              class="w-full flex justify-center mt-4" color="gray"
-              icon="i-heroicons-plus" size="xl"
-              variant="solid" label="Start in a new tab"
-              :trailing="false" @click="startInNewTab($route.params.id as string)"/>
+            class="w-full flex justify-center mt-4" color="gray"
+            icon="i-heroicons-plus" size="xl"
+            variant="solid" label="Start in a new tab"
+            :trailing="false" @click="startInNewTab($route.params.id as string)" />
         </div>
       </div>
     </template>
@@ -227,9 +248,9 @@
 </template>
 
 <script setup lang="ts">
-import {CheckIcon, ClipboardIcon} from '@heroicons/vue/24/outline'
-import {useBacktestStore} from '~/stores/backtestStore'
-import {useMainStore} from '~/stores/mainStore'
+import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/outline'
+import { useBacktestStore } from '~/stores/backtestStore'
+import { useMainStore } from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
@@ -245,7 +266,7 @@ const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 
 const backtestStore = useBacktestStore()
 
-const {cancel, rerun, newBacktest} = backtestStore
+const { cancel, rerun, newBacktest } = backtestStore
 
 const start = (id: string) => {
   if (totalRoutesError.value.length) {
@@ -253,7 +274,7 @@ const start = (id: string) => {
     if (routeSection) {
       const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({top: offsetTop, behavior: 'smooth'})
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {
@@ -272,7 +293,7 @@ const startInNewTab = (id: string) => {
     if (routeSection) {
       const offsetTop = routeSection.offsetTop
       // scroll to routes section
-      window.scrollTo({top: offsetTop, behavior: 'smooth'})
+      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
     }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       setTimeout(() => {

@@ -109,6 +109,10 @@ interface GetConfigResponse {
   }
 }
 
+interface ActiveWorkersResponse {
+  data: string[]
+}
+
 interface ConfigExchange {
   name: string
   type?: string

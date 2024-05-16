@@ -33,7 +33,7 @@ if (useMainStore().isAuthenticated) {
   useSocketStore().initiate()
   setTimeout(() => {
     useMainStore().initiate()
-  }, 500)
+  }, 300)
 }
 else {
   showLogin.value = true

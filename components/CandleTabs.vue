@@ -6,10 +6,12 @@
         aria-label="props.Tabs">
         <div
           v-for="(tab, name, index) in props.tabs" :key="tab.id"
-          class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center ">
+          class="relative group min-w-0 flex-1 overflow-hidden text-center flex items-center "
+          @click.middle="emit('close', tab.id)">
           <NuxtLink
             :to="`/candles/${tab.id}`"
             :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none  w-full text-sm bg-white dark:bg-backdrop-dark']">
+
             <span>{{ getTitle(tab) }}</span>
 
             <span
@@ -22,7 +24,7 @@
             v-show="Object.keys(props.tabs).length > 1" :data-cy="'tab-close-button' + index"
             class="absolute right-[1em] focus:outline-none" @click="emit('close', tab.id)">
             <XMarkIcon
-              class="h-5 w-5 text-gray-400 hover:text-gray-600 hover:bg-gray-200 rounded-full"
+              class="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 bg-gray-100 dark:bg-gray-700 rounded-full"
               aria-hidden="true" />
           </button>
         </div>
@@ -55,7 +57,7 @@ const props = defineProps<{
   tabs: CandleTabs
 }>()
 
-function getTitle (tab: CandleTab) {
+function getTitle(tab: CandleTab) {
   // if error, show error
   if (tab.results.exception.error && tab.results.executing) {
     return `Error`

@@ -121,7 +121,7 @@
                     <MenuItem v-slot="{ active }">
                       <a href="https://jesse.trade/strategies" :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-start items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']" target="_blank">
                         <DocumentTextIcon class="w-5 h-5 mr-2" />
-                        Sample Strategies
+                        Community Strategies
                       </a>
                     </MenuItem>
 
@@ -201,7 +201,7 @@
         <div class="w-full" @click="close">
           <a href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank">
             <DocumentTextIcon class="w-5 h-5 mr-2" />
-            Sample Strategies
+            Community Strategies
           </a>
         </div>
 
@@ -328,7 +328,7 @@ const openFeedback = () => {
 
 const logoutConfirmation = ref(false)
 
-function logout () {
+function logout() {
   localStorage.clear()
   location.reload()
   logoutConfirmation.value = false

@@ -136,7 +136,6 @@ export const useOptimizationStore = defineStore('optimization', {
       this.results.routes_info = arr
     },
     progressbarEvent(id: string, data: ProgressBar) {
-      console.log('progressbarEvent', id, data)
       this.results.progressbar = data
     },
     infoLogEvent(id: string, data: any) {
