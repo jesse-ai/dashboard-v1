@@ -360,7 +360,7 @@ const remainingTimeText = computed(() => helpers.remainingTimeText(props.results
 
 function copyInfoLogs() {
   navigator.clipboard.writeText(props.results.infoLogs)
-  showNotification('success', 'Info copied successfully')
+  showNotification('success', 'Logs copied successfully')
   copiedLogsInfo.value = true
 
   setTimeout(() => {

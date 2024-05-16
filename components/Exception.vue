@@ -174,7 +174,7 @@ const report = async () => {
 
 const copy = () => {
   navigator.clipboard.writeText(props.content)
-  showNotification('success', 'Report copied successfully')
+  showNotification('success', 'Copied successfully')
   copied.value = true
   setTimeout(() => {
     copied.value = false

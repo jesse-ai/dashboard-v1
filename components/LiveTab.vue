@@ -348,7 +348,7 @@ const copyInfoLogs = () => {
   displayInfo.value = true
 
   navigator.clipboard.writeText(props.results.infoLogs)
-  showNotification('success', 'Info copied successfully')
+  showNotification('success', 'Logs copied successfully')
   copiedLogsInfo.value = true
 
   setTimeout(() => {
@@ -360,7 +360,7 @@ const copyErrorLogs = () => {
   displayErrors.value = true
 
   navigator.clipboard.writeText(props.results.errorLogs)
-  showNotification('success', 'Error copied successfully')
+  showNotification('success', 'Logs copied successfully')
   copiedErrorLogs.value = true
 
   setTimeout(() => {
