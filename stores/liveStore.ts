@@ -58,6 +58,10 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[tab.id] = tab
       await navigateTo(`/live/${tab.id}`)
     },
+    closeTab(id: string) {
+      delete this.tabs[id]
+      navigateTo('/live')
+    },
     startInNewTab(id: string) {
       const tab = newTab()
       tab.form = _.cloneDeep(this.tabs[id].form)

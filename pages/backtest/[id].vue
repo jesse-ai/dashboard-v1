@@ -14,9 +14,7 @@ import { useBacktestStore } from '~/stores/backtestStore'
 useSeoMeta({ title: 'Backtest - Jesse' })
 
 const backtestStore = useBacktestStore()
-
 const tabs = computed(() => backtestStore.tabs)
-
 const pageId = computed(() => useRoute().params.id as string)
 
 const currentTab = computed(() => {
