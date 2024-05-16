@@ -6,8 +6,6 @@ import { useMainStore } from '~/stores/mainStore'
 function newTab(): LiveTab {
   return _.cloneDeep({
     id: helpers.uuid(),
-    session_id: '',
-    name: 'Tab 0',
     form: {
       debug_mode: true,
       paper_mode: true,
@@ -201,7 +199,11 @@ export const useLiveStore = defineStore('Live', {
     },
     async fetchLogs(id: string) {
       // info logs
-      const { data, error } = await usePostApi('/get-logs', { id, session_id: this.tabs[id].results.generalInfo.session_id, type: 'info' }, true)
+      const { data, error } = await usePostApi('/get-logs', {
+        id,
+        session_id: this.tabs[id].results.generalInfo.session_id,
+        type: 'info'
+      }, true)
 
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)

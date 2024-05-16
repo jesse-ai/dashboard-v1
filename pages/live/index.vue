@@ -3,11 +3,17 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useLiveStore } from '~/stores/liveStore'
 
 const router = useRouter()
-onMounted(() => {
-  router.push({ path: '/live/1' })
-})
+const liveStore = useLiveStore()
+const keys = Object.keys(liveStore.tabs)
+if (keys.length > 0) {
+  const firstTabKey = keys[0]
+  const firstTab = liveStore.tabs[firstTabKey]
+  router.push({ path: `/live/${firstTab.id}` })
+}
+else {
+  liveStore.addTab()
+}
 </script>

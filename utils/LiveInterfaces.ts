@@ -4,8 +4,6 @@ interface LiveTabs {
 
 interface LiveTab {
   id: string
-  session_id: string
-  name: string
   form: FormLiveTab
   results: ResultsLiveTab
 }
