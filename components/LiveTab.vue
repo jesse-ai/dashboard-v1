@@ -87,10 +87,12 @@
         <Divider class="mt-16 mb-4" title="Options" />
 
         <div class="grid grid-cols-1 gap-6">
-          <ToggleButton :object="form" name="debug_mode" title="Debug Mode" description="Logs more details, helpful for debugging. Not recommended for beginners." />
+          <ToggleButton
+            v-model="form.debug_mode"
+            title="Debug Mode" description="Logs more details, helpful for debugging. Not recommended for beginners." />
 
           <ToggleButton
-            :object="form" name="paper_mode"
+            v-model="form.paper_mode"
             title="Paper Trade" :disabled="planInfo.plan !== 'premium'"
             :disabled-guide="planInfo.plan !== 'premium' ? 'Premium plan required' : ''" description="Trade in real-time using actual exchange data with PAPER money." />
         </div>
