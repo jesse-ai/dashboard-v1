@@ -77,7 +77,7 @@
         <XCircleIcon class="h-5 w-5 text-red-400" aria-hidden="true" />
       </div>
 
-      <div class="ml-3 overflow-hidden">
+      <div class="ml-3 overflow-hidden w-full">
         <h3 class="text-base font-medium text-red-800 mb-6" v-text="title" />
 
         <pre
