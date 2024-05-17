@@ -4,7 +4,10 @@
     <Card>
       <Heading>CPU</Heading>
       <div>
-        <UFormGroup :label="`CPU cores to use for optimization(${settings.optimization.cpu_cores} / ${systemInfo.cpu_cores})`" :object="settings.optimization" description="How many CPU cores of your machine would you like to be used for optimization?`">
+        <UFormGroup
+          :label="`CPU cores to use for optimization(${settings.optimization.cpu_cores} / ${systemInfo.cpu_cores})`"
+          description="How many CPU cores of your machine would you like to be used for optimization?`"
+        >
           <UInput v-model="settings.optimization.cpu_cores" type="number" placeholder="ex: 4" />
         </UFormGroup>
       </div>
