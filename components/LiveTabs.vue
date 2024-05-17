@@ -69,9 +69,17 @@ function getTitle(tab: LiveTab) {
 
   const firstRoute = tab.form.routes[0]
   const k = `${firstRoute.exchange} • ${firstRoute.strategy} • ${firstRoute.symbol} • ${firstRoute.timeframe}`
-  if (tab.results.monitoring) {
-    return `${k} | ${tab.results.progressbar.current}%`
+
+  if (tab.results.monitoring && !tab.results.finished) {
+    return `🟢 ${k}`
   }
+
+  if (tab.results.exception.error) {
+    return `🔴 ${k}`
+  }
+
+
+
   if (tab.results.showResults) {
     return `${k} | Results`
   }
