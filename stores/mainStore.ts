@@ -227,7 +227,7 @@ export const useMainStore = defineStore('main', {
           // if the tab is executing, we need to sync the tab with the server
           if (!this.activeWorkers.has(tab.id)) {
             // if the tab is not in the active workers list, we need to cancel it
-            await useLiveStore().cancel(tab.id)
+            useLiveStore().forceClose(tab.id)
           }
         }
       }
