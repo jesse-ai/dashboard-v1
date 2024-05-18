@@ -3,9 +3,9 @@ import _ from 'lodash'
 import helpers from '@/utils/helpers'
 import { useMainStore } from '~/stores/mainStore'
 
-function newTab(): LiveTab {
+function newTab(id = '') {
   return _.cloneDeep({
-    id: helpers.uuid(),
+    id: id || helpers.uuid(),
     form: {
       debug_mode: true,
       paper_mode: true,
@@ -61,12 +61,6 @@ export const useLiveStore = defineStore('Live', {
     closeTab(id: string) {
       delete this.tabs[id]
       navigateTo('/live')
-    },
-    startInNewTab(id: string) {
-      const tab = newTab()
-      tab.form = _.cloneDeep(this.tabs[id].form)
-      this.tabs[tab.id] = tab
-      this.start(tab.id)
     },
     reset(id: string) {
       this.tabs[id].results.progressbar.current = 0
@@ -132,12 +126,20 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.finished = false
     },
     candlesInfoEvent(id: string, data: CandlesInfoEvent) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.info = [
         ['Period', data.duration],
         ['Starting-Ending Date', `${helpers.timestampToDate(data.starting_time)} => ${helpers.timestampToDate(data.finishing_time)}`]
       ]
     },
     routesInfoEvent(id: string, data: RoutesInfoEvent[]) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
@@ -150,14 +152,26 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.routes_info = arr
     },
     progressbarEvent(id: string, data: ProgressBar) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.progressbar = data
     },
     infoLogEvent(id: string, data: { timestamp: number, message: string }) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.infoLogs += `[${helpers.timestampToTime(
         data.timestamp
       )}] ${data.message}\n`
     },
     errorLogEvent(id: string, data: { id: string, timestamp: number, message: string }) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       showNotification('error', data.message)
 
       this.tabs[id].results.errorLogs += `[${helpers.timestampToTime(
@@ -165,10 +179,18 @@ export const useLiveStore = defineStore('Live', {
       )}] ${data.message}\n`
     },
     exceptionEvent(id: string, data: Exception) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.exception.error = data.error
       this.tabs[id].results.exception.traceback = data.traceback
     },
     generalInfoEvent(id: string, data: LiveGeneralInfoEvent) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.generalInfo = data
 
       // set routes in both form.routes (maybe page was refreshed)
@@ -193,6 +215,10 @@ export const useLiveStore = defineStore('Live', {
       }
     },
     async fetchCandles(id: string) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       const { data, error } = await usePostApi('/get-candles', { id, exchange: this.tabs[id].form.routes[0].exchange, symbol: this.tabs[id].form.routes[0].symbol, timeframe: this.tabs[id].form.routes[0].timeframe }, true)
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
@@ -202,6 +228,10 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.candles = res.data
     },
     async fetchLogs(id: string) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       // info logs
       const { data, error } = await usePostApi('/get-logs', {
         id,
@@ -244,12 +274,24 @@ export const useLiveStore = defineStore('Live', {
       })
     },
     currentCandlesEvent(id: string, data: CurrentCandlesObject) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.currentCandles = data
     },
     watchlistEvent(id: string, data: [string, string][]) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.watchlist = data
     },
     positionsEvent(id: string, data: positionsEvent[]) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.positions = []
 
       for (const item of data) {
@@ -265,9 +307,17 @@ export const useLiveStore = defineStore('Live', {
       }
     },
     ordersEvent(id: string, data: ordersEvent[]) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.orders = data
     },
     metricsEvent(id: string, data: MetricsEvent) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.metrics = [
         ['Total Closed Trades', data.total],
         ['Total Net Profit', `${_.round(data.net_profit, 2)} (${_.round(data.net_profit_percentage, 2)}%)`],
@@ -297,6 +347,10 @@ export const useLiveStore = defineStore('Live', {
       ]
     },
     equityCurveEvent(id: string, data: EquityCurveEvent[]) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.charts.equity_curve = []
       data.forEach((item: { balance: number, timestamp: number }) => {
         this.tabs[id].results.charts.equity_curve.push({
@@ -310,14 +364,30 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.showResults = true
     },
     unexpectedTerminationEvent(id: string) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       this.tabs[id].results.finished = true
     },
     terminationEvent(id: string) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
       if (!this.tabs[id].results.finished) {
         this.tabs[id].results.finished = true
         this.tabs[id].results.terminating = false
         showNotification('success', 'Session terminated successfully')
       }
+    },
+    forceClose(id: string) {
+      if (this.tabs[id] === undefined) {
+        this.tabs[id] = newTab(id)
+      }
+
+      this.tabs[id].results.finished = true
+      this.tabs[id].results.terminating = false
     }
   }
 })
