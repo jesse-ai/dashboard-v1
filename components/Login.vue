@@ -80,5 +80,6 @@ const login = async () => {
   const res = data.value as AuthResponse
   setAuth(res.auth_token)
   showNotification('success', 'Logged in successfully')
+  window.location.reload()
 }
 </script>
