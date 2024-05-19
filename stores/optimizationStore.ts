@@ -44,6 +44,15 @@ export const useOptimizationStore = defineStore('optimization', {
     storage: persistedState.localStorage,
   },
   actions: {
+    async init(activeWorkers: Set<string>) {
+      if (this.results.executing && !this.results.exception.error) {
+        // if the tab is executing, we need to sync the tab with the server
+        if (!activeWorkers.has('optimization')) {
+          // if the tab is not in the active workers list, we need to cancel it
+          await this.cancel()
+        }
+      }
+    },
     async start() {
       this.results.progressbar.current = 0
       this.results.executing = true

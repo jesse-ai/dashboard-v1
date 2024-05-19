@@ -53,6 +53,19 @@ export const useLiveStore = defineStore('Live', {
     storage: persistedState.localStorage
   },
   actions: {
+    async init(activeWorkers: Set<string>) {
+      // go through all the tabs and check if the current tab is open in another tab
+      for (const key in this.tabs) {
+        const tab = this.tabs[key]
+        if (tab.results.monitoring && !tab.results.exception.error) {
+          // if the tab is executing, we need to sync the tab with the server
+          if (!activeWorkers.has(tab.id)) {
+            // if the tab is not in the active workers list, we need to cancel it
+            this.forceClose(tab.id)
+          }
+        }
+      }
+    },
     async addTab() {
       const tab = newTab()
       this.tabs[tab.id] = tab
@@ -219,7 +232,14 @@ export const useLiveStore = defineStore('Live', {
         this.tabs[id] = newTab(id)
       }
 
-      const { data, error } = await usePostApi('/get-candles', { id, exchange: this.tabs[id].form.routes[0].exchange, symbol: this.tabs[id].form.routes[0].symbol, timeframe: this.tabs[id].form.routes[0].timeframe }, true)
+      const { data, error } = await usePostApi('/get-candles',
+        {
+          id,
+          // exchange: this.tabs[id].form.routes[0].exchange,
+          exchange: this.tabs[id].form.routes[0].exchange,
+          symbol: this.tabs[id].form.routes[0].symbol,
+          timeframe: this.tabs[id].form.routes[0].timeframe
+        }, true)
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
         return

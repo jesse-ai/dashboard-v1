@@ -39,6 +39,18 @@ export const useCandlesStore = defineStore('candles', {
     storage: persistedState.localStorage,
   },
   actions: {
+    async init(activeWorkers: Set<string>) {
+      for (const key in this.tabs) {
+        const tab = this.tabs[key]
+        if (tab.results.executing && !tab.results.exception.error) {
+          // if the tab is executing, we need to sync the tab with the server
+          if (!activeWorkers.has(tab.id)) {
+            // if the tab is not in the active workers list, we need to cancel it
+            await this.cancel(tab.id)
+          }
+        }
+      }
+    },
     async addTab() {
       const tab = newTab()
       this.tabs[tab.id] = tab

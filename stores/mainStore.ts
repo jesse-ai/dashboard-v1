@@ -5,6 +5,7 @@ import { handleError } from '~/composables/notifications'
 import { useCandlesStore } from '~/stores/candleStore'
 import { useBacktestStore } from '~/stores/backtestStore'
 import { useOptimizationStore } from '~/stores/optimizationStore'
+import { useLiveStore } from '~/stores/liveStore'
 
 export const useMainStore = defineStore('main', {
   state: () => ({
@@ -185,52 +186,10 @@ export const useMainStore = defineStore('main', {
 
     async syncOpenTabs() {
       // go through all the tabs and check if the current tab is open in another tab
-
-      // candle:
-      for (const key in useCandlesStore().tabs) {
-        const tab = useCandlesStore().tabs[key]
-        if (tab.results.executing && !tab.results.exception.error) {
-          // if the tab is executing, we need to sync the tab with the server
-          if (!this.activeWorkers.has(tab.id)) {
-            // if the tab is not in the active workers list, we need to cancel it
-            await useCandlesStore().cancel(tab.id)
-          }
-        }
-      }
-
-      // backtest:
-      for (const key in useBacktestStore().tabs) {
-        const tab = useBacktestStore().tabs[key]
-        if (tab.results.executing && !tab.results.exception.error) {
-          // if the tab is executing, we need to sync the tab with the server
-          if (!this.activeWorkers.has(tab.id)) {
-            // if the tab is not in the active workers list, we need to cancel it
-            await useBacktestStore().cancel(tab.id)
-          }
-        }
-      }
-
-      // optimization:
-      const optimizeStore = useOptimizationStore()
-      if (optimizeStore.results.executing && !optimizeStore.results.exception.error) {
-        // if the tab is executing, we need to sync the tab with the server
-        if (!this.activeWorkers.has('optimization')) {
-          // if the tab is not in the active workers list, we need to cancel it
-          await optimizeStore.cancel()
-        }
-      }
-
-      // live:
-      for (const key in useLiveStore().tabs) {
-        const tab = useLiveStore().tabs[key]
-        if (tab.results.monitoring && !tab.results.exception.error) {
-          // if the tab is executing, we need to sync the tab with the server
-          if (!this.activeWorkers.has(tab.id)) {
-            // if the tab is not in the active workers list, we need to cancel it
-            useLiveStore().forceClose(tab.id)
-          }
-        }
-      }
+      useCandlesStore().init(this.activeWorkers)
+      useBacktestStore().init(this.activeWorkers)
+      useOptimizationStore().init(this.activeWorkers)
+      useLiveStore().init(this.activeWorkers)
     },
 
     updateConfig: useThrottleFn(async () => {
