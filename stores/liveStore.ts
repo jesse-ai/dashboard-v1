@@ -57,11 +57,18 @@ export const useLiveStore = defineStore('Live', {
       // go through all the tabs and check if the current tab is open in another tab
       for (const key in this.tabs) {
         const tab = this.tabs[key]
+        // if the tab is executing, we need to sync the tab with the server
         if (tab.results.monitoring && !tab.results.exception.error) {
-          // if the tab is executing, we need to sync the tab with the server
+          // if the tab is not in the active workers list, we need to cancel it
           if (!activeWorkers.has(tab.id)) {
-            // if the tab is not in the active workers list, we need to cancel it
             this.forceClose(tab.id)
+          }
+          else {
+            // Fetch new data for candles and logs just in case the old ones are not valid anymore
+            // Because the user has opened the dashboard after a while of the live sessions running.
+            console.log('fetching candles and logs')
+            this.fetchCandles(tab.id)
+            this.fetchLogs(tab.id)
           }
         }
       }
