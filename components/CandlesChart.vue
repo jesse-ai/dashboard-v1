@@ -107,7 +107,7 @@ watch(currentCandles, (newValue, oldValue) => {
 })
 
 watch(theme, (newVal) => {
-  checkTheme(newVal)
+  setTheme(newVal)
 })
 
 watch(positionEntry, (newValue, oldValue) => {
@@ -127,16 +127,9 @@ onMounted(() => {
 
   candleSeries = chart.addCandlestickSeries()
   candleSeries.setData(props.candles)
-
   chart.timeScale().fitContent()
 
-  if (theme.value === 'light') {
-    chart.applyOptions(lightTheme.value.chart)
-  }
-  else {
-    chart.applyOptions(darkTheme.value.chart)
-  }
-
+  setTheme(theme.value)
   updatePositionEntry()
   updateOrderEntries()
 })
@@ -211,12 +204,9 @@ function updateCurrentCandle(candle: LiveCandleData) {
   candleSeries.update(candle)
 }
 
-function checkTheme(val: string) {
-  if (val === 'light') {
-    chart.applyOptions(lightTheme.value.chart)
-  }
-  else {
-    chart.applyOptions(darkTheme.value.chart)
-  }
+function setTheme(val: string) {
+  chart.applyOptions(
+    val === 'light' ? lightTheme.value.chart : darkTheme.value.chart
+  )
 }
 </script>
