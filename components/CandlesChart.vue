@@ -3,8 +3,11 @@
 </template>
 
 <script setup lang="ts">
-import { createChart, CrosshairMode } from 'lightweight-charts'
+import { createChart } from 'lightweight-charts'
 import _ from 'lodash'
+import { settings, lightTheme, darkTheme } from '~/composables/lightweightCharts'
+
+const colorMode = useColorMode()
 
 const props = defineProps<{
   form: FormLiveTab
@@ -18,76 +21,6 @@ const lines = {
   orderEntries: {} as any,
   positionEntry: null
 }
-
-const settings = ref({
-  width: 800,
-  height: 380,
-  crosshair: {
-    mode: CrosshairMode.Normal
-  },
-})
-
-const colorMode = useColorMode()
-
-const lightTheme = ref({
-  chart: {
-    layout: {
-      background: { color: '#ffffff' },
-      textColor: 'rgba(33, 56, 77, 1)'
-    },
-    grid: {
-      vertLines: {
-        color: '#f1f1f1',
-        visible: false,
-      },
-      horzLines: {
-        color: '#f1f1f1',
-        visible: false,
-      }
-    },
-    priceScale: {
-      borderColor: 'rgba(197, 203, 206, 0.6)'
-    },
-    timeScale: {
-      borderColor: 'rgba(197, 203, 206, 0.6)',
-      timeVisible: true,
-      secondsVisible: false
-    }
-  },
-  series: {
-    color: '#4f46e5'
-  }
-})
-
-const darkTheme = ref({
-  chart: {
-    layout: {
-      background: { color: '#333333' },
-      textColor: '#D1D5DB'
-    },
-    grid: {
-      vertLines: {
-        color: '#525252',
-        visible: false
-      },
-      horzLines: {
-        color: '#525252',
-        visible: false
-      }
-    },
-    priceScale: {
-      borderColor: '#525252'
-    },
-    timeScale: {
-      borderColor: '#525252',
-      timeVisible: true,
-      secondsVisible: false
-    }
-  },
-  series: {
-    color: '#818CF8'
-  }
-})
 
 const theme = computed(() => colorMode.preference)
 const currentCandles = computed(() => props.results.currentCandles)
@@ -121,9 +54,9 @@ watch(() => props.results.orders, (newValue, oldValue) => {
 }, { deep: true })
 
 onMounted(() => {
-  settings.value.width = chart.clientWidth
+  settings.width = chart.clientWidth
 
-  chart = createChart(chart, settings.value)
+  chart = createChart(chart, settings)
 
   candleSeries = chart.addCandlestickSeries()
   candleSeries.setData(props.candles)
@@ -206,7 +139,7 @@ function updateCurrentCandle(candle: LiveCandleData) {
 
 function setTheme(val: string) {
   chart.applyOptions(
-    val === 'light' ? lightTheme.value.chart : darkTheme.value.chart
+    val === 'light' ? lightTheme.chart : darkTheme.chart
   )
 }
 </script>
