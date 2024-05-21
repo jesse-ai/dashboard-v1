@@ -146,7 +146,7 @@ onBeforeUnmount(() => {
   candleSeries = null
 })
 
-function updatePositionEntry () {
+function updatePositionEntry() {
   const color = positionType.value === 'long' ? '#00AB5C' : '#FF497D'
 
   if (lines.positionEntry) {
@@ -167,7 +167,7 @@ function updatePositionEntry () {
   }
 }
 
-function updateOrderEntries () {
+function updateOrderEntries() {
   const PositionSymbol = firstPosition.value[0].value
 
   for (const key in lines.orderEntries) {
@@ -194,7 +194,7 @@ function updateOrderEntries () {
   })
 }
 
-function updateCurrentCandle (candle: LiveCandleData) {
+function updateCurrentCandle(candle: LiveCandleData) {
   if (candle === undefined) {
     throw new TypeError('candle is undefined!')
   }
@@ -211,7 +211,7 @@ function updateCurrentCandle (candle: LiveCandleData) {
   candleSeries.update(candle)
 }
 
-function checkTheme (val: string) {
+function checkTheme(val: string) {
   if (val === 'light') {
     chart.applyOptions(lightTheme.value.chart)
   }
