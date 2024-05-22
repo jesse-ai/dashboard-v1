@@ -21,7 +21,8 @@
 
           <!-- Tab close button -->
           <button
-            v-show="Object.keys(tabs).length > 1" class="absolute right-[1em] focus:outline-none"
+            v-show="Object.keys(tabs).length > 1 && !tab.results.monitoring"
+            class="absolute right-[1em] focus:outline-none"
             @click="emit('close', tab.id)">
             <XMarkIcon
               class="h-5 w-5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 bg-gray-100 dark:bg-gray-700 rounded-full"
