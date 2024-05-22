@@ -109,12 +109,10 @@
         </div>
 
         <!-- Candlesticks chart -->
-        <div>
-          <CandlesChart v-if="results.candles && results.candles.length" :candles="results.candles" :results="results" :form="form" />
-        </div>
+        <CandlesChart v-if="results.monitoring && !results.finished && !results.exception.error" :results="results" :form="form" />
 
         <!-- tables -->
-        <Divider class="mb-4" :class="results.candles && results.candles.length ? 'mt-16' : ''" title="Routes" />
+        <Divider class="mb-4" title="Routes" />
         <MultipleValuesTable :data="results.routes" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
 
         <Divider class="mt-12 mb-4" title="Positions" />
