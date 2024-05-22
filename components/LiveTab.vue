@@ -89,7 +89,7 @@
         <div class="grid grid-cols-1 gap-6">
           <ToggleButton
             v-model="form.debug_mode"
-            title="Debug Mode" description="Logs more details, helpful for debugging. Not recommended for beginners." />
+            title="Debug Mode" description="Logs more details, helpful for debugging." />
 
           <ToggleButton
             v-model="form.paper_mode"
