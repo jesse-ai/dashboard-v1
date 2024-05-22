@@ -1,5 +1,5 @@
 <template>
-  <div ref="chart" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600" />
+  <div ref="chartContainer" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600" />
 </template>
 
 <script setup lang="ts">
@@ -15,8 +15,9 @@ const props = defineProps<{
   candles: Array<any>
 }>()
 
+const chartContainer = ref()
 let chart = null as any
-let candleSeries = null as any
+let series = null as any
 const lines = {
   orderEntries: {} as any,
   positionEntry: null
@@ -54,12 +55,12 @@ watch(() => props.results.orders, (newValue, oldValue) => {
 }, { deep: true })
 
 onMounted(() => {
-  settings.width = chart.clientWidth
+  settings.width = chartContainer.value.clientWidth
 
-  chart = createChart(chart, settings)
+  chart = createChart(chartContainer.value, settings)
 
-  candleSeries = chart.addCandlestickSeries()
-  candleSeries.setData(props.candles)
+  series = chart.addCandlestickSeries()
+  series.setData(props.candles)
   chart.timeScale().fitContent()
 
   setTheme(theme.value)
@@ -67,16 +68,22 @@ onMounted(() => {
   updateOrderEntries()
 })
 
-onBeforeUnmount(() => {
-  chart = null
-  candleSeries = null
+onUnmounted(() => {
+  if (chart) {
+    chart.remove()
+    chart = null
+  }
+  if (series) {
+    series = null
+  }
+  // window.removeEventListener('resize', resizeHandler)
 })
 
 function updatePositionEntry() {
   const color = positionType.value === 'long' ? '#00AB5C' : '#FF497D'
 
   if (lines.positionEntry) {
-    candleSeries.removePriceLine(lines.positionEntry)
+    series.removePriceLine(lines.positionEntry)
   }
 
   if (Number(positionEntry.value) > 0) {
@@ -89,7 +96,7 @@ function updatePositionEntry() {
       title: 'Entry Price',
     }
 
-    lines.positionEntry = candleSeries.createPriceLine(entryPrice)
+    lines.positionEntry = series.createPriceLine(entryPrice)
   }
 }
 
@@ -97,7 +104,7 @@ function updateOrderEntries() {
   const PositionSymbol = firstPosition.value[0].value
 
   for (const key in lines.orderEntries) {
-    candleSeries.removePriceLine(lines.orderEntries[key])
+    series.removePriceLine(lines.orderEntries[key])
     delete lines.orderEntries[key]
   }
 
@@ -115,7 +122,7 @@ function updateOrderEntries() {
         title: title
       }
 
-      lines.orderEntries[order.id] = candleSeries.createPriceLine(orderPrice)
+      lines.orderEntries[order.id] = series.createPriceLine(orderPrice)
     }
   })
 }
@@ -134,7 +141,7 @@ function updateCurrentCandle(candle: LiveCandleData) {
     return
   }
 
-  candleSeries.update(candle)
+  series.update(candle)
 }
 
 function setTheme(val: string) {
