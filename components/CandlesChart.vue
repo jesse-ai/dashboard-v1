@@ -55,6 +55,10 @@ watch(() => props.results.orders, (newValue, oldValue) => {
 }, { deep: true })
 
 onMounted(() => {
+  init()
+})
+
+function init() {
   settings.width = chartContainer.value.clientWidth
 
   chart = createChart(chartContainer.value, settings)
@@ -66,9 +70,14 @@ onMounted(() => {
   setTheme(theme.value)
   updatePositionEntry()
   updateOrderEntries()
-})
+}
 
 onUnmounted(() => {
+  flush()
+  // window.removeEventListener('resize', resizeHandler)
+})
+
+function flush() {
   if (chart) {
     chart.remove()
     chart = null
@@ -76,8 +85,7 @@ onUnmounted(() => {
   if (series) {
     series = null
   }
-  // window.removeEventListener('resize', resizeHandler)
-})
+}
 
 function updatePositionEntry() {
   const color = positionType.value === 'long' ? '#00AB5C' : '#FF497D'
