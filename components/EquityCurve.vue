@@ -11,7 +11,7 @@ import {
 import { settings, lightTheme, darkTheme } from '~/composables/charts/lineSeries'
 
 const colorMode = useColorMode()
-const theme = computed(() => colorMode.preference)
+const theme = computed(() => colorMode.value)
 const chartContainer = ref()
 let chart: IChartApi | null = null
 let series: ISeriesApi<any> | null = null

@@ -66,7 +66,6 @@ export const useLiveStore = defineStore('Live', {
           else {
             // Fetch new data for candles and logs just in case the old ones are not valid anymore
             // Because the user has opened the dashboard after a while of the live sessions running.
-            console.log('fetching candles and logs')
             this.fetchLogs(tab.id)
           }
         }

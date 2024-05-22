@@ -14,9 +14,6 @@ import {
 const colorMode = useColorMode()
 
 const toggle = () => {
-  if (colorMode.preference == 'dark')
-    colorMode.preference = 'light'
-  else
-    colorMode.preference = 'dark'
+  colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark'
 }
 </script>

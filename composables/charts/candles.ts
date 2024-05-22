@@ -8,7 +8,6 @@ export const settings = {
   },
 }
 
-
 export const lightTheme = {
   chart: {
     layout: {

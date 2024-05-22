@@ -43,7 +43,7 @@ const lines = {
   positionEntry: null as IPriceLine | null
 }
 
-const theme = computed(() => colorMode.preference)
+const theme = computed(() => colorMode.value)
 const currentCandles = computed(() => props.results.currentCandles)
 const positionEntry = computed(() => props.results.positions[0][2].value)
 const positionType = computed(() => {
@@ -112,9 +112,10 @@ async function init() {
   series!.setData(props.results.candles)
   chart.timeScale().fitContent()
 
-  setTheme(theme.value)
   updatePositionEntry()
   updateOrderEntries()
+
+  setTheme(theme.value)
 }
 
 onUnmounted(() => {
