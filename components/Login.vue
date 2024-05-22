@@ -25,7 +25,8 @@
         <UForm :state="form" class="flex items-center justify-center" @submit="login">
           <UFormGroup name="password">
             <UInput
-              v-model="form.password" placeholder="password"
+              v-model="form.password"
+              autofocus placeholder="password"
               icon="i-heroicons-lock-closed" size="xl"
               type="password" />
           </UFormGroup>
