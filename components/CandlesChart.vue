@@ -15,7 +15,13 @@
 </template>
 
 <script setup lang="ts">
-import { createChart } from 'lightweight-charts'
+import {
+  createChart,
+  type CreatePriceLineOptions,
+  type IChartApi,
+  type IPriceLine,
+  type ISeriesApi
+} from 'lightweight-charts'
 import _ from 'lodash'
 import { settings, lightTheme, darkTheme } from '~/composables/lightweightCharts'
 import { useLiveStore } from '~/stores/liveStore'
@@ -30,11 +36,11 @@ const props = defineProps<{
 }>()
 
 const chartContainer = ref()
-let chart = null as any
-let series = null as any
+let chart: IChartApi | null = null
+let series: ISeriesApi<any> | null = null
 const lines = {
   orderEntries: {} as any,
-  positionEntry: null
+  positionEntry: null as IPriceLine | null
 }
 
 const theme = computed(() => colorMode.preference)
@@ -76,7 +82,6 @@ watch(() => props.results.orders, (newValue, oldValue) => {
 }, { deep: true })
 
 onMounted(async () => {
-  // after 100 ms
   setTimeout(async () => {
     await init()
   }, 200)
@@ -92,7 +97,7 @@ async function init() {
   chart = createChart(chartContainer.value, settings)
 
   series = chart.addCandlestickSeries()
-  series.setData(props.results.candles)
+  series!.setData(props.results.candles)
   chart.timeScale().fitContent()
 
   setTheme(theme.value)
@@ -106,7 +111,7 @@ onUnmounted(() => {
 })
 
 function flush() {
-  if (chart) {
+  if (chart !== null) {
     chart.remove()
     chart = null
   }
@@ -119,20 +124,20 @@ function updatePositionEntry() {
   const color = positionType.value === 'long' ? '#00AB5C' : '#FF497D'
 
   if (lines.positionEntry) {
-    series.removePriceLine(lines.positionEntry)
+    series!.removePriceLine(lines.positionEntry)
   }
 
   if (Number(positionEntry.value) > 0) {
-    const entryPrice = {
-      price: positionEntry.value,
+    const entryPrice: CreatePriceLineOptions = {
+      price: Number(positionEntry.value),
       color: color,
-      lineWidth: 1.5,
+      lineWidth: 1,
       lineStyle: 0,
       axisLabelVisible: true,
       title: 'Entry Price',
     }
 
-    lines.positionEntry = series.createPriceLine(entryPrice)
+    lines.positionEntry = series!.createPriceLine(entryPrice)
   }
 }
 
@@ -140,7 +145,7 @@ function updateOrderEntries() {
   const PositionSymbol = firstPosition.value[0].value
 
   for (const key in lines.orderEntries) {
-    series.removePriceLine(lines.orderEntries[key])
+    series!.removePriceLine(lines.orderEntries[key])
     delete lines.orderEntries[key]
   }
 
@@ -149,16 +154,16 @@ function updateOrderEntries() {
     const title = _.startCase(_.lowerCase(`${order.side} ${order.type}`))
 
     if ((order.status === 'ACTIVE' || order.status === 'QUEUED') && order.symbol === PositionSymbol) {
-      const orderPrice = {
+      const orderPrice: CreatePriceLineOptions = {
         price: Number(order.price),
         color: color,
-        lineWidth: 1.5,
+        lineWidth: 1,
         lineStyle: 0,
         axisLabelVisible: true,
         title: title
       }
 
-      lines.orderEntries[order.id] = series.createPriceLine(orderPrice)
+      lines.orderEntries[order.id] = series!.createPriceLine(orderPrice)
     }
   })
 }
@@ -177,10 +182,12 @@ function updateCurrentCandle(candle: LiveCandleData) {
     return
   }
 
-  series.update(candle)
+  series!.update(candle)
 }
 
 function setTheme(val: string) {
+  if (chart === null) return
+
   chart.applyOptions(
     val === 'light' ? lightTheme.chart : darkTheme.chart
   )
