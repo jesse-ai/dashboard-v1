@@ -4,6 +4,7 @@
 
 <script setup lang="ts">
 import { createChart } from 'lightweight-charts'
+import { settings, lightTheme, darkTheme } from '~/composables/charts/lineSeries'
 
 const colorMode = useColorMode()
 
@@ -15,74 +16,6 @@ const props = defineProps<{
   equityCurve: { time: number, value: number }[]
 }>()
 
-const settings = ref({
-  width: 800,
-  height: 300,
-  priceScale: {
-    borderColor: 'rgba(197, 203, 206, 1)'
-  },
-  timeScale: {
-    borderColor: 'rgba(197, 203, 206, 1)',
-    timeVisible: true,
-    secondsVisible: false
-  }
-})
-
-const lightTheme = ref({
-  chart: {
-    layout: {
-      background: { color: '#ffffff' },
-      textColor: 'rgba(33, 56, 77, 1)'
-    },
-    grid: {
-      vertLines: {
-        color: '#f1f1f1',
-      },
-      horzLines: {
-        color: '#f1f1f1',
-      }
-    },
-    priceScale: {
-      borderColor: 'rgba(197, 203, 206, 0.6)'
-    },
-    timeScale: {
-      borderColor: 'rgba(197, 203, 206, 0.6)',
-      timeVisible: true,
-      secondsVisible: false
-    }
-  },
-  series: {
-    color: '#4f46e5'
-  }
-})
-
-const darkTheme = ref({
-  chart: {
-    layout: {
-      background: { color: '#333333' },
-      textColor: '#D1D5DB'
-    },
-    grid: {
-      vertLines: {
-        color: '#525252',
-      },
-      horzLines: {
-        color: '#525252',
-      }
-    },
-    priceScale: {
-      borderColor: '#525252'
-    },
-    timeScale: {
-      borderColor: '#525252',
-      timeVisible: true,
-      secondsVisible: false
-    }
-  },
-  series: {
-    color: '#818CF8'
-  }
-})
 
 watch(props.equityCurve, (data) => {
   lineSeries.setData(data)
@@ -93,8 +26,8 @@ watch(theme, (newVal) => {
 })
 
 onMounted(() => {
-  settings.value.width = chart.clientWidth
-  chart = createChart(chart, settings.value)
+  settings.width = chart.clientWidth
+  chart = createChart(chart, settings)
 
   lineSeries = chart.addLineSeries({
     lineWidth: 1.5
@@ -104,12 +37,12 @@ onMounted(() => {
   lineSeries.setData(props.equityCurve)
 
   if (theme.value === 'light') {
-    chart.applyOptions(lightTheme.value.chart)
-    lineSeries.applyOptions(lightTheme.value.series)
+    chart.applyOptions(lightTheme.chart)
+    lineSeries.applyOptions(lightTheme.series)
   }
   else {
-    chart.applyOptions(darkTheme.value.chart)
-    lineSeries.applyOptions(darkTheme.value.series)
+    chart.applyOptions(darkTheme.chart)
+    lineSeries.applyOptions(darkTheme.series)
   }
 })
 
@@ -118,14 +51,14 @@ onBeforeUnmount(() => {
   lineSeries = null
 })
 
-function checkTheme (val: string) {
+function checkTheme(val: string) {
   if (val === 'light') {
-    chart.applyOptions(lightTheme.value.chart)
-    lineSeries.applyOptions(lightTheme.value.series)
+    chart.applyOptions(lightTheme.chart)
+    lineSeries.applyOptions(lightTheme.series)
   }
   else {
-    chart.applyOptions(darkTheme.value.chart)
-    lineSeries.applyOptions(darkTheme.value.series)
+    chart.applyOptions(darkTheme.chart)
+    lineSeries.applyOptions(darkTheme.series)
   }
 }
 </script>

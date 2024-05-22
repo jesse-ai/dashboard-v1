@@ -23,7 +23,7 @@ import {
   type ISeriesApi
 } from 'lightweight-charts'
 import _ from 'lodash'
-import { settings, lightTheme, darkTheme } from '~/composables/lightweightCharts'
+import { settings, lightTheme, darkTheme } from '~/composables/charts/candles'
 import { useLiveStore } from '~/stores/liveStore'
 
 const colorMode = useColorMode()
