@@ -1,18 +1,32 @@
 <template>
-  <div ref="chartContainer" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600" />
+  <div class="mb-16">
+    <div v-if="loading" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600 p-4">
+      <USkeleton class="h-4 w-full mb-4" />
+      <USkeleton class="h-4 w-2/3 mb-4" />
+      <USkeleton class="h-4 w-1/2 mb-4" />
+      <USkeleton class="h-4 w-full mb-4" />
+      <USkeleton class="h-4 w-full mb-4" />
+      <USkeleton class="h-4 w-2/3 mb-4" />
+      <USkeleton class="h-4 w-full mb-4" />
+      <USkeleton class="h-4 w-full" />
+    </div>
+    <div ref="chartContainer" :class="{ 'rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600': !loading }" />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { createChart } from 'lightweight-charts'
 import _ from 'lodash'
 import { settings, lightTheme, darkTheme } from '~/composables/lightweightCharts'
+import { useLiveStore } from '~/stores/liveStore'
 
 const colorMode = useColorMode()
+const pageId = computed(() => useRoute().params.id as string)
+const loading = ref(true)
 
 const props = defineProps<{
   form: FormLiveTab
   results: ResultsLiveTab
-  candles: Array<any>
 }>()
 
 const chartContainer = ref()
@@ -35,6 +49,8 @@ const positionType = computed(() => {
 const firstPosition = computed(() => props.results.positions[0])
 
 watch(currentCandles, (newValue, oldValue) => {
+  if (series === null) return
+
   const firstRoute = props.form.routes[0]
   const key = `${firstRoute.exchange}-${firstRoute.symbol}-${firstRoute.timeframe}`
   updateCurrentCandle(newValue[key])
@@ -44,27 +60,39 @@ watch(theme, (newVal) => {
   setTheme(newVal)
 })
 
+
 watch(positionEntry, (newValue, oldValue) => {
+  if (series === null) return
+
   if (newValue !== oldValue) {
     updatePositionEntry()
   }
 })
 
 watch(() => props.results.orders, (newValue, oldValue) => {
+  if (series === null) return
+
   updateOrderEntries()
 }, { deep: true })
 
-onMounted(() => {
-  init()
+onMounted(async () => {
+  // after 100 ms
+  setTimeout(async () => {
+    await init()
+  }, 200)
 })
 
-function init() {
+async function init() {
+  loading.value = true
+  await useLiveStore().fetchCandles(pageId.value)
+  loading.value = false
+
   settings.width = chartContainer.value.clientWidth
 
   chart = createChart(chartContainer.value, settings)
 
   series = chart.addCandlestickSeries()
-  series.setData(props.candles)
+  series.setData(props.results.candles)
   chart.timeScale().fitContent()
 
   setTheme(theme.value)
@@ -140,7 +168,7 @@ function updateCurrentCandle(candle: LiveCandleData) {
     throw new TypeError('candle is undefined!')
   }
 
-  if (props.candles.length === 0) {
+  if (props.results.candles.length === 0) {
     return
   }
 
