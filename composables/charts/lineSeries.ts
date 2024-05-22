@@ -20,9 +20,11 @@ export const lightTheme = {
     grid: {
       vertLines: {
         color: '#f1f1f1',
+        visible: false,
       },
       horzLines: {
         color: '#f1f1f1',
+        visible: false,
       }
     },
     priceScale: {
@@ -48,9 +50,11 @@ export const darkTheme = {
     grid: {
       vertLines: {
         color: '#525252',
+        visible: false
       },
       horzLines: {
         color: '#525252',
+        visible: false
       }
     },
     priceScale: {
