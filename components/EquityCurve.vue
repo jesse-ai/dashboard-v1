@@ -1,65 +1,78 @@
 <template>
-  <div ref="chart" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600" />
+  <div ref="chartContainer" class="rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600" />
 </template>
 
 <script setup lang="ts">
-import { createChart } from 'lightweight-charts'
+import {
+  createChart,
+  type IChartApi,
+  type ISeriesApi
+} from 'lightweight-charts'
 import { settings, lightTheme, darkTheme } from '~/composables/charts/lineSeries'
 
 const colorMode = useColorMode()
-
 const theme = computed(() => colorMode.preference)
-let chart = null as any
-let lineSeries = null as any
+const chartContainer = ref()
+let chart: IChartApi | null = null
+let series: ISeriesApi<any> | null = null
 
 const props = defineProps<{
   equityCurve: { time: number, value: number }[]
 }>()
 
-
 watch(props.equityCurve, (data) => {
-  lineSeries.setData(data)
+  if (series === null) return
+
+  series.setData(data)
 })
 
 watch(theme, (newVal) => {
-  checkTheme(newVal)
+  setTheme(newVal)
 })
 
-onMounted(() => {
-  settings.width = chart.clientWidth
-  chart = createChart(chart, settings)
+onMounted(async () => {
+  await init()
+})
 
-  lineSeries = chart.addLineSeries({
-    lineWidth: 1.5
+async function init() {
+  settings.width = chartContainer.value.clientWidth
+
+  chart = createChart(chartContainer.value, settings)
+
+  series = chart.addLineSeries({
+    lineWidth: 2
   })
 
   chart.timeScale().fitContent()
-  lineSeries.setData(props.equityCurve)
+  series.setData(props.equityCurve)
 
-  if (theme.value === 'light') {
-    chart.applyOptions(lightTheme.chart)
-    lineSeries.applyOptions(lightTheme.series)
-  }
-  else {
-    chart.applyOptions(darkTheme.chart)
-    lineSeries.applyOptions(darkTheme.series)
-  }
+  setTheme(theme.value)
+}
+
+onUnmounted(() => {
+  flush()
+  // window.removeEventListener('resize', resizeHandler)
 })
 
-onBeforeUnmount(() => {
-  chart = null
-  lineSeries = null
-})
+function flush() {
+  if (chart !== null) {
+    chart.remove()
+    chart = null
+  }
+  if (series) {
+    series = null
+  }
+}
 
-function checkTheme(val: string) {
-  if (val === 'light') {
-    chart.applyOptions(lightTheme.chart)
-    lineSeries.applyOptions(lightTheme.series)
-  }
-  else {
-    chart.applyOptions(darkTheme.chart)
-    lineSeries.applyOptions(darkTheme.series)
-  }
+function setTheme(val: string) {
+  if (chart === null || series === null) return
+
+  chart.applyOptions(
+    val === 'light' ? lightTheme.chart : darkTheme.chart
+  )
+  series.applyOptions(
+    val === 'light' ? lightTheme.series : darkTheme.series
+  )
 }
 </script>
 
