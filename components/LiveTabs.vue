@@ -78,8 +78,6 @@ function getTitle(tab: LiveTab) {
     return `🔴 ${k}`
   }
 
-
-
   if (tab.results.showResults) {
     return `${k} | Results`
   }

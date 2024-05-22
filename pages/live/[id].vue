@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <LiveTabs :tabs="tabs" mode="backtest" @close="liveStore.closeTab" />
+    <LiveTabs :tabs="tabs" @close="liveStore.closeTab" />
   </div>
 
   <LiveTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
