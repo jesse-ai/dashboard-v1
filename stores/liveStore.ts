@@ -67,7 +67,6 @@ export const useLiveStore = defineStore('Live', {
             // Fetch new data for candles and logs just in case the old ones are not valid anymore
             // Because the user has opened the dashboard after a while of the live sessions running.
             console.log('fetching candles and logs')
-            this.fetchCandles(tab.id)
             this.fetchLogs(tab.id)
           }
         }
@@ -79,6 +78,11 @@ export const useLiveStore = defineStore('Live', {
       await navigateTo(`/live/${tab.id}`)
     },
     closeTab(id: string) {
+      const tab = this.tabs[id]
+      if (tab.results.monitoring && !tab.results.exception.error && !tab.results.finished) {
+        showNotification('error', 'Cannot close a live session tab that is currently running')
+        return
+      }
       delete this.tabs[id]
       navigateTo('/live')
     },
@@ -230,15 +234,10 @@ export const useLiveStore = defineStore('Live', {
       if (!this.tabs[id].results.monitoring) {
         this.tabs[id].results.booting = false
         this.tabs[id].results.monitoring = true
-        this.fetchCandles(id)
         this.fetchLogs(id)
       }
     },
     async fetchCandles(id: string) {
-      if (this.tabs[id] === undefined) {
-        this.tabs[id] = newTab(id)
-      }
-
       const { data, error } = await usePostApi('/get-candles',
         {
           id,
@@ -247,10 +246,12 @@ export const useLiveStore = defineStore('Live', {
           symbol: this.tabs[id].form.routes[0].symbol,
           timeframe: this.tabs[id].form.routes[0].timeframe
         }, true)
+
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
         return
       }
+
       const res = data.value as GetCandlesResponse
       this.tabs[id].results.candles = res.data
     },
@@ -258,6 +259,9 @@ export const useLiveStore = defineStore('Live', {
       if (this.tabs[id] === undefined) {
         this.tabs[id] = newTab(id)
       }
+
+      this.tabs[id].results.infoLogs = ''
+      this.tabs[id].results.errorLogs = ''
 
       // info logs
       const { data, error } = await usePostApi('/get-logs', {
