@@ -96,6 +96,18 @@ async function init() {
 
   chart = createChart(chartContainer.value, settings)
 
+  // // add watermark
+  // chart.applyOptions({
+  //   watermark: {
+  //     visible: true,
+  //     fontSize: 24,
+  //     horzAlign: 'left',
+  //     vertAlign: 'bottom',
+  //     color: '#888',
+  //     text: 'BTC-USD - 1m',
+  //   },
+  // })
+
   series = chart.addCandlestickSeries()
   series!.setData(props.results.candles)
   chart.timeScale().fitContent()
