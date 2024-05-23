@@ -4,8 +4,9 @@
 
     <div class="flex justify-end mt-8">
       <UButton
-        id="feedback-cancel-button" color="gray"
-        variant="link" class="mr-8"
+        id="feedback-cancel-button"
+        color="gray"
+        block
         label="Close" @click="about = false" />
     </div>
   </div>
