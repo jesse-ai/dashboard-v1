@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 interface Route {
   exchange: string
   symbol: string
@@ -116,4 +114,24 @@ interface multiplesTablesValue {
 interface FeedbackResponse {
   status: string
   message: string
+}
+
+interface StoreExchangeApiKeyResponse {
+  status: string
+  message: string
+}
+
+interface DeleteExchangeApiKeyResponse {
+  status: string
+  message: string
+}
+
+interface ExchangeApiKeys {
+  id: string
+  exchangeName: string
+  name: string
+  apiKey: string
+  apiSecret: string
+  additionalFields: string
+  createdAt: Date
 }

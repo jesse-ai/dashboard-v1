@@ -85,6 +85,7 @@ export const useMainStore = defineStore('main', {
     skippedJesseVersions: [] as string[],
     skippedLivePluginVersions: [] as string[],
     activeWorkers: new Set<string>(),
+    exchangeApiKeys: [] as ExchangeApiKeys[],
   }),
   persist: {
     storage: persistedState.localStorage,
