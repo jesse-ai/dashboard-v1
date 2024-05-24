@@ -1,0 +1,166 @@
+<template>
+  <SmallContainer>
+    <Heading>
+      Exchange API Keys
+    </Heading>
+
+    <p>
+      Here you can add your API keys for various exchanges. API keys are used to connect your account to the exchange and allow the bot to trade on your behalf.
+      <br><br>Please note that for security reasons, once created, API keys cannot be modified or seen again.
+    </p>
+
+    <br>
+
+    <UForm :state="form" class="space-y-4" @submit="create">
+      <UFormGroup label="Exchange name:" required>
+        <USelect v-model="form.exchange" :options="mainStore.liveTradingExchangeNames" />
+      </UFormGroup>
+
+      <UFormGroup label="Name:" required>
+        <UInput
+          v-model="form.name" type="text"
+          placeholder="Give a name to this API key (e.g. Binance - subaccount 1)"
+        />
+      </UFormGroup>
+
+      <UFormGroup label="API Key:" required>
+        <UInput
+          v-model="form.apiKey"
+          placeholder="Enter your API key here"
+          type="text" />
+      </UFormGroup>
+
+      <UFormGroup label="API Secret:" required>
+        <UInput
+          v-model="form.apiSecret"
+          placeholder="Enter your API secret here"
+          type="text" />
+      </UFormGroup>
+
+      <UFormGroup
+        v-if="showAdditionalFields"
+        label="API Passphrase:" required>
+        <UInput
+          v-model="form.apiPassphrase"
+          placeholder="Enter your API passphrase here"
+          type="text" />
+      </UFormGroup>
+
+      <UFormGroup
+        v-if="showAdditionalFields"
+        label="Wallet Address:" required>
+        <UInput
+          v-model="form.walletAddress"
+          placeholder="Enter your wallet address here"
+          type="text" />
+      </UFormGroup>
+
+      <UFormGroup
+        v-if="showAdditionalFields"
+        label="Stark Private Key:" required>
+        <UInput
+          v-model="form.starkPrivateKey"
+          placeholder="Enter your Stark private key here"
+          type="text" />
+      </UFormGroup>
+
+      <!--      <UFormGroup v-for="field in selectedExchange.fields" :key="field" :label="field + ':'" required> -->
+      <!--        <UInput v-model="form[field]" type="text" /> -->
+      <!--      </UFormGroup> -->
+
+      <div class="flex justify-end">
+        <UButton
+          id="api-keys-cancel-button" color="gray"
+          variant="link" class="mr-8"
+          label="Cancel"
+          @click="resetForm" />
+
+        <UButton
+          id="api-keys-submit-button" type="submit"
+          class="w-48 flex justify-center " label="Create"
+          :loading="loadingBtn" :disabled="!isValidForm" />
+      </div>
+    </UForm>
+
+    <div class="mt-8">
+      <Heading>Previously Created API Keys</Heading>
+
+      <pre>{{ apiKeys }}</pre>
+    <!--      <div v-for="key in apiKeys" :key="key.id"> -->
+    <!--        <p>{{ key.exchange }}</p> -->
+    <!--        <UButton label="Delete" @click="deleteKey(key.id)" /> -->
+    <!--      </div> -->
+    </div>
+  </SmallContainer>
+</template>
+
+<script setup lang="ts">
+import { useMainStore } from '~/stores/mainStore'
+import SmallContainer from '~/components/SmallContainer.vue'
+
+useSeoMeta({ title: 'API Keys' })
+
+
+const loadingBtn = ref(false)
+const mainStore = useMainStore()
+const form = reactive({
+  exchange: mainStore.liveTradingExchangeNames[0],
+  name: '',
+
+  apiKey: '',
+  apiSecret: '',
+
+  // only for DYDX and Apex pro
+  apiPassphrase: '',
+  walletAddress: '',
+  starkPrivateKey: '',
+})
+
+const apiKeys = computed(() => mainStore.exchangeApiKeys)
+// only When exchange name string begins with Dydx or Apex
+const showAdditionalFields = computed(() => form.exchange.startsWith('Dydx') || form.exchange.startsWith('Apex'))
+
+const isValidForm = computed(() => {
+  // Add your own validation logic here
+  return form.exchange && form.apiKey && form.apiSecret
+})
+
+async function create() {
+  if (!isValidForm.value) {
+    showNotification('error', 'Please fill in all required fields')
+    return
+  }
+  loadingBtn.value = true
+
+  const { data, error } = await usePostApi('/exchange-api-keys', form, true)
+
+  loadingBtn.value = false
+  if (error.value && error.value.statusCode !== 200) {
+    handleError(error)
+  }
+
+  const res = data.value as StoreExchangeApiKeyResponse
+  if (res.status === 'success') {
+    showNotification('success', 'Successfully added API key')
+    apiKeys.value.push(form)
+    resetForm()
+  }
+  else if (res.status === 'error') {
+    showNotification('error', res.message)
+  }
+}
+
+function resetForm() {
+  form.exchange = mainStore.liveTradingExchangeNames[0]
+  form.name = ''
+  form.apiKey = ''
+  form.apiSecret = ''
+  form.apiPassphrase = ''
+  form.walletAddress = ''
+  form.starkPrivateKey = ''
+}
+
+// async function deleteKey(id) {
+//   // Add your own delete logic here
+// }
+</script>
