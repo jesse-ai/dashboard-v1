@@ -1,4 +1,4 @@
-export function showNotification (type: 'error' | 'success', description: string) {
+export function showNotification(type: 'error' | 'success', description: string) {
   if (typeof window === 'undefined') return
 
   const toast = useToast()
@@ -15,7 +15,7 @@ export function showNotification (type: 'error' | 'success', description: string
   })
 }
 
-export function handleError (error: any) {
+export function handleError(error: any) {
   if (error.response) {
     if (error.response.data && error.response.data.message) {
       showNotification('error', error.response.data.message)
