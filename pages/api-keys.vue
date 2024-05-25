@@ -64,10 +64,6 @@
           type="text" />
       </UFormGroup>
 
-      <!--      <UFormGroup v-for="field in selectedExchange.fields" :key="field" :label="field + ':'" required> -->
-      <!--        <UInput v-model="form[field]" type="text" /> -->
-      <!--      </UFormGroup> -->
-
       <div class="flex justify-end">
         <UButton
           id="api-keys-cancel-button" color="gray"
@@ -82,16 +78,17 @@
       </div>
     </UForm>
 
+    <!-- Previously Added -->
     <div class="mt-8">
-      <Heading>Previously Added</Heading>
+      <Heading>
+        Previously Added
+      </Heading>
+
+      <EmptyBox v-if="!apiKeys.length">
+        No API keys added yet
+      </EmptyBox>
 
       <ExchangeApiKey v-for="a in apiKeys" :key="a.id" :api-key="a" />
-
-      <!--      <pre>{{ apiKeys }}</pre> -->
-    <!--      <div v-for="key in apiKeys" :key="key.id"> -->
-    <!--        <p>{{ key.exchange }}</p> -->
-    <!--        <UButton label="Delete" @click="deleteKey(key.id)" /> -->
-    <!--      </div> -->
     </div>
   </SmallContainer>
 </template>
