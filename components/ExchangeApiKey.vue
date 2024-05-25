@@ -1,23 +1,46 @@
 <template>
-  <Card class="mb-4">
-    Exchange: {{ apiKey.exchange }}<br>
-    Name: {{ apiKey.name }}<br>
-    API Key: {{ apiKey.api_key }}<br>
-    API Secret: {{ apiKey.api_secret }}<br>
-    <div v-if="apiKey.exchange.startsWith('Dydx') || apiKey.exchange.startsWith('Apex')">
-      API Passphrase: {{ apiKey.api_passphrase }}<br>
-      Wallet Address: {{ apiKey.wallet_address }}<br>
-      Stark Private Key: {{ apiKey.stark_private_key }}<br>
+  <Card class="mb-4 p-4">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="text-xl font-bold">
+        {{ apiKey.name }} • {{ apiKey.exchange }}
+      </h2>
+      <UButton
+        icon="i-heroicons-trash"
+        color="red"
+        label="Delete" variant="link"
+        @click="deleteModal = true" />
     </div>
 
-    <UButton
-      icon="trash" color="red"
-      label="Delete" variant="link"
-      @click="deleteModal = true" />
+    <p class="text-sm text-gray-500">{{ useTimeAgo(apiKey.created_at).value }}</p>
+
+    <div class="mt-4">
+      <div class="flex justify-between">
+        <span class="font-medium">API Key:</span>
+        <span>{{ apiKey.api_key }}</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="font-medium">API Secret:</span>
+        <span>{{ apiKey.api_secret }}</span>
+      </div>
+      <div v-if="apiKey.exchange.startsWith('Dydx') || apiKey.exchange.startsWith('Apex')">
+        <div class="flex justify-between">
+          <span class="font-medium">API Passphrase:</span>
+          <span>{{ apiKey.api_passphrase }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Wallet Address:</span>
+          <span>{{ apiKey.wallet_address }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium">Stark Private Key:</span>
+          <span>{{ apiKey.stark_private_key }}</span>
+        </div>
+      </div>
+    </div>
 
     <ConfirmModal
       v-model="deleteModal" title="Delete API Key"
-      :description="`Are you sure you want to delete ${apiKey.name} API key?`"
+      :description="`Are you sure you want to delete '${apiKey.name}' API key?`"
       type="info">
       <UButton
         variant="solid" color="red"
@@ -29,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import { useTimeAgo } from '@vueuse/core'
+
 const props = defineProps<{
   apiKey: ExchangeApiKey
 }>()
