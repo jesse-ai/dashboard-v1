@@ -78,7 +78,7 @@
         <UButton
           id="api-keys-submit-button" type="submit"
           class="w-48 flex justify-center " label="Create"
-          :loading="loadingBtn" :disabled="!isValidForm" />
+          :loading="submitLoading" :disabled="!isValidForm" />
       </div>
     </UForm>
 
@@ -103,7 +103,7 @@ import ExchangeApiKey from '~/components/ExchangeApiKey.vue'
 
 useSeoMeta({ title: 'API Keys' })
 
-const loadingBtn = ref(false)
+const submitLoading = ref(false)
 const mainStore = useMainStore()
 
 type FormData = {
@@ -142,7 +142,7 @@ async function submit() {
     showNotification('error', 'Please fill in all required fields')
     return
   }
-  loadingBtn.value = true
+  submitLoading.value = true
 
   const formData: FormData = {
     name: form.name,
@@ -163,7 +163,7 @@ async function submit() {
     '/exchange-api-keys/store', formData, true
   )
 
-  loadingBtn.value = false
+  submitLoading.value = false
   if (error.value && error.value.statusCode !== 200) {
     handleError(error)
   }

@@ -13,7 +13,7 @@
     <UButton
       icon="trash" color="red"
       label="Delete" variant="link"
-      @click="deleteKey(apiKey.id)" />
+      @click="deleteModal = true" />
 
     <ConfirmModal
       v-model="deleteModal" title="Delete API Key"
@@ -22,41 +22,37 @@
       <UButton
         variant="solid" color="red"
         class="flex justify-center" label="Delete"
-        @click="stop($route.params.id as string)" />
+        :loading="deleteLoading"
+        @click="deleteKey" />
     </ConfirmModal>
   </Card>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
   apiKey: ExchangeApiKey
 }>()
 
 const deleteModal = ref(false)
+const deleteLoading = ref(false)
+const mainStore = useMainStore()
 
-function deleteKey(id: string) {
-  useConfirmDialog({
-    title: 'Delete API Key',
-    message: 'Are you sure you want to delete this API key?',
-    onConfirm: async () => {
-      const { data, error } = await usePostApi(
-        '/exchange-api-keys/delete', { id }, true
-      )
-
-      if (error.value && error.value.statusCode !== 200) {
-        handleError(error)
-      }
-
-      const res = data.value as DeleteExchangeApiKeyResponse
-      if (res.status === 'success') {
-        showNotification('success', 'Successfully deleted API key')
-        const index = apiKeys.value.findIndex(a => a.id === id)
-        apiKeys.value.splice(index, 1)
-      }
-      else if (res.status === 'error') {
-        showNotification('error', res.message)
-      }
-    }
-  })
+async function deleteKey() {
+  deleteLoading.value = true
+  const { data, error } = await usePostApi(
+    '/exchange-api-keys/delete', {
+      id: props.apiKey.id
+    }, true
+  )
+  deleteLoading.value = false
+  if (error.value && error.value.statusCode !== 200) {
+    handleError(error)
+    return
+  }
+  deleteModal.value = false
+  showNotification('success', 'API Key deleted successfully')
+  mainStore.exchangeApiKeys = mainStore.exchangeApiKeys.filter((
+    key: ExchangeApiKey
+  ) => key.id !== props.apiKey.id)
 }
 </script>
