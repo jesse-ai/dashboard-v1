@@ -11,7 +11,7 @@
 
     <br>
 
-    <UForm :state="form" class="space-y-4" @submit="create">
+    <UForm :state="form" class="space-y-4" @submit="submit">
       <UFormGroup label="Exchange name:" required>
         <USelect v-model="form.exchange" :options="mainStore.liveTradingExchangeNames" />
       </UFormGroup>
@@ -19,7 +19,7 @@
       <UFormGroup label="Name:" required>
         <UInput
           v-model="form.name" type="text"
-          placeholder="Give a name to this API key (e.g. Binance - subaccount 1)"
+          placeholder="Give a name to this API key (e.g. Bybit - subaccount 1)"
         />
       </UFormGroup>
 
@@ -83,9 +83,11 @@
     </UForm>
 
     <div class="mt-8">
-      <Heading>Previously Created API Keys</Heading>
+      <Heading>Previously Added</Heading>
 
-      <pre>{{ apiKeys }}</pre>
+      <ExchangeApiKey v-for="a in apiKeys" :key="a.id" :api-key="a" />
+
+      <!--      <pre>{{ apiKeys }}</pre> -->
     <!--      <div v-for="key in apiKeys" :key="key.id"> -->
     <!--        <p>{{ key.exchange }}</p> -->
     <!--        <UButton label="Delete" @click="deleteKey(key.id)" /> -->
@@ -97,6 +99,7 @@
 <script setup lang="ts">
 import { useMainStore } from '~/stores/mainStore'
 import SmallContainer from '~/components/SmallContainer.vue'
+import ExchangeApiKey from '~/components/ExchangeApiKey.vue'
 
 useSeoMeta({ title: 'API Keys' })
 
@@ -134,7 +137,7 @@ const isValidForm = computed(() => {
   return form.exchange && form.apiKey && form.apiSecret
 })
 
-async function create() {
+async function submit() {
   if (!isValidForm.value) {
     showNotification('error', 'Please fill in all required fields')
     return

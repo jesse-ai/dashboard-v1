@@ -119,12 +119,12 @@ interface FeedbackResponse {
 interface StoreExchangeApiKeyResponse {
   status: string
   message: string
-  data: ExchangeApiKeys
+  data: ExchangeApiKey
 }
 
 interface GetExchangeApiKeysResponse {
   status: string
-  data: ExchangeApiKeys[]
+  data: ExchangeApiKey[]
 }
 
 interface DeleteExchangeApiKeyResponse {
@@ -132,16 +132,16 @@ interface DeleteExchangeApiKeyResponse {
   message: string
 }
 
-interface ExchangeApiKeys {
+interface ExchangeApiKey {
   id: string
-  exchangeName: string
+  exchange: string
   name: string
-  createdAt: Date
-  apiKey: string
-  apiSecret: string
+  created_at: Date
+  api_key: string
+  api_secret: string
 
   // dydx and apex pro
-  apiPassphrase?: string
-  walletAddress?: string
-  startPrivateKey?: string
+  api_passphrase?: string
+  wallet_address?: string
+  stark_private_key?: string
 }
