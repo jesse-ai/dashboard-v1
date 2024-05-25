@@ -112,12 +112,12 @@ type FormData = {
 
 const form = reactive({
   exchange: mainStore.liveTradingExchangeNames[0],
-  name: 'test',
-  apiKey: 'aaa',
-  apiSecret: 'sss',
-  apiPassphrase: 'pp',
-  walletAddress: 'ww',
-  stark_private_key: 'sp',
+  name: '',
+  apiKey: '',
+  apiSecret: '',
+  apiPassphrase: '',
+  walletAddress: '',
+  stark_private_key: '',
 })
 
 const apiKeys = computed(() => mainStore.exchangeApiKeys)
