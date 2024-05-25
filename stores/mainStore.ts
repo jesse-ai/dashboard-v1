@@ -182,6 +182,8 @@ export const useMainStore = defineStore('main', {
 
       await this.syncOpenTabs()
 
+      await this.fetchExchangeApiKeys()
+
       this.initiated = true
     },
 
@@ -201,9 +203,18 @@ export const useMainStore = defineStore('main', {
       if (error.value && error.value.statusCode !== 200) {
         handleError(error)
       }
-    }, 1000,
-    true, true
-    ),
+    }, 1000, true, true),
+
+    async fetchExchangeApiKeys() {
+      const { data, error } = await useFetchApi('/exchange-api-keys', true)
+      if (error.value && error.value.statusCode !== 200) {
+        handleError(error)
+        return
+      }
+
+      const res = data.value as GetExchangeApiKeysResponse
+      this.exchangeApiKeys = res.data
+    },
 
     setAuthToken(token: string) {
       this.authToken = token

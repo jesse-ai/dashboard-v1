@@ -59,7 +59,7 @@
         v-if="showAdditionalFields"
         label="Stark Private Key:" required>
         <UInput
-          v-model="form.starkPrivateKey"
+          v-model="form.stark_private_key"
           placeholder="Enter your Stark private key here"
           type="text" />
       </UFormGroup>
@@ -100,28 +100,37 @@ import SmallContainer from '~/components/SmallContainer.vue'
 
 useSeoMeta({ title: 'API Keys' })
 
-
 const loadingBtn = ref(false)
 const mainStore = useMainStore()
+
+type FormData = {
+  name: string
+  exchange: string
+  api_key: string
+  api_secret: string
+  additional_fields?: {
+    api_passphrase: string
+    wallet_address: string
+    stark_private_key: string
+  }
+}
+
 const form = reactive({
   exchange: mainStore.liveTradingExchangeNames[0],
-  name: '',
-
-  apiKey: '',
-  apiSecret: '',
-
-  // only for DYDX and Apex pro
-  apiPassphrase: '',
-  walletAddress: '',
-  starkPrivateKey: '',
+  name: 'test',
+  apiKey: 'aaa',
+  apiSecret: 'sss',
+  apiPassphrase: 'pp',
+  walletAddress: 'ww',
+  stark_private_key: 'sp',
 })
 
 const apiKeys = computed(() => mainStore.exchangeApiKeys)
-// only When exchange name string begins with Dydx or Apex
 const showAdditionalFields = computed(() => form.exchange.startsWith('Dydx') || form.exchange.startsWith('Apex'))
-
 const isValidForm = computed(() => {
-  // Add your own validation logic here
+  if (form.exchange.startsWith('Dydx') || form.exchange.startsWith('Apex')) {
+    return form.exchange && form.apiKey && form.apiSecret && form.apiPassphrase && form.walletAddress && form.stark_private_key
+  }
   return form.exchange && form.apiKey && form.apiSecret
 })
 
@@ -132,7 +141,24 @@ async function create() {
   }
   loadingBtn.value = true
 
-  const { data, error } = await usePostApi('/exchange-api-keys', form, true)
+  const formData: FormData = {
+    name: form.name,
+    exchange: form.exchange,
+    api_key: form.apiKey,
+    api_secret: form.apiSecret,
+  }
+
+  if (showAdditionalFields.value) {
+    formData.additional_fields = {
+      api_passphrase: form.apiPassphrase,
+      wallet_address: form.walletAddress,
+      stark_private_key: form.stark_private_key,
+    }
+  }
+
+  const { data, error } = await usePostApi(
+    '/exchange-api-keys/store', formData, true
+  )
 
   loadingBtn.value = false
   if (error.value && error.value.statusCode !== 200) {
@@ -142,7 +168,7 @@ async function create() {
   const res = data.value as StoreExchangeApiKeyResponse
   if (res.status === 'success') {
     showNotification('success', 'Successfully added API key')
-    apiKeys.value.push(form)
+    apiKeys.value.push(res.data)
     resetForm()
   }
   else if (res.status === 'error') {
@@ -157,10 +183,6 @@ function resetForm() {
   form.apiSecret = ''
   form.apiPassphrase = ''
   form.walletAddress = ''
-  form.starkPrivateKey = ''
+  form.stark_private_key = ''
 }
-
-// async function deleteKey(id) {
-//   // Add your own delete logic here
-// }
 </script>
