@@ -66,13 +66,8 @@
 
       <div class="flex justify-end">
         <UButton
-          id="api-keys-cancel-button" color="gray"
-          variant="link" class="mr-8"
-          label="Cancel"
-          @click="resetForm" />
-
-        <UButton
-          id="api-keys-submit-button" type="submit"
+          type="submit"
+          icon="i-heroicons-plus"
           class="w-48 flex justify-center " label="Create"
           :loading="submitLoading" :disabled="!isValidForm" />
       </div>
