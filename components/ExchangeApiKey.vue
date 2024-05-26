@@ -4,6 +4,7 @@
       <h2 class="text-xl font-bold">
         {{ apiKey.name }} • {{ apiKey.exchange }}
       </h2>
+
       <UButton
         icon="i-heroicons-trash"
         color="red"
@@ -11,7 +12,7 @@
         @click="deleteModal = true" />
     </div>
 
-    <p class="text-sm text-gray-500">{{ useTimeAgo(apiKey.created_at).value }}</p>
+    <p class="text-sm text-gray-500 dark:text-gray-400">{{ useTimeAgo(apiKey.created_at).value }}</p>
 
     <div class="mt-4">
       <div class="flex justify-between">

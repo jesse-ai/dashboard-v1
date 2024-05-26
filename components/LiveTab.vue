@@ -160,6 +160,28 @@
             size="xl" variant="solid"
             label="Start" :trailing="false"
             @click="start($route.params.id as string)" />
+
+          <UButton
+            class="w-full flex justify-center mt-4"
+            variant="link"
+            color="gray"
+            size="xl"
+            :trailing="false"
+            to="/api-keys"
+          >
+            Manage Exchange API Keys
+          </UButton>
+
+          <UButton
+            class="w-full flex justify-center mt-4"
+            variant="link"
+            color="gray"
+            size="xl"
+            :trailing="false"
+            to="/api-keys"
+          >
+            Manage Notifications
+          </UButton>
         </div>
       </div>
 

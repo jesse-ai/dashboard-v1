@@ -76,7 +76,7 @@
     <!-- Previously Added -->
     <div class="mt-8">
       <Heading>
-        Previously Added
+        Previously Added <span v-if="apiKeys.length">({{ apiKeys.length }})</span>
       </Heading>
 
       <EmptyBox v-if="!apiKeys.length">
