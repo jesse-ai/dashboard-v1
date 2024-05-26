@@ -9,8 +9,10 @@
       notification driver and allow the bot to send notifications on your behalf.
       <br><br>Please note that for security reasons, once created, API keys cannot be modified or seen again.
     </p>
-
-    <pre>{{ form }}</pre>
+    <br>
+    <p>
+      If you need help setting up your API keys, please refer to the documentation for <NuxtLink class="underline" href="https://docs.jesse.trade/docs/notifications" target="_blank">notification drivers</NuxtLink>.
+    </p>
 
     <br>
 
