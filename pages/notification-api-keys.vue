@@ -107,7 +107,17 @@ const form = reactive({
 })
 
 const apiKeys = computed(() => mainStore.notificationApiKeys)
-const isValidForm = computed(() => form.type && form.driver && form.fields)
+const isValidForm = computed(() => {
+  if (!form.type || !form.driver) {
+    return false
+  }
+  if (form.driver === 'Telegram') {
+    return form.bot_token && form.chat_id
+  }
+  else if (form.driver === 'Discord' || form.driver === 'Slack') {
+    return form.webhook
+  }
+})
 
 async function submit() {
   if (!isValidForm.value) {
@@ -119,7 +129,12 @@ async function submit() {
   const formData: FormData = {
     type: form.type,
     driver: form.driver,
-    fields: form.fields,
+    name: form.name,
+    fields: JSON.stringify({
+      bot_token: form.bot_token,
+      chat_id: form.chat_id,
+      webhook: form.webhook,
+    }),
   }
 
   const { data, error } = await usePostApi(
@@ -143,8 +158,8 @@ async function submit() {
 }
 
 function resetForm() {
-  form.type = notificationTypes[0]
-  form.driver = ''
-  form.fields = ''
+  form.chat_id = ''
+  form.bot_token = ''
+  form.webhook = ''
 }
 </script>
