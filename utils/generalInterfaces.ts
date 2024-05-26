@@ -122,14 +122,20 @@ interface StoreExchangeApiKeyResponse {
   data: ExchangeApiKey
 }
 
+interface StoreNotificationApiKeyResponse {
+  status: string
+  message: string
+  data: NotificationApiKey
+}
+
 interface GetExchangeApiKeysResponse {
   status: string
   data: ExchangeApiKey[]
 }
 
-interface DeleteExchangeApiKeyResponse {
+interface GetNotificationApiKeysResponse {
   status: string
-  message: string
+  data: NotificationApiKey[]
 }
 
 interface ExchangeApiKey {
@@ -144,4 +150,18 @@ interface ExchangeApiKey {
   api_passphrase?: string
   wallet_address?: string
   stark_private_key?: string
+}
+
+interface NotificationApiKey {
+  id: string
+  name: string
+  type: string
+  driver: string
+  created_at: Date
+
+  // telegram
+  bot_token?: string
+  chat_id?: string
+  // discord and slack
+  webhook?: string
 }

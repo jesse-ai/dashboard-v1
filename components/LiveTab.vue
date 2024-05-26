@@ -167,7 +167,7 @@
             color="gray"
             size="xl"
             :trailing="false"
-            to="/api-keys"
+            to="/exchange-api-keys"
           >
             Manage Exchange API Keys
           </UButton>
@@ -178,7 +178,7 @@
             color="gray"
             size="xl"
             :trailing="false"
-            to="/api-keys"
+            to="/notification-api-keys"
           >
             Manage Notifications
           </UButton>

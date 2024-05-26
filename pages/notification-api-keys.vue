@@ -1,66 +1,36 @@
 <template>
   <SmallContainer>
     <Heading>
-      Exchange API Keys
+      Notification API Keys
     </Heading>
 
     <p>
-      Here you can add your API keys for various exchanges. API keys are used to connect your account to the exchange and allow the bot to trade on your behalf.
+      Here you can add your API keys for various notification drivers. API keys are used to connect your account to the notification driver and allow the bot to send notifications on your behalf.
       <br><br>Please note that for security reasons, once created, API keys cannot be modified or seen again.
     </p>
 
     <br>
 
     <UForm :state="form" class="space-y-4" @submit="submit">
-      <UFormGroup label="Exchange name:" required>
-        <USelect v-model="form.exchange" :options="mainStore.liveTradingExchangeNames" />
+      <UFormGroup label="Driver:" required>
+        <USelect v-model="form.driver" :options="notificationDrivers" />
+      </UFormGroup>
+
+      <UFormGroup label="Notification Type:" required>
+        <USelect v-model="form.type" :options="notificationTypes" />
       </UFormGroup>
 
       <UFormGroup label="Name:" required>
         <UInput
           v-model="form.name" type="text"
-          placeholder="Give a name to this API key (e.g. Bybit - subaccount 1)"
+          placeholder="Give a name to this API key to identify it later"
         />
       </UFormGroup>
 
-      <UFormGroup label="API Key:" required>
+      <UFormGroup label="Fields:" required>
         <UInput
-          v-model="form.apiKey"
-          placeholder="Enter your API key here"
-          type="text" />
-      </UFormGroup>
-
-      <UFormGroup label="API Secret:" required>
-        <UInput
-          v-model="form.apiSecret"
-          placeholder="Enter your API secret here"
-          type="text" />
-      </UFormGroup>
-
-      <UFormGroup
-        v-if="showAdditionalFields"
-        label="API Passphrase:" required>
-        <UInput
-          v-model="form.apiPassphrase"
-          placeholder="Enter your API passphrase here"
-          type="text" />
-      </UFormGroup>
-
-      <UFormGroup
-        v-if="showAdditionalFields"
-        label="Wallet Address:" required>
-        <UInput
-          v-model="form.walletAddress"
-          placeholder="Enter your wallet address here"
-          type="text" />
-      </UFormGroup>
-
-      <UFormGroup
-        v-if="showAdditionalFields"
-        label="Stark Private Key:" required>
-        <UInput
-          v-model="form.stark_private_key"
-          placeholder="Enter your Stark private key here"
+          v-model="form.fields"
+          placeholder="Enter your fields here in JSON format"
           type="text" />
       </UFormGroup>
 
@@ -83,7 +53,7 @@
         No API keys added yet
       </EmptyBox>
 
-      <ExchangeApiKey v-for="a in apiKeys" :key="a.id" :api-key="a" />
+      <NotificationApiKey v-for="a in apiKeys" :key="a.id" :api-key="a" />
     </div>
   </SmallContainer>
 </template>
@@ -91,43 +61,32 @@
 <script setup lang="ts">
 import { useMainStore } from '~/stores/mainStore'
 import SmallContainer from '~/components/SmallContainer.vue'
-import ExchangeApiKey from '~/components/ExchangeApiKey.vue'
 
 useSeoMeta({ title: 'API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
+const notificationTypes = ['general', 'error']
+const notificationDrivers = ['Telegram', 'Discord', 'Slack']
 
 type FormData = {
   name: string
-  exchange: string
-  api_key: string
-  api_secret: string
-  additional_fields?: {
-    api_passphrase: string
-    wallet_address: string
-    stark_private_key: string
-  }
+  type: string
+  driver: string
+  fields: string
 }
 
 const form = reactive({
-  exchange: mainStore.liveTradingExchangeNames[0],
   name: '',
-  apiKey: '',
-  apiSecret: '',
-  apiPassphrase: '',
-  walletAddress: '',
-  stark_private_key: '',
+  type: notificationTypes[0],
+  driver: notificationDrivers[0],
+  bot_token: '',
+  chat_id: '',
+  webhook: '',
 })
 
-const apiKeys = computed(() => mainStore.exchangeApiKeys)
-const showAdditionalFields = computed(() => form.exchange.startsWith('Dydx') || form.exchange.startsWith('Apex'))
-const isValidForm = computed(() => {
-  if (form.exchange.startsWith('Dydx') || form.exchange.startsWith('Apex')) {
-    return form.exchange && form.apiKey && form.apiSecret && form.apiPassphrase && form.walletAddress && form.stark_private_key
-  }
-  return form.exchange && form.apiKey && form.apiSecret
-})
+const apiKeys = computed(() => mainStore.notificationApiKeys)
+const isValidForm = computed(() => form.type && form.driver && form.fields)
 
 async function submit() {
   if (!isValidForm.value) {
@@ -137,22 +96,13 @@ async function submit() {
   submitLoading.value = true
 
   const formData: FormData = {
-    name: form.name,
-    exchange: form.exchange,
-    api_key: form.apiKey,
-    api_secret: form.apiSecret,
-  }
-
-  if (showAdditionalFields.value) {
-    formData.additional_fields = {
-      api_passphrase: form.apiPassphrase,
-      wallet_address: form.walletAddress,
-      stark_private_key: form.stark_private_key,
-    }
+    type: form.type,
+    driver: form.driver,
+    fields: form.fields,
   }
 
   const { data, error } = await usePostApi(
-    '/exchange-api-keys/store', formData, true
+    '/notification-api-keys/store', formData, true
   )
 
   submitLoading.value = false
@@ -160,7 +110,7 @@ async function submit() {
     handleError(error)
   }
 
-  const res = data.value as StoreExchangeApiKeyResponse
+  const res = data.value as StoreNotificationApiKeyResponse
   if (res.status === 'success') {
     showNotification('success', 'Successfully added API key')
     apiKeys.value.push(res.data)
@@ -172,12 +122,8 @@ async function submit() {
 }
 
 function resetForm() {
-  form.exchange = mainStore.liveTradingExchangeNames[0]
-  form.name = ''
-  form.apiKey = ''
-  form.apiSecret = ''
-  form.apiPassphrase = ''
-  form.walletAddress = ''
-  form.stark_private_key = ''
+  form.type = notificationTypes[0]
+  form.driver = ''
+  form.fields = ''
 }
 </script>
