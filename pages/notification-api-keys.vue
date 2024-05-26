@@ -104,7 +104,11 @@ type FormData = {
   name: string
   type: string
   driver: string
-  fields: string
+  fields: {
+    bot_token?: string
+    chat_id?: string
+    webhook?: string
+  }
 }
 
 const form = reactive({
@@ -149,7 +153,7 @@ async function submit() {
     type: form.type,
     driver: form.driver,
     name: form.name,
-    fields: JSON.stringify(fields),
+    fields: fields,
   }
 
   submitLoading.value = true
