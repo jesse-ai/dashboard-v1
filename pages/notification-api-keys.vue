@@ -27,11 +27,32 @@
         />
       </UFormGroup>
 
-      <UFormGroup label="Fields:" required>
+      <UFormGroup v-if="form.driver === 'Telegram'" label="Bot Token:" required>
         <UInput
-          v-model="form.fields"
-          placeholder="Enter your fields here in JSON format"
-          type="text" />
+          v-model="form.bot_token" type="text"
+          placeholder="Enter your Telegram bot token"
+        />
+      </UFormGroup>
+
+      <UFormGroup v-if="form.driver === 'Telegram'" label="Chat ID:" required>
+        <UInput
+          v-model="form.chat_id" type="text"
+          placeholder="Enter your Telegram chat ID"
+        />
+      </UFormGroup>
+
+      <UFormGroup v-if="form.driver === 'Discord'" label="Webhook URL:" required>
+        <UInput
+          v-model="form.webhook" type="text"
+          placeholder="Enter your Discord webhook URL"
+        />
+      </UFormGroup>
+
+      <UFormGroup v-if="form.driver === 'Slack'" label="Webhook URL:" required>
+        <UInput
+          v-model="form.webhook" type="text"
+          placeholder="Enter your Slack webhook URL"
+        />
       </UFormGroup>
 
       <div class="flex justify-end">
@@ -66,7 +87,7 @@ useSeoMeta({ title: 'API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
-const notificationTypes = ['general', 'error']
+const notificationTypes = ['General', 'Error']
 const notificationDrivers = ['Telegram', 'Discord', 'Slack']
 
 type FormData = {
