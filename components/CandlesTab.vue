@@ -47,7 +47,10 @@
 
         <!-- symbol -->
         <Divider title="Symbol" class="mt-16" />
-        <UInput v-model="form.symbol" placeholder="ex: BTC-USDT" size="xl" class="mt-2" />
+        <UInput
+          v-model="form.symbol"
+          placeholder="ex: BTC-USDT"
+          size="xl" class="mt-2" />
 
         <Divider title="Start Date" class="mt-16" />
         <UInput v-model="form.start_date" type="date" size="xl" class="mt-2" />
@@ -106,94 +109,55 @@ props.results.alert.message = ''
 
 const exceptionReport = ref(false)
 
-const totalSymbolError = ref<string[]>([])
-const copiedForm = ref<{ symbol: CandleTabForm }>({ symbol: props.form })
-
 const backtestingExchangeNames = computed(() => mainStore.backtestingExchangeNames)
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 
-watch(copiedForm, () => {
-  checkSymbol()
-}, { deep: true })
+const { rerun, newBacktest } = backtestState
 
-const initiate = () => {
-  if (props.form.exchange === '') {
-    props.form.exchange = backtestingExchangeNames.value[0]
+const start = (id: string) => {
+  if (!validate()) {
+    return
   }
+
+  candlesStore.start(id)
 }
 
-const checkSymbol = () => {
-  totalSymbolError.value = []
-  const symbolErrors = []
+const startInNewTab = (id: string) => {
+  if (!validate()) {
+    return
+  }
 
+  candlesStore.startInNewTab(id)
+}
+
+function validate() {
   const ERRORS = {
     maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
     mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
     emptySymbolErrorMessage: 'Symbol parameter cannot be empty',
   }
 
-  if (props.form.symbol.length === 0) {
-    symbolErrors.push(ERRORS.emptySymbolErrorMessage)
-  }
-
-  if (!symbolErrors.includes(ERRORS.maxSymbolLengthErrorMessage) && props.form.symbol.length > 19) {
-    symbolErrors.push(ERRORS.maxSymbolLengthErrorMessage)
-  }
-
-  if (props.form.symbol.length >= 5) {
-    let checkDash = false
-    for (const item1 of props.form.symbol.substring(3, 5)) {
-      if (item1 === '-') {
-        checkDash = true
-      }
-    }
-    if (!checkDash) {
-      symbolErrors.push(ERRORS.mustContainDashErrorMessage)
-    }
-  }
-
-  for (const item of symbolErrors) {
-    totalSymbolError.value.push(item)
-  }
-}
-
-const { rerun, newBacktest } = backtestState
-
-const start = (id: string) => {
-  if (validate()) return
-  candlesStore.start(id)
-}
-
-const startInNewTab = (id: string) => {
-  if (validate()) return
-  candlesStore.startInNewTab(id)
-}
-
-function validate() {
   if (!props.form.exchange) {
     showNotification('error', 'Exchange parameter cannot be empty')
-    return true
+    return false
   }
   if (!props.form.symbol) {
-    showNotification('error', 'Symbol parameter cannot be empty')
-    return true
+    showNotification('error', ERRORS.emptySymbolErrorMessage)
+    return false
   }
-  else {
-    if (!props.form.symbol.includes('-')) {
-      showNotification('error', 'Symbol parameter must contain "-" character')
-      return true
-    }
-    else if (props.form.symbol.length > 13) {
-      showNotification('error', 'Maximum symbol length is exceeded!')
-      return true
-    }
+  if (!props.form.symbol.includes('-')) {
+    showNotification('error', ERRORS.mustContainDashErrorMessage)
+    return false
+  }
+  if (props.form.symbol.length > 13) {
+    showNotification('error', ERRORS.maxSymbolLengthErrorMessage)
+    return false
   }
   if (!props.form.start_date) {
     showNotification('error', 'Start date parameter cannot be empty')
-    return true
+    return false
   }
-}
 
-initiate()
-checkSymbol()
+  return true
+}
 </script>
