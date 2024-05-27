@@ -184,6 +184,7 @@ export const useMainStore = defineStore('main', {
       await this.syncOpenTabs()
 
       await this.fetchExchangeApiKeys()
+      await this.fetchNotificationApiKeys()
 
       this.initiated = true
     },
@@ -215,6 +216,17 @@ export const useMainStore = defineStore('main', {
 
       const res = data.value as GetExchangeApiKeysResponse
       this.exchangeApiKeys = res.data
+    },
+
+    async fetchNotificationApiKeys() {
+      const { data, error } = await useFetchApi('/notification-api-keys', true)
+      if (error.value && error.value.statusCode !== 200) {
+        handleError(error)
+        return
+      }
+
+      const res = data.value as GetNotificationApiKeysResponse
+      this.notificationApiKeys = res.data
     },
 
     setAuthToken(token: string) {
