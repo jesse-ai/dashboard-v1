@@ -63,11 +63,11 @@
         <div v-if="results.showResults">
           <button
             class="font-medium select-none items-center px-2.5 py-1.5 border border-transparent rounded shadow-sm text-white bg-indigo-600 dark:bg-indigo-400 hover:bg-indigo-700 dark:hover:bg-indigo-300 focus:outline-none dark:text-black text-base tracking-wide text-center block w-full mb-4"
-            @click="rerun($route.params.id as string)">
+            @click="backtestState.rerun($route.params.id as string)">
             Rerun
           </button>
 
-          <button class="btn-secondary text-center block w-full mb-4" @click="newBacktest($route.params.id as string)">
+          <button class="btn-secondary text-center block w-full mb-4" @click="backtestState.newBacktest($route.params.id as string)">
             New backtest
           </button>
         </div>
@@ -95,24 +95,20 @@ import { useCandlesStore } from '~/stores/candleStore'
 import { useMainStore } from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
-
-const candlesStore = useCandlesStore()
-const mainStore = useMainStore()
-const backtestState = useBacktestStore()
-
 const props = defineProps<{
   form: CandleTabForm
   results: CandleTabResults
 }>()
 
-props.results.alert.message = ''
+const candlesStore = useCandlesStore()
+const mainStore = useMainStore()
+const backtestState = useBacktestStore()
 
+props.results.alert.message = ''
 const exceptionReport = ref(false)
 
 const backtestingExchangeNames = computed(() => mainStore.backtestingExchangeNames)
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
-
-const { rerun, newBacktest } = backtestState
 
 const start = (id: string) => {
   if (!validate()) {
