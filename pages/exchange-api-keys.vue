@@ -159,13 +159,6 @@ type FormData = {
     stark_private_key: string
   }
 }
-//
-// const typeHelpText = computed(() => {
-//   if (form.type === 'general') {
-//     return 'All notifications will be sent to this API. Best for those who want to be notified about all events.'
-//   }
-//   return 'Only notifications related to errors will be sent to this API. Best for those who want to be notified only about urgent issues.'
-// })
 
 const form = reactive({
   exchange: mainStore.liveTradingExchangeNames[0],
