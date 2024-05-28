@@ -15,14 +15,6 @@
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ useTimeAgo(apiKey.created_at).value }}</p>
 
     <div class="mt-4">
-      <div class="flex justify-between">
-        <span class="font-medium">Notification Type:</span>
-        <span>{{ apiKey.type }}</span>
-      </div>
-      <div class="flex justify-between">
-        <span class="font-medium">Driver:</span>
-        <span>{{ apiKey.driver }}</span>
-      </div>
       <div v-if="apiKey.bot_token" class="flex justify-between">
         <span class="font-medium">Bot Token:</span>
         <span>{{ apiKey.bot_token }}</span>

@@ -21,10 +21,6 @@
         <USelect v-model="form.driver" :options="notificationDrivers" />
       </UFormGroup>
 
-      <UFormGroup label="Notification Type:" required>
-        <USelect v-model="form.type" :options="notificationTypes" />
-      </UFormGroup>
-
       <UFormGroup label="Name:" required>
         <UInput
           v-model="form.name" type="text"
@@ -92,10 +88,7 @@ useSeoMeta({ title: 'API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
-const notificationTypes = [
-  { label: 'General (all notifications)', value: 'general' },
-  { label: 'Error (Only Urgent errors)', value: 'error' },
-]
+
 const notificationDrivers = [
   { label: 'Telegram', value: 'telegram' },
   { label: 'Discord', value: 'discord' },
@@ -104,7 +97,6 @@ const notificationDrivers = [
 
 type FormData = {
   name: string
-  type: string
   driver: string
   fields: {
     bot_token?: string
@@ -115,7 +107,6 @@ type FormData = {
 
 const form = reactive({
   name: '',
-  type: notificationTypes[0].value,
   driver: notificationDrivers[0].value,
   bot_token: '',
   chat_id: '',
@@ -124,9 +115,6 @@ const form = reactive({
 
 const apiKeys = computed(() => mainStore.notificationApiKeys)
 const isValidForm = computed(() => {
-  if (!form.type || !form.driver) {
-    return false
-  }
   if (form.driver === 'telegram') {
     return form.bot_token && form.chat_id
   }
@@ -152,7 +140,6 @@ async function submit() {
   }
 
   const formData: FormData = {
-    type: form.type,
     driver: form.driver,
     name: form.name,
     fields: fields,

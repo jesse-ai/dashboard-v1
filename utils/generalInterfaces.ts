@@ -150,12 +150,14 @@ interface ExchangeApiKey {
   api_passphrase?: string
   wallet_address?: string
   stark_private_key?: string
+
+  general_notifications: NotificationApiKey
+  error_notifications: NotificationApiKey
 }
 
 interface NotificationApiKey {
   id: string
   name: string
-  type: string
   driver: string
   created_at: Date
 
