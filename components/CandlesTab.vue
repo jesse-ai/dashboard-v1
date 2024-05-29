@@ -43,7 +43,11 @@
       <div v-if="!results.executing && !results.showResults" class="pb-4">
         <!-- exchange -->
         <Divider title="Exchange" />
-        <USelectMenu v-model="form.exchange" :options="backtestingExchangeNames" size="xl" class="mt-2" />
+        <USelectMenu
+          v-model="form.exchange"
+          placeholder="Select an exchange..."
+          :options="backtestingExchangeNames" size="xl"
+          class="mt-2" />
 
         <!-- symbol -->
         <Divider title="Symbol" class="mt-16" />
