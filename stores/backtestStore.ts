@@ -16,7 +16,7 @@ function newTab(): BacktestTab {
       export_csv: false,
       export_json: false,
       routes: [],
-      extra_routes: []
+      data_routes: []
     },
     results: {
       showResults: false,
@@ -96,8 +96,8 @@ export const useBacktestStore = defineStore('backtest', {
         return { ...route, symbol: route.symbol.toUpperCase() }
       })
 
-      // also for extra_routes
-      this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route) => {
+      // also for data_routes
+      this.tabs[id].form.data_routes = this.tabs[id].form.data_routes.map((route) => {
         route.symbol = route.symbol.toUpperCase()
         return route
       })
@@ -105,7 +105,7 @@ export const useBacktestStore = defineStore('backtest', {
       const { data, error } = await usePostApi('/backtest', {
         id,
         routes: this.tabs[id].form.routes,
-        extra_routes: this.tabs[id].form.extra_routes,
+        data_routes: this.tabs[id].form.data_routes,
         config: useMainStore().settings.backtest,
         start_date: this.tabs[id].form.start_date,
         finish_date: this.tabs[id].form.finish_date,

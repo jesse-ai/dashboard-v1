@@ -12,7 +12,7 @@ interface FormLiveTab {
   debug_mode: boolean
   paper_mode: boolean
   routes: Route[]
-  extra_routes: ExtraRoute[]
+  data_routes: DataRoute[]
 }
 
 interface ResultsLiveTab {

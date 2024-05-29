@@ -12,7 +12,7 @@
         <button
           type="button"
           class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-r-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none"
-          @click="addExtraRoute">
+          @click="addDataRoute">
           <PlusIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
           <span>Data Route</span>
         </button>
@@ -124,10 +124,10 @@
     Data Routes
    ================================
   -->
-    <Divider v-if="form.extra_routes.length" class="mt-8 mb-4" title="Data Routes" />
+    <Divider v-if="form.data_routes.length" class="mt-8 mb-4" title="Data Routes" />
 
     <div
-      v-for="(r, i) in form.extra_routes" :key="r.exchange + i + r.timeframe"
+      v-for="(r, i) in form.data_routes" :key="r.exchange + i + r.timeframe"
       class="w-full flex border shadow-sm dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
       <!-- exchange -->
       <select
@@ -168,7 +168,7 @@
             <MenuItems
               class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-backdrop-dark dark:border-gray-900 z-10 ring-1 ring-black dark:ring-gray-900 ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-900 focus:outline-none">
               <div class="py-1">
-                <MenuItem @click="deleteExtraRoute(r)">
+                <MenuItem @click="deleteDataRoute(r)">
                   <a
                     :name="'extra-delete-menu' + i"
                     class="dark:hover:bg-gray-700 group flex items-center px-4 py-2 text-sm">
@@ -176,7 +176,7 @@
                     Delete
                   </a>
                 </MenuItem>
-                <MenuItem v-slot="{ active }" @click="duplicateExtraRoutes(r)">
+                <MenuItem v-slot="{ active }" @click="duplicateDataRoutes(r)">
                   <a
                     :name="'extra-duplicate-menu' + i"
                     :class="[active ? 'bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300', 'group flex items-center px-4 py-2 text-sm']">
@@ -188,22 +188,22 @@
                 </MenuItem>
               </div>
               <div class="py-1">
-                <MenuItem @click="moveUpExtraRoutes(r)">
+                <MenuItem @click="moveUpDataRoutes(r)">
                   <a
                     :name="'extra-moveup-menu' + i"
-                    :class="[form.extra_routes.indexOf(r) !== 0 ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
+                    :class="[form.data_routes.indexOf(r) !== 0 ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
                     <ArrowUpCircleIcon
-                      :class="[form.extra_routes.indexOf(r) !== 0 ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
+                      :class="[form.data_routes.indexOf(r) !== 0 ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
                       aria-hidden="true" />
                     Move Up
                   </a>
                 </MenuItem>
-                <MenuItem @click="moveDownExtraRoutes(r)">
+                <MenuItem @click="moveDownDataRoutes(r)">
                   <a
                     :name="'extra-movedown-menu' + i"
-                    :class="[form.extra_routes.indexOf(r) !== (form.extra_routes.length - 1) ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
+                    :class="[form.data_routes.indexOf(r) !== (form.data_routes.length - 1) ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
                     <ArrowDownCircleIcon
-                      :class="[form.extra_routes.indexOf(r) !== (form.extra_routes.length - 1) ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
+                      :class="[form.data_routes.indexOf(r) !== (form.data_routes.length - 1) ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
                       aria-hidden="true" />
                     Move Down
                   </a>
@@ -240,13 +240,13 @@ const props = defineProps<{
 }>()
 
 const mainStore = useMainStore()
-const copiedExtraRoutes = ref({ extra_routes: props.form.extra_routes })
+const copiedDataRoutes = ref({ data_routes: props.form.data_routes })
 const copiedRoutes = ref({ routes: props.form.routes })
 const ERRORS = reactive({
   uniqueRoutesErrorMessage: 'each exchange-symbol pair can be traded only once! More info: https://docs.jesse.trade/docs/routes.html#trading-multiple-routes',
   maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
   mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
-  timeframeMustBeDifferentErrorMessage: 'Extra routes timeframe and routes timeframe must be different',
+  timeframeMustBeDifferentErrorMessage: 'Data routes\' timeframe and trading routes\' timeframe must be different',
   emptyParameter: 'You must fill all the parameters',
   invalidSymbol: 'Symbol is invalid'
 })
@@ -275,7 +275,7 @@ const exchanges = computed(() => {
 })
 
 watchEffect(() => {
-  copiedExtraRoutes.value = { extra_routes: props.form.extra_routes }
+  copiedDataRoutes.value = { data_routes: props.form.data_routes }
   copiedRoutes.value = { routes: props.form.routes }
   initiate()
   checkRoutes()
@@ -310,8 +310,8 @@ function checkRoutes() {
     CheckRoutesSymbol(item)
   }
   // check extra routes symbols
-  if (props.form.extra_routes.length > 0) {
-    for (const item of props.form.extra_routes) {
+  if (props.form.data_routes.length > 0) {
+    for (const item of props.form.data_routes) {
       CheckRoutesSymbol(item)
     }
   }
@@ -332,12 +332,12 @@ function checkRoutes() {
   }
 
   let checkBreakExtraLoop = false
-  const tempExtraRoutes = props.form.extra_routes
-  for (const item of tempExtraRoutes.slice(0, -1)) {
+  const tempDataRoutes = props.form.data_routes
+  for (const item of tempDataRoutes.slice(0, -1)) {
     if (props.totalRoutesError.includes(ERRORS.uniqueRoutesErrorMessage) || checkBreakExtraLoop)
       break
 
-    for (const item1 of tempExtraRoutes.slice(tempExtraRoutes.indexOf(item) + 1)) {
+    for (const item1 of tempDataRoutes.slice(tempDataRoutes.indexOf(item) + 1)) {
       if (item.exchange === item1.exchange && item.timeframe === item1.timeframe && item.symbol === item1.symbol) {
         props.totalRoutesError.push(ERRORS.uniqueRoutesErrorMessage)
         checkBreakExtraLoop = true
@@ -347,8 +347,8 @@ function checkRoutes() {
   }
 
   checkBreakExtraLoop = false
-  if (props.form.extra_routes.length > 0) {
-    for (const item of tempExtraRoutes) {
+  if (props.form.data_routes.length > 0) {
+    for (const item of tempDataRoutes) {
       if (props.totalRoutesError.includes(ERRORS.timeframeMustBeDifferentErrorMessage) || checkBreakLoop)
         break
 
@@ -363,7 +363,7 @@ function checkRoutes() {
   }
 }
 
-function CheckRoutesSymbol(item: Route | ExtraRoute) {
+function CheckRoutesSymbol(item: Route | DataRoute) {
   if (!props.totalRoutesError.includes(ERRORS.emptyParameter) && (item.symbol.length == 0 || item.exchange.length == 0 || item.timeframe.length == 0))
     props.totalRoutesError.push(ERRORS.emptyParameter)
   else if (!props.totalRoutesError.includes(ERRORS.emptyParameter)) {
@@ -386,8 +386,8 @@ function addRoute() {
   })
 }
 
-function addExtraRoute() {
-  props.form.extra_routes.push({
+function addDataRoute() {
+  props.form.data_routes.push({
     exchange: props.form.routes[props.form.routes.length - 1].exchange,
     symbol: '',
     timeframe: mainStore.jesseSupportedTimeframes[0],
@@ -401,10 +401,10 @@ function deleteRoute(item: Route) {
   }
 }
 
-function deleteExtraRoute(item: ExtraRoute) {
-  const index = props.form.extra_routes.indexOf(item)
-  if (props.form.extra_routes.length !== 0 && index > -1) {
-    props.form.extra_routes.splice(index, 1)
+function deleteDataRoute(item: DataRoute) {
+  const index = props.form.data_routes.indexOf(item)
+  if (props.form.data_routes.length !== 0 && index > -1) {
+    props.form.data_routes.splice(index, 1)
   }
 }
 
@@ -419,14 +419,14 @@ function duplicateRoutes(item: Route) {
   props.form.routes.splice(itemIndex + 1, 0, newItem)
 }
 
-function duplicateExtraRoutes(item: ExtraRoute) {
-  const itemIndex = props.form.extra_routes.indexOf(item)
+function duplicateDataRoutes(item: DataRoute) {
+  const itemIndex = props.form.data_routes.indexOf(item)
   const newItem = {
     exchange: item.exchange,
     symbol: '',
     timeframe: item.timeframe,
   }
-  props.form.extra_routes.splice(itemIndex + 1, 0, newItem)
+  props.form.data_routes.splice(itemIndex + 1, 0, newItem)
 }
 
 function moveUpRoutes(item: Route) {
@@ -438,12 +438,12 @@ function moveUpRoutes(item: Route) {
   }
 }
 
-function moveUpExtraRoutes(item: ExtraRoute) {
-  const itemIndex = props.form.extra_routes.indexOf(item)
+function moveUpDataRoutes(item: DataRoute) {
+  const itemIndex = props.form.data_routes.indexOf(item)
   if (itemIndex !== 0) {
-    const lastItem = props.form.extra_routes[itemIndex - 1]
-    props.form.extra_routes[itemIndex] = lastItem
-    props.form.extra_routes[itemIndex - 1] = item
+    const lastItem = props.form.data_routes[itemIndex - 1]
+    props.form.data_routes[itemIndex] = lastItem
+    props.form.data_routes[itemIndex - 1] = item
   }
 }
 
@@ -456,12 +456,12 @@ function moveDownRoutes(item: Route) {
   }
 }
 
-function moveDownExtraRoutes(item: ExtraRoute) {
-  const itemIndex = props.form.extra_routes.indexOf(item)
-  if (itemIndex !== props.form.extra_routes.length - 1) {
-    const followingItem = props.form.extra_routes[itemIndex + 1]
-    props.form.extra_routes[itemIndex] = followingItem
-    props.form.extra_routes[itemIndex + 1] = item
+function moveDownDataRoutes(item: DataRoute) {
+  const itemIndex = props.form.data_routes.indexOf(item)
+  if (itemIndex !== props.form.data_routes.length - 1) {
+    const followingItem = props.form.data_routes[itemIndex + 1]
+    props.form.data_routes[itemIndex] = followingItem
+    props.form.data_routes[itemIndex + 1] = item
   }
 }
 

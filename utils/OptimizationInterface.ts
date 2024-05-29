@@ -7,7 +7,7 @@ interface OptimizationForm {
   export_csv: boolean
   export_json: boolean
   routes: OptimizationRoute[]
-  extra_routes: ExtraRoute[]
+  data_routes: DataRoute[]
   optimal_total: number
   // add this because of the error
   symbol?: null
@@ -38,7 +38,7 @@ interface OptimizationRoute {
   strategy: string
 }
 
-interface ExtraRoute {
+interface DataRoute {
   exchange: string
   symbol: string
   timeframe: string

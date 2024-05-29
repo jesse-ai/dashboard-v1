@@ -28,7 +28,7 @@ interface BacktestForm {
   export_csv: boolean
   export_json: boolean
   routes: Route[]
-  extra_routes: ExtraRoute[]
+  data_routes: DataRoute[]
   symbol?: string
 }
 

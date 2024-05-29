@@ -10,7 +10,7 @@ function newTab(id = '') {
       debug_mode: true,
       paper_mode: true,
       routes: [],
-      extra_routes: []
+      data_routes: []
     },
     results: {
       showResults: false,
@@ -112,13 +112,13 @@ export const useLiveStore = defineStore('Live', {
         route.symbol = route.symbol.toUpperCase()
         return route
       })
-      // also for extra_routes
-      this.tabs[id].form.extra_routes = this.tabs[id].form.extra_routes.map((route: ExtraRoute) => {
+      // also for data_routes
+      this.tabs[id].form.data_routes = this.tabs[id].form.data_routes.map((route: DataRoute) => {
         route.symbol = route.symbol.toUpperCase()
         return route
       })
 
-      const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, extra_routes: this.tabs[id].form.extra_routes, config: mainStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
+      const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, data_routes: this.tabs[id].form.data_routes, config: mainStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
 
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)

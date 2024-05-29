@@ -5,7 +5,7 @@ interface Route {
   strategy: string
 }
 
-interface ExtraRoute {
+interface DataRoute {
   exchange: string
   symbol: string
   timeframe: string
