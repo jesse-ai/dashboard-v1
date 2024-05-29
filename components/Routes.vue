@@ -14,7 +14,7 @@
           class="inline-flex items-center shadow-sm px-4 py-1.5 border border-gray-300 dark:border-gray-900 text-sm leading-5 font-medium rounded-r-full text-gray-700 dark:text-gray-100 bg-white dark:bg-backdrop-dark hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none"
           @click="addExtraRoute">
           <PlusIcon class="-ml-1.5 mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
-          <span>Extra Route</span>
+          <span>Data Route</span>
         </button>
       </div>
     </DividerWithButtons>
@@ -121,10 +121,10 @@
 
     <!--
    ================================
-    Extra Routes
+    Data Routes
    ================================
   -->
-    <Divider v-if="form.extra_routes.length" class="mt-8 mb-4" title="Extra Routes" />
+    <Divider v-if="form.extra_routes.length" class="mt-8 mb-4" title="Data Routes" />
 
     <div
       v-for="(r, i) in form.extra_routes" :key="r.exchange + i + r.timeframe"
