@@ -128,11 +128,11 @@
 
     <div
       v-for="(r, i) in form.extra_routes" :key="r.exchange + i + r.timeframe"
-      class="flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg mb-4">
+      class="w-full flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
       <!-- exchange -->
       <select
         v-model="r.exchange"
-        class="dark:bg-backdrop-dark dark:hover:bg-gray-700 hover:bg-gray-50 cursor-pointer w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 dark:border-gray-900 focus:outline-none   rounded-l-lg">
+        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  rounded-l-lg">
         <option v-for="item in exchanges" :key="item.name" :disabled="!allowedToTradeIn(item.name)">
           {{ item.name }}
           {{ allowedToTradeIn(item.name) ? '' : ' (premium only)' }}
@@ -142,19 +142,19 @@
       <!-- symbol -->
       <input
         v-model="r.symbol" type="text"
-        class="dark:bg-backdrop-dark dark:hover:bg-gray-700 hover:bg-gray-50 w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 dark:border-gray-900 focus:outline-none  "
+        class="bg-white dark:bg-gray-900 w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  "
         placeholder="ex: BTC-USDT">
 
       <!-- timeframe -->
       <select
         v-model="r.timeframe"
-        class="dark:bg-backdrop-dark dark:hover:bg-gray-700 hover:bg-gray-50 cursor-pointer w-full pl-3 pr-10 py-6 border-0 border-r border-gray-200 dark:border-gray-900 focus:outline-none  ">
+        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none">
         <option v-for="item in getSupportedTimeframes(r.exchange)" :key="item">{{ item }}</option>
       </select>
 
       <!-- More Button -->
       <div
-        class="flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-r-lg">
+        class="flex flex-col items-center justify-center cursor-pointer bg-white dark:bg-gray-900 rounded-r-lg">
         <Menu as="div" class="relative block h-full w-full">
           <MenuButton class="px-5 block text-left h-full w-full focus:outline-none">
             <EllipsisVerticalIcon class="h-8 w-8 text-gray-400" />
@@ -281,7 +281,7 @@ watchEffect(() => {
   checkRoutes()
 })
 
-function allowedToTradeIn (exchangeName: string) {
+function allowedToTradeIn(exchangeName: string) {
   if (props.mode !== 'backtest') return true
 
   if (mainStore.planInfo.plan === 'premium') {
@@ -291,7 +291,7 @@ function allowedToTradeIn (exchangeName: string) {
   return mainStore.exchangeInfo[exchangeName].required_live_plan === 'free'
 }
 
-function initiate () {
+function initiate() {
   if (props.form.routes.length) {
     return
   }
@@ -303,7 +303,7 @@ function initiate () {
   })
 }
 
-function checkRoutes () {
+function checkRoutes() {
   props.totalRoutesError.splice(0, props.totalRoutesError.length)
   // check routes symbols
   for (const item of props.form.routes) {
@@ -363,7 +363,7 @@ function checkRoutes () {
   }
 }
 
-function CheckRoutesSymbol (item: Route | ExtraRoute) {
+function CheckRoutesSymbol(item: Route | ExtraRoute) {
   if (!props.totalRoutesError.includes(ERRORS.emptyParameter) && (item.symbol.length == 0 || item.exchange.length == 0 || item.timeframe.length == 0))
     props.totalRoutesError.push(ERRORS.emptyParameter)
   else if (!props.totalRoutesError.includes(ERRORS.emptyParameter)) {
@@ -377,7 +377,7 @@ function CheckRoutesSymbol (item: Route | ExtraRoute) {
   }
 }
 
-function addRoute () {
+function addRoute() {
   props.form.routes.push({
     exchange: props.form.routes[props.form.routes.length - 1].exchange,
     symbol: '',
@@ -386,7 +386,7 @@ function addRoute () {
   })
 }
 
-function addExtraRoute () {
+function addExtraRoute() {
   props.form.extra_routes.push({
     exchange: props.form.routes[props.form.routes.length - 1].exchange,
     symbol: '',
@@ -394,21 +394,21 @@ function addExtraRoute () {
   })
 }
 
-function deleteRoute (item: Route) {
+function deleteRoute(item: Route) {
   const index = props.form.routes.indexOf(item)
   if (props.form.routes.length !== 1 && index > -1) {
     props.form.routes.splice(index, 1)
   }
 }
 
-function deleteExtraRoute (item: ExtraRoute) {
+function deleteExtraRoute(item: ExtraRoute) {
   const index = props.form.extra_routes.indexOf(item)
   if (props.form.extra_routes.length !== 0 && index > -1) {
     props.form.extra_routes.splice(index, 1)
   }
 }
 
-function duplicateRoutes (item: Route) {
+function duplicateRoutes(item: Route) {
   const itemIndex = props.form.routes.indexOf(item)
   const newItem = {
     exchange: item.exchange,
@@ -419,7 +419,7 @@ function duplicateRoutes (item: Route) {
   props.form.routes.splice(itemIndex + 1, 0, newItem)
 }
 
-function duplicateExtraRoutes (item: ExtraRoute) {
+function duplicateExtraRoutes(item: ExtraRoute) {
   const itemIndex = props.form.extra_routes.indexOf(item)
   const newItem = {
     exchange: item.exchange,
@@ -429,7 +429,7 @@ function duplicateExtraRoutes (item: ExtraRoute) {
   props.form.extra_routes.splice(itemIndex + 1, 0, newItem)
 }
 
-function moveUpRoutes (item: Route) {
+function moveUpRoutes(item: Route) {
   const itemIndex = props.form.routes.indexOf(item)
   if (itemIndex !== 0) {
     const lastItem = props.form.routes[itemIndex - 1]
@@ -438,7 +438,7 @@ function moveUpRoutes (item: Route) {
   }
 }
 
-function moveUpExtraRoutes (item: ExtraRoute) {
+function moveUpExtraRoutes(item: ExtraRoute) {
   const itemIndex = props.form.extra_routes.indexOf(item)
   if (itemIndex !== 0) {
     const lastItem = props.form.extra_routes[itemIndex - 1]
@@ -447,7 +447,7 @@ function moveUpExtraRoutes (item: ExtraRoute) {
   }
 }
 
-function moveDownRoutes (item: Route) {
+function moveDownRoutes(item: Route) {
   const itemIndex = props.form.routes.indexOf(item)
   if (itemIndex !== props.form.routes.length - 1) {
     const followingItem = props.form.routes[itemIndex + 1]
@@ -456,7 +456,7 @@ function moveDownRoutes (item: Route) {
   }
 }
 
-function moveDownExtraRoutes (item: ExtraRoute) {
+function moveDownExtraRoutes(item: ExtraRoute) {
   const itemIndex = props.form.extra_routes.indexOf(item)
   if (itemIndex !== props.form.extra_routes.length - 1) {
     const followingItem = props.form.extra_routes[itemIndex + 1]
@@ -465,7 +465,7 @@ function moveDownExtraRoutes (item: ExtraRoute) {
   }
 }
 
-function getSupportedTimeframes (exchange: string) {
+function getSupportedTimeframes(exchange: string) {
   if (!exchange) {
     return []
   }
