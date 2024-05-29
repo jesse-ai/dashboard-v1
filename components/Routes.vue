@@ -26,7 +26,7 @@
   -->
     <div
       v-for="(r, i) in form.routes" :key="r.exchange + i"
-      class="w-full flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
+      class="w-full flex border shadow-sm dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
       <select
         v-model="r.exchange"
         class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  rounded-l-lg">
@@ -128,7 +128,7 @@
 
     <div
       v-for="(r, i) in form.extra_routes" :key="r.exchange + i + r.timeframe"
-      class="w-full flex border dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
+      class="w-full flex border shadow-sm dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
       <!-- exchange -->
       <select
         v-model="r.exchange"
