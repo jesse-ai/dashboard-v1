@@ -13,7 +13,10 @@
 
     <UForm :state="form" class="space-y-4" @submit="submit">
       <UFormGroup label="Exchange name:" required>
-        <USelect v-model="form.exchange" :options="mainStore.liveTradingExchangeNames" />
+        <USelectMenu
+          v-model="form.exchange"
+          searchable
+          :options="mainStore.liveTradingExchangeNames" />
       </UFormGroup>
 
       <UFormGroup
@@ -29,7 +32,7 @@
           </UButton>
         </template>
         <template #default>
-          <USelect
+          <USelectMenu
             v-model="form.general_notifications_id"
             :disabled="!notifications_items.length"
             placeholder="Select a notification driver"
@@ -50,7 +53,7 @@
           </UButton>
         </template>
         <template #default>
-          <USelect
+          <USelectMenu
             v-model="form.error_notifications_id"
             :disabled="!notifications_items.length"
             placeholder="Select a notification driver"
