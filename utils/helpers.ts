@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 const helpers = {
-  timestampToTime (timestamp: number) {
+  timestampToTime(timestamp: number) {
     const date = new Date(Number(timestamp))
     const year = date.getUTCFullYear()
     const month = String(date.getUTCMonth() + 1).padStart(2, '0')
@@ -10,12 +10,12 @@ const helpers = {
     return `${year}-${month}-${day} ${date.toUTCString().slice(17, 25)}`
   },
 
-  timestampToTimeOnly (timestamp: number) {
+  timestampToTimeOnly(timestamp: number) {
     const date = new Date(Number(timestamp))
     return `${date.toUTCString().slice(17, 25)}`
   },
 
-  timestampToDate (timestamp: number) {
+  timestampToDate(timestamp: number) {
     const date = new Date(Number(timestamp))
     const year = date.getUTCFullYear()
     const month = String(date.getUTCMonth() + 1).padStart(2, '0')
@@ -23,11 +23,11 @@ const helpers = {
     return `${year}-${month}-${day}`
   },
 
-  currentTime () {
+  currentTime() {
     return new Date().toISOString().slice(11, 19)
   },
 
-  secondsToHumanReadable (seconds: number) {
+  secondsToHumanReadable(seconds: number) {
     const hours = Math.floor(seconds / 3600)
     const minutes = Math.floor((seconds - (hours * 3600)) / 60)
     const secondsLeft = _.round(
@@ -37,7 +37,7 @@ const helpers = {
     return `${hours}h ${minutes}m ${secondsLeft}s`
   },
 
-  remainingTimeText (seconds: number) {
+  remainingTimeText(seconds: number) {
     if (Math.round(seconds) === 0) {
       return 'Please wait...'
     }
@@ -57,7 +57,7 @@ const helpers = {
      * A helper function that rounds the input to 2 decimals but only if the number is bigger than 1.
      * Used for displaying prices
      */
-  roundPrice (price: number) {
+  roundPrice(price: number) {
     if (price > 1) {
       return _.round(price, 2)
     }
@@ -65,7 +65,7 @@ const helpers = {
     return price
   },
 
-  colorBasedOnSide (orderSide: string) {
+  colorBasedOnSide(orderSide: string) {
     if (orderSide === 'buy') {
       return 'text-green-600 dark:text-green-400'
     }
@@ -77,7 +77,7 @@ const helpers = {
     }
   },
 
-  colorBasedOnType (positionType: string) {
+  colorBasedOnType(positionType: string) {
     if (positionType === 'long') {
       return 'text-green-600 dark:text-green-400'
     }
@@ -89,7 +89,7 @@ const helpers = {
     }
   },
 
-  colorBasedOnNumber (num: number) {
+  colorBasedOnNumber(num: number) {
     if (num > 0) {
       return 'text-green-600 dark:text-green-400'
     }
@@ -101,7 +101,7 @@ const helpers = {
     }
   },
 
-  uuid () {
+  uuid() {
     return uuidv4()
   }
 }
