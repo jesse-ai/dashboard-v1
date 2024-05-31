@@ -36,7 +36,8 @@
             v-model="form.general_notifications_id"
             :disabled="!notifications_items.length"
             placeholder="Select a notification driver"
-            :options="notifications_items" />
+            :options="notifications_items"
+            value-attribute="value" />
         </template>
       </UFormGroup>
 
@@ -57,7 +58,8 @@
             v-model="form.error_notifications_id"
             :disabled="!notifications_items.length"
             placeholder="Select a notification driver"
-            :options="notifications_items" />
+            :options="notifications_items"
+            value-attribute="value" />
         </template>
       </UFormGroup>
 
