@@ -147,3 +147,449 @@ interface ClearCandlesDatabaseCacheResponse {
   message: string
   status: string
 }
+
+interface Route {
+  symbol: string
+  timeframe: string
+  strategy: string
+}
+
+interface DataRoute {
+  symbol: string
+  timeframe: string
+}
+
+interface ProgressBar {
+  current: number
+  estimated_remaining_seconds: number
+}
+
+interface Alert {
+  message: string
+  type: string
+}
+
+type ArrayItem = [string, number | string]
+
+interface ArrayItems extends Array<ArrayItem> { }
+
+interface Exception {
+  error: string
+  traceback: string
+}
+
+interface EquityCurve {
+  time: number
+  value: number
+}
+
+interface RoutesInfoEvent {
+  symbol: string
+  timeframe: string
+  strategy_name: string
+}
+
+interface RouteInfo {
+  value: string
+  style: string
+}
+
+interface EquityCurveEvent {
+  timestamp: number
+  balance: number
+}
+
+interface MetricsEvent {
+  total: number
+  total_winning_trades: number
+  total_losing_trades: number
+  starting_balance: number
+  finishing_balance: number
+  win_rate: number
+  ratio_avg_win_loss: number
+  longs_count: number
+  longs_percentage: number
+  shorts_percentage: number
+  shorts_count: number
+  fee: number
+  net_profit: number
+  net_profit_percentage: number
+  average_win: number
+  average_loss: number
+  expectancy: number
+  expectancy_percentage: number
+  expected_net_profit_every_100_trades: number
+  average_holding_period: number
+  average_winning_holding_period: number
+  average_losing_holding_period: number
+  gross_profit: number
+  gross_loss: number
+  max_drawdown: number
+  annual_return: number
+  sharpe_ratio: number
+  calmar_ratio: number
+  sortino_ratio: number
+  omega_ratio: number
+  serenity_index: number
+  smart_sharpe: number
+  smart_sortino: number
+  total_open_trades: number
+  open_pl: number
+  winning_streak: number
+  losing_streak: number
+  largest_losing_trade: number
+  largest_winning_trade: number
+  current_streak: number
+}
+
+interface CandlesInfoEvent {
+  duration: string
+  starting_time: number
+  finishing_time: number
+  exchange_type: string
+  leverage: number
+  leverage_mode: string
+}
+
+interface multiplesTablesValue {
+  value: string | number
+  style: string
+  tag?: string
+  tooltip?: string
+}
+
+interface FeedbackResponse {
+  status: string
+  message: string
+}
+
+interface StoreExchangeApiKeyResponse {
+  status: string
+  message: string
+  data: ExchangeApiKey
+}
+
+interface StoreNotificationApiKeyResponse {
+  status: string
+  message: string
+  data: NotificationApiKey
+}
+
+interface GetExchangeApiKeysResponse {
+  status: string
+  data: ExchangeApiKey[]
+}
+
+interface GetNotificationApiKeysResponse {
+  status: string
+  data: NotificationApiKey[]
+}
+
+interface ExchangeApiKey {
+  id: string
+  exchange: string
+  name: string
+  created_at: Date
+  api_key: string
+  api_secret: string
+
+  // dydx and apex pro
+  api_passphrase?: string
+  wallet_address?: string
+  stark_private_key?: string
+
+  general_notifications: NotificationApiKey
+  error_notifications: NotificationApiKey
+}
+
+interface NotificationApiKey {
+  id: string
+  name: string
+  driver: string
+  created_at: Date
+
+  // telegram
+  bot_token?: string
+  chat_id?: string
+  // discord and slack
+  webhook?: string
+}
+
+// ==================== backtest ====================
+
+interface BacktestResults {
+  showResults: boolean
+  executing: boolean
+  logsModal: boolean
+  progressbar: ProgressBar
+  routes_info: RouteInfo[][]
+  metrics: ArrayItems
+  hyperparameters: ArrayItems
+  generalInfo: BacktestGeneralInfo
+  infoLogs: string
+  exception: Exception
+  charts: {
+    equity_curve: EquityCurve[]
+  }
+  alert: Alert
+  info: ArrayItems
+}
+
+interface BacktestForm {
+  start_date: string
+  finish_date: string
+  debug_mode: boolean
+  export_chart: boolean
+  export_tradingview: boolean
+  export_full_reports: boolean
+  export_csv: boolean
+  export_json: boolean
+  routes: Route[]
+  data_routes: DataRoute[]
+  symbol?: string
+}
+
+interface BacktestTab {
+  id: string
+  form: BacktestForm
+  results: BacktestResults
+}
+
+interface BacktestTabs {
+  [id: string]: BacktestTab
+}
+
+interface BacktestGeneralInfo {
+  debug_mode?: boolean
+  session_id?: string
+}
+
+// ==================== Candle ====================
+
+
+interface CandleTabs {
+  [id: string]: CandleTab
+}
+
+interface CandleTab {
+  id: string
+  form: CandleTabForm
+  results: CandleTabResults
+}
+
+interface CandleTabForm {
+  start_date: string
+  exchange: string
+  symbol: string
+  debug_mode?: boolean
+}
+
+interface CandleTabResults {
+  showResults: boolean
+  executing: boolean
+  progressbar: ProgressBar
+  metrics: any[] // Replace 'any' with the actual type of the items in the 'metrics' array if known
+  infoLogs: string
+  exception: Exception
+  alert: Alert
+}
+
+// ==================== Live ====================
+interface LiveTabs {
+  [id: string]: LiveTab
+}
+
+interface LiveTab {
+  id: string
+  form: LiveForm
+  results: LiveResults
+}
+
+interface LiveForm {
+  debug_mode: boolean
+  paper_mode: boolean
+  exchange_api_key: ExchangeApiKey
+  exchange: string
+  routes: Route[]
+  data_routes: DataRoute[]
+}
+
+interface LiveResults {
+  showResults: boolean
+  booting: boolean
+  monitoring: boolean
+  finished: boolean
+  terminating: boolean
+  progressbar: ProgressBar
+  routes_info: RouteInfo[][]
+  routes: any[]
+  metrics: any[]
+  generalInfo: any
+  positions: multiplesTablesValue[][]
+  orders: ordersEvent[]
+  watchlist: [string, string][]
+  candles: LiveCandleData[]
+  currentCandles: CurrentCandlesObject
+  infoLogs: string
+  errorLogs: string
+  exception: Exception
+  charts: {
+    equity_curve: EquityCurve[]
+  }
+  info: (string | number)[][]
+}
+
+interface ordersEvent {
+  canceled_at: number | null
+  created_at: number
+  exchange_id: string
+  executed_at: number | null
+  filled_qty: number
+  id: string
+  price: number
+  qty: number
+  session_id: string | null
+  side: string
+  status: string
+  symbol: string
+  type: string
+}
+
+interface LiveGeneralInfoEvent {
+  started_at: number
+  current_time: number
+  started_balance: number
+  current_balance: number
+  debug_mode: boolean
+  count_error_logs: number
+  count_info_logs: number
+  count_active_orders: number
+  open_positions: number
+  pnl: number
+  pnl_perc: number
+  count_trades: number
+  count_winning_trades: number
+  count_losing_trades: number
+  routes: Route[] // Replace 'any' with the actual type of the items in the 'routes' array if known
+}
+
+interface positionsEvent {
+  currency: string
+  current_price: number
+  entry: number
+  leverage: number
+  liquidation_price: number | null
+  opened_at: number
+  pnl: number
+  pnl_perc: number
+  qty: number
+  strategy_name: string
+  symbol: string
+  type: string
+  value: number
+}
+
+
+interface LogsData {
+  id: string
+  timestamp: number
+  message: string
+}
+
+interface GetLogsEvent {
+  id: string
+  data: LogsData[]
+}
+
+interface KeyValueObject {
+  key: string
+  value: string | number
+}
+
+interface LiveCandleData {
+  time: number
+  open: number
+  close: number
+  high: number
+  low: number
+  volume: number
+}
+
+interface CurrentCandlesObject {
+  [key: string]: LiveCandleData
+}
+
+interface GetCandlesResponse {
+  id: string
+  data: LiveCandleData[]
+}
+
+interface WebSocketData {
+  id: string
+  event: string
+  data: any
+}
+
+// ==================== Optimization ====================
+
+
+
+
+interface OptimizationForm {
+  start_date: string
+  finish_date: string
+  debug_mode: boolean
+  export_csv: boolean
+  export_json: boolean
+  routes: OptimizationRoute[]
+  data_routes: DataRoute[]
+  optimal_total: number
+  // add this because of the error
+  symbol?: null
+}
+
+interface OptimizationResults {
+  showResults: boolean
+  executing: boolean
+  logsModal: boolean
+  progressbar: {
+    current: number
+    estimated_remaining_seconds: number
+  }
+  routes_info: any[]
+  best_candidates: any[]
+  metrics: any[]
+  generalInfo: ArrayItems
+  infoLogs: string
+  info: (string | number)[][]
+  exception: Exception
+  alert: Alert
+}
+
+interface OptimizationRoute {
+  symbol: string
+  timeframe: string
+  strategy: string
+}
+
+interface OptimizationGeneralInfoEvent {
+  started_at: string
+  index: number
+  average_execution_seconds: number
+  trading_route: string
+  population_size?: number
+  iterations?: number
+  solution_length?: number
+}
+
+interface bestCandidatesEvent {
+  rank: number
+  dna: string
+  fitness: number
+  training_win_rate: number
+  training_total_trades: number
+  training_pnl: number
+  testing_win_rate: number
+  testing_total_trades: number
+  testing_pnl: number
+}
