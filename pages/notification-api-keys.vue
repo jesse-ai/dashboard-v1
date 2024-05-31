@@ -18,7 +18,10 @@
 
     <UForm :state="form" class="space-y-4" @submit="submit">
       <UFormGroup label="Driver:" required>
-        <USelectMenu v-model="form.driver" :options="notificationDrivers" />
+        <USelectMenu
+          v-model="form.driver"
+          value-attribute="value"
+          :options="notificationDrivers" />
       </UFormGroup>
 
       <UFormGroup label="Name:" required>
