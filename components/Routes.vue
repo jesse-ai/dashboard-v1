@@ -26,93 +26,77 @@
   -->
     <div
       v-for="(r, i) in form.routes" :key="r.symbol + i"
-      class="w-full flex border shadow-sm dark:bg-backdrop-dark dark:border-gray-900 rounded-lg my-4">
-      <!--      <select -->
-      <!--        v-model="r.exchange" -->
-      <!--        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  rounded-l-lg"> -->
-      <!--        <option v-for="item in exchanges" :key="item.name" :disabled="!allowedToTradeIn(item.name)"> -->
-      <!--          {{ item.name }} -->
-      <!--          {{ allowedToTradeIn(item.name) ? '' : ' (premium only)' }} -->
-      <!--        </option> -->
-      <!--      </select> -->
-
+      class="flex mt-4"
+    >
       <!-- symbol -->
-      <input
-        v-model="r.symbol" type="text"
-        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  rounded-l-lg"
-        placeholder="ex: BTC-USDT">
+      <USelectMenu
+        v-model="r.symbol"
+        class="w-full"
+        :ui="{ rounded: 'rounded-none rounded-l' }"
+        searchable
+        size="lg"
+        :options="['BTC-USDT', 'ETH-USDT']"
+        placeholder="ex: BTC-USDT" />
 
       <!-- timeframe -->
-      <select
+      <USelectMenu
         v-model="r.timeframe"
-        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  ">
-        <option v-for="item in timeframes" :key="item">{{ item }}</option>
-      </select>
+        class="w-full"
+        :ui="{ rounded: 'rounded-none' }"
+        size="lg"
+        :options="timeframes"
+      />
 
-      <select
+      <USelectMenu
         v-model="r.strategy"
-        class="bg-white dark:bg-gray-900 cursor-pointer w-full pl-3.5 py-2.5 border-0 border-r border-gray-300 dark:border-gray-700 focus:outline-none  ">
-        <option v-for="item in strategies" :key="item">{{ item }}</option>
-      </select>
+        class="w-full"
+        :ui="{ rounded: 'rounded-none rounded-r' }"
+        size="lg"
+        :options="strategies"
+        searchable
+      />
 
-      <!-- More Button -->
-      <div class="flex flex-col items-center justify-center cursor-pointer bg-white dark:bg-gray-900 rounded-r-lg">
-        <Menu as="div" class="relative block h-full w-full">
-          <MenuButton class="px-5 block text-left h-full w-full focus:outline-none">
-            <EllipsisVerticalIcon class="h-8 w-8 text-gray-400" />
-          </MenuButton>
-
-          <transition
-            enter-active-class="transition ease-out duration-100"
-            enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-            <MenuItems
-              class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-backdrop-dark z-10 ring-1 ring-black dark:ring-gray-900 ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-900 focus:outline-none">
-              <div class="py-1">
-                <MenuItem @click="deleteRoute(r)">
-                  <a
-                    :class="[(form.routes.length > 1) ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
-                    <TrashIcon
-                      :class="[(form.routes.length > 1) ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
-                      aria-hidden="true" />
-                    Delete
-                  </a>
-                </MenuItem>
-                <MenuItem v-slot="{ active }" @click="duplicateRoutes(r)">
-                  <a
-                    :class="[active ? 'bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300', 'group flex items-center px-4 py-2 text-sm']">
-                    <DocumentDuplicateIcon
-                      class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true" />
-                    Duplicate
-                  </a>
-                </MenuItem>
-              </div>
-              <div class="py-1">
-                <MenuItem @click="moveUpRoutes(r)">
-                  <a
-                    :class="[form.routes.indexOf(r) !== 0 ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
-                    <ArrowUpCircleIcon
-                      :class="[form.routes.indexOf(r) !== 0 ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
-                      aria-hidden="true" />
-                    Move Up
-                  </a>
-                </MenuItem>
-                <MenuItem @click="moveDownRoutes(r)">
-                  <a
-                    :class="[form.routes.indexOf(r) !== (form.routes.length - 1) ? 'dark:hover:bg-gray-700' : 'text-gray-200 dark:text-gray-600 cursor-not-allowed', 'group flex items-center px-4 py-2 text-sm']">
-                    <ArrowDownCircleIcon
-                      :class="[form.routes.indexOf(r) !== (form.routes.length - 1) ? 'text-gray-400 group-hover:text-gray-500' : 'text-gray-200 group-hover:text-gray-200 dark:text-gray-600 dark:group-hover:text-gray-600', 'mr-3 h-5 w-5']"
-                      aria-hidden="true" />
-                    Move Down
-                  </a>
-                </MenuItem>
-              </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-      </div>
+      <!--  buttons    -->
+      <UButton
+        v-if="form.routes.length > 1"
+        class=""
+        size="lg"
+        variant="link"
+        color="gray"
+        icon="i-heroicons-trash"
+        :disabled="form.routes.length === 1"
+        @click="deleteRoute(r)"
+      />
+      <UButton
+        v-if="form.routes.length > 1"
+        class=""
+        size="lg"
+        variant="link"
+        color="gray"
+        icon="i-heroicons-document-duplicate"
+        :disabled="form.routes.length === 1"
+        @click="duplicateRoutes(r)"
+      />
+      <UButton
+        v-if="form.routes.length > 1"
+        class=""
+        size="lg"
+        variant="link"
+        color="gray"
+        icon="i-heroicons-arrow-down"
+        :disabled="form.routes.indexOf(r) === (form.routes.length - 1)"
+        @click="moveDownRoutes(r)"
+      />
+      <UButton
+        v-if="form.routes.length > 1"
+        class=""
+        size="lg"
+        variant="link"
+        color="gray"
+        icon="i-heroicons-arrow-up"
+        :disabled="form.routes.indexOf(r) === 0"
+        @click="moveUpRoutes(r)"
+      />
     </div>
 
     <!--
