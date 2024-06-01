@@ -162,7 +162,7 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.monitoring = false
       this.tabs[id].results.finished = false
     },
-    candlesInfoEvent(id: string, data: CandlesInfoEvent) {
+    candlesInfoEvent(id: string, data: BacktestInfoEvent) {
       if (this.tabs[id] === undefined) {
         this.tabs[id] = newTab(id)
       }

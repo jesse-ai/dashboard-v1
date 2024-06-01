@@ -7,8 +7,8 @@ import { useMainStore } from '~/stores/mainStore'
 export const useOptimizationStore = defineStore('optimization', {
   state: () => ({
     form: {
-      start_date: '2021-01-01',
-      finish_date: '2021-06-01',
+      start_date: '2024-01-01',
+      finish_date: '2024-03-01',
       debug_mode: false,
       export_csv: false,
       export_json: false,
@@ -121,7 +121,7 @@ export const useOptimizationStore = defineStore('optimization', {
       this.results.showResults = false
       this.start()
     },
-    candlesInfoEvent(id: string, data: CandlesInfoEvent) {
+    candlesInfoEvent(id: string, data: BacktestInfoEvent) {
       this.results.info = [
         ['Period', data.duration],
         [
@@ -136,7 +136,6 @@ export const useOptimizationStore = defineStore('optimization', {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
-          { value: item.exchange, style: '' },
           { value: item.symbol, style: '' },
           { value: item.timeframe, style: '' },
           { value: item.strategy_name, style: '' },

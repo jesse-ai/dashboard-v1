@@ -7,14 +7,15 @@ function newTab(): BacktestTab {
   return _.cloneDeep({
     id: helpers.uuid(),
     form: {
-      start_date: '2021-01-01',
-      finish_date: '2021-06-01',
+      start_date: '2024-01-01',
+      finish_date: '2024-03-01',
       debug_mode: false,
       export_chart: false,
       export_tradingview: false,
       export_full_reports: false,
       export_csv: false,
       export_json: false,
+      exchange: '',
       routes: [] as Route[],
       data_routes: [] as DataRoute[]
     },
@@ -91,19 +92,9 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[id].results.exception.error = ''
       this.tabs[id].results.alert.message = ''
 
-      // make sure symbols are uppercase
-      this.tabs[id].form.routes = this.tabs[id].form.routes.map((route) => {
-        return { ...route, symbol: route.symbol.toUpperCase() }
-      })
-
-      // also for data_routes
-      this.tabs[id].form.data_routes = this.tabs[id].form.data_routes.map((route) => {
-        route.symbol = route.symbol.toUpperCase()
-        return route
-      })
-
       const { data, error } = await usePostApi('/backtest', {
         id,
+        exchange: this.tabs[id].form.exchange,
         routes: this.tabs[id].form.routes,
         data_routes: this.tabs[id].form.data_routes,
         config: useMainStore().settings.backtest,
@@ -144,13 +135,14 @@ export const useBacktestStore = defineStore('backtest', {
     newBacktest(id: string) {
       this.tabs[id].results.showResults = false
     },
-    candlesInfoEvent(id: string, data: CandlesInfoEvent) {
+    candlesInfoEvent(id: string, data: BacktestInfoEvent) {
       const list = [
         ['Period', data.duration],
         ['Starting Date', helpers.timestampToDate(
           data.starting_time
         )],
         ['Ending Date', helpers.timestampToDate(data.finishing_time)],
+        ['Exchange', data.exchange],
         ['Exchange Type', data.exchange_type],
       ] as [string, string | number][]
       if (data.exchange_type === 'futures') {

@@ -242,10 +242,11 @@ interface MetricsEvent {
   current_streak: number
 }
 
-interface CandlesInfoEvent {
+interface BacktestInfoEvent {
   duration: string
   starting_time: number
   finishing_time: number
+  exchange: string
   exchange_type: string
   leverage: number
   leverage_mode: string
@@ -344,6 +345,7 @@ interface BacktestForm {
   export_full_reports: boolean
   export_csv: boolean
   export_json: boolean
+  exchange: string
   routes: Route[]
   data_routes: DataRoute[]
   symbol?: string

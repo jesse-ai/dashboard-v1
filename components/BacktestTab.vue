@@ -70,7 +70,20 @@
 
       <!-- Content -->
       <div v-if="!results.executing && !results.showResults">
-        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="backtest" />
+        <!-- exchange -->
+        <Divider class="mb-4" title="Exchange" />
+        <USelectMenu
+          v-model="form.exchange"
+          placeholder="Select an exchange..."
+          searchable
+          :options="useMainStore().backtestingExchangeNames"
+          size="xl" class="mt-2 mb-16"
+        />
+
+        <Routes
+          :total-routes-error="totalRoutesError" :timeframes="useMainStore().jesseSupportedTimeframes"
+          :form="form" :results="results"
+          mode="backtest" />
 
         <Divider class="mt-16" title="Duration" />
         <div class="flex items-center select-none flex-1 my-4">
@@ -125,7 +138,7 @@
           <Divider title="Routes" class="mb-4" />
           <MultipleValuesTable
             :data="results.routes_info"
-            :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
+            :header-items="['Symbol', 'Timeframe', 'Strategy']" header />
 
           <Divider v-if="results.hyperparameters.length" class="mt-16 mb-4" title="Hyperparameters" />
           <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
@@ -268,18 +281,10 @@ const backtestStore = useBacktestStore()
 
 const { cancel, rerun, newBacktest } = backtestStore
 
-const start = (id: string) => {
+function start(id: string) {
   if (totalRoutesError.value.length) {
-    const routeSection = document.getElementById('routes-section')
-    if (routeSection) {
-      const offsetTop = routeSection.offsetTop
-      // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
-    }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
-      setTimeout(() => {
-        showNotification('error', totalRoutesError.value[i])
-      }, i * 100)
+      showNotification('error', totalRoutesError.value[i])
     }
     return
   }
@@ -289,16 +294,8 @@ const start = (id: string) => {
 
 const startInNewTab = (id: string) => {
   if (totalRoutesError.value.length) {
-    const routeSection = document.getElementById('routes-section')
-    if (routeSection) {
-      const offsetTop = routeSection.offsetTop
-      // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
-    }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
-      setTimeout(() => {
-        showNotification('error', totalRoutesError.value[i])
-      }, i * 100)
+      showNotification('error', totalRoutesError.value[i])
     }
     return
   }

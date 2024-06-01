@@ -34,9 +34,10 @@
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
+        searchable-placeholder="Search symbols..."
         size="lg"
         :options="['BTC-USDT', 'ETH-USDT']"
-        placeholder="ex: BTC-USDT" />
+        placeholder="Select a symbol..." />
 
       <!-- timeframe -->
       <USelectMenu
