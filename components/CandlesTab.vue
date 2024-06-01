@@ -45,6 +45,7 @@
         <Divider title="Exchange" />
         <USelectMenu
           v-model="form.exchange"
+          searchable
           placeholder="Select an exchange..."
           :options="backtestingExchangeNames" size="xl"
           class="mt-2" />
