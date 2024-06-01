@@ -47,7 +47,7 @@
           v-model="form.exchange"
           searchable
           placeholder="Select an exchange..."
-          :options="backtestingExchangeNames" size="xl"
+          :options="backtestingExchangeNames" size="lg"
           class="mt-2" />
 
         <!-- symbol -->
@@ -55,10 +55,10 @@
         <UInput
           v-model="form.symbol"
           placeholder="ex: BTC-USDT"
-          size="xl" class="mt-2" />
+          size="lg" class="mt-2" />
 
         <Divider title="Start Date" class="mt-16" />
-        <UInput v-model="form.start_date" type="date" size="xl" class="mt-2" />
+        <UInput v-model="form.start_date" type="date" size="lg" class="mt-2" />
       </div>
     </template>
 

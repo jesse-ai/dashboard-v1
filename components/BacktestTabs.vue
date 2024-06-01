@@ -10,7 +10,7 @@
           @click.middle="emit('close', tab.id)">
           <NuxtLink
             :to="`/backtest/${tab.id}`"
-            :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-sm bg-white dark:bg-backdrop-dark']">
+            :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-xs bg-white dark:bg-backdrop-dark']">
 
             <span>{{ getTitle(tab) }}</span>
 

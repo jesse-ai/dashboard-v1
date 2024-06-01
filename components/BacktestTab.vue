@@ -77,7 +77,8 @@
           placeholder="Select an exchange..."
           searchable
           :options="useMainStore().backtestingExchangeNames"
-          size="xl" class="mt-2 mb-16"
+          size="lg"
+          class="mt-2 mb-16"
         />
 
         <Routes
@@ -89,12 +90,12 @@
         <div class="flex items-center select-none flex-1 my-4">
           <UInput
             v-model="form.start_date" type="date"
-            variant="outline" size="xl"
+            variant="outline" size="lg"
             class="w-full mr-2" />
 
           <UInput
             v-model="form.finish_date" type="date"
-            variant="outline" size="xl"
+            variant="outline" size="lg"
             class="w-full ml-2" />
         </div>
 

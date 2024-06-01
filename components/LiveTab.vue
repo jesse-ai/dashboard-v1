@@ -90,7 +90,7 @@
           placeholder="Select an exchange..."
           searchable
           :options="exchangeItems"
-          size="xl" class="mt-2 mb-16"
+          size="lg" class="mt-2 mb-16"
         />
         <USelectMenu
           v-else
@@ -98,7 +98,7 @@
           placeholder="Select an exchange..."
           searchable
           :options="exchangeItems"
-          size="xl" class="mt-2 mb-16"
+          size="lg" class="mt-2 mb-16"
           @change="updateExchange" />
 
         <Routes
@@ -106,6 +106,7 @@
           :results="results" mode="live"
           :timeframes="timeframeItems" />
 
+        <!-- options -->
         <Divider class="mt-16 mb-4" title="Options" />
 
         <div class="grid grid-cols-1 gap-6">
