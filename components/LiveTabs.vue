@@ -69,7 +69,7 @@ function getTitle(tab: LiveTab) {
   }
 
   const firstRoute = tab.form.routes[0]
-  const k = `${firstRoute.exchange} • ${firstRoute.strategy} • ${firstRoute.symbol} • ${firstRoute.timeframe}`
+  const k = `${tab.form.exchange} • ${firstRoute.strategy} • ${firstRoute.symbol} • ${firstRoute.timeframe}`
 
   if (tab.results.monitoring && !tab.results.finished) {
     return `🟢 ${k}`

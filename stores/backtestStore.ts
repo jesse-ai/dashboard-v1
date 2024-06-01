@@ -15,8 +15,8 @@ function newTab(): BacktestTab {
       export_full_reports: false,
       export_csv: false,
       export_json: false,
-      routes: [],
-      data_routes: []
+      routes: [] as Route[],
+      data_routes: [] as DataRoute[]
     },
     results: {
       showResults: false,
@@ -163,7 +163,6 @@ export const useBacktestStore = defineStore('backtest', {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
-          { value: item.exchange, style: '' },
           { value: item.symbol, style: '' },
           { value: item.timeframe, style: '' },
           { value: item.strategy_name, style: '' },

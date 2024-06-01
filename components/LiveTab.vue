@@ -82,7 +82,29 @@
     <template #left>
       <!-- form -->
       <div v-if="!results.booting && !results.monitoring && !results.showResults" data-cy="live-page-content">
-        <Routes :total-routes-error="totalRoutesError" :form="form" :results="results" mode="live" />
+        <!-- exchange -->
+        <Divider class="mb-4" title="Exchange" />
+        <USelectMenu
+          v-if="form.paper_mode"
+          v-model="form.exchange"
+          placeholder="Select an exchange..."
+          searchable
+          :options="exchangeItems"
+          size="xl" class="mt-2 mb-16"
+        />
+        <USelectMenu
+          v-else
+          v-model="form.exchange_api_key"
+          placeholder="Select an exchange..."
+          searchable
+          :options="exchangeItems"
+          size="xl" class="mt-2 mb-16"
+          @change="updateExchange" />
+
+        <Routes
+          :total-routes-error="totalRoutesError" :form="form"
+          :results="results" mode="live"
+          :timeframes="timeframeItems" />
 
         <Divider class="mt-16 mb-4" title="Options" />
 
@@ -269,7 +291,7 @@
         <KeyValueTableSimple :data="results.watchlist" />
       </div>
     </template>
-  </LayoutsSidebar>
+  </layoutssidebar>
 </template>
 
 <script setup lang="ts">
@@ -284,8 +306,8 @@ import { useMainStore } from '~/stores/mainStore'
 import helpers from '@/utils/helpers'
 
 const props = defineProps<{
-  form: FormLiveTab
-  results: ResultsLiveTab
+  form: LiveForm
+  results: LiveResults
 }>()
 
 const totalRoutesError = ref<string[]>([])
@@ -303,6 +325,19 @@ const mainStore = useMainStore()
 const liveStore = useLiveStore()
 
 const planInfo = computed(() => mainStore.planInfo)
+
+const exchangeItems = computed(() => {
+  // if paper mode
+  if (props.form.paper_mode) {
+    return mainStore.liveTradingExchangeNames
+  }
+
+  // if live mode
+  return mainStore.exchangeApiKeys.map(n => ({
+    label: `${n.exchange} - ${n.name}`,
+    value: n,
+  }))
+})
 
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {
@@ -339,21 +374,24 @@ const orders = computed(() => {
   return arr
 })
 
+const timeframeItems = computed(() => {
+  if (mainStore.settings.live.generate_candles_from_1m || !props.form.exchange) {
+    return mainStore.jesseSupportedTimeframes
+  }
+  return mainStore.exchangeInfo[props.form.exchange].supported_timeframes
+})
+
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
 
-const start = (id: string) => {
+function updateExchange(value: { label: string, value: ExchangeApiKey }) {
+  props.form.exchange = value.value.exchange
+}
+
+function start(id: string) {
   if (totalRoutesError.value.length) {
-    const routeSection = document.getElementById('routes-section')
-    if (routeSection) {
-      const offsetTop = routeSection.offsetTop
-      // scroll to routes section
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' })
-    }
     for (let i = 0; i < totalRoutesError.value.length; i++) {
-      setTimeout(() => {
-        showNotification('error', totalRoutesError.value[i])
-      }, i * 100)
+      showNotification('error', totalRoutesError.value[i])
     }
     return
   }
@@ -361,12 +399,12 @@ const start = (id: string) => {
   liveStore.start(id)
 }
 
-const stop = (id: string) => {
+function stop(id: string) {
   terminationConfirmModal.value = false
   liveStore.stop(id)
 }
 
-const copyInfoLogs = () => {
+function copyInfoLogs() {
   displayInfo.value = true
 
   navigator.clipboard.writeText(props.results.infoLogs)
@@ -378,7 +416,7 @@ const copyInfoLogs = () => {
   }, 3000)
 }
 
-const copyErrorLogs = () => {
+function copyErrorLogs() {
   displayErrors.value = true
 
   navigator.clipboard.writeText(props.results.errorLogs)

@@ -9,8 +9,10 @@ function newTab(id = '') {
     form: {
       debug_mode: true,
       paper_mode: true,
-      routes: [],
-      data_routes: []
+      exchange_api_key: {} as ExchangeApiKey,
+      exchange: '',
+      routes: [] as Route[],
+      data_routes: [] as DataRoute[]
     },
     results: {
       showResults: false,
@@ -118,7 +120,19 @@ export const useLiveStore = defineStore('Live', {
         return route
       })
 
-      const { data, error } = await usePostApi('/live', { id, routes: this.tabs[id].form.routes, data_routes: this.tabs[id].form.data_routes, config: mainStore.settings.live, debug_mode: this.tabs[id].form.debug_mode, paper_mode: this.tabs[id].form.paper_mode }, true)
+      const exchange_api_key_id = this.tabs[id].form.paper_mode ? '' : this.tabs[id].form.exchange_api_key.id
+      const exchange = this.tabs[id].form.paper_mode ? this.tabs[id].form.exchange : this.tabs[id].form.exchange_api_key.exchange
+
+      const { data, error } = await usePostApi('/live', {
+        id,
+        exchange: exchange,
+        exchange_api_key_id: exchange_api_key_id,
+        routes: this.tabs[id].form.routes,
+        data_routes: this.tabs[id].form.data_routes,
+        config: mainStore.settings.live,
+        debug_mode: this.tabs[id].form.debug_mode,
+        paper_mode: this.tabs[id].form.paper_mode
+      }, true)
 
       if (error.value && error.value.statusCode !== 200) {
         showNotification('error', error.value.data.message)
@@ -166,7 +180,6 @@ export const useLiveStore = defineStore('Live', {
       const arr: RouteInfo[][] = []
       data.forEach((item) => {
         arr.push([
-          { value: item.exchange, style: '' },
           { value: item.symbol, style: '' },
           { value: item.timeframe, style: '' },
           { value: item.strategy_name, style: '' },
@@ -222,7 +235,6 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.routes = []
       for (const item of this.tabs[id].form.routes) {
         this.tabs[id].results.routes.push([
-          { value: item.exchange, style: '' },
           { value: item.symbol, style: '' },
           { value: item.timeframe, style: '' },
           { value: item.strategy, style: '' },
@@ -240,8 +252,7 @@ export const useLiveStore = defineStore('Live', {
       const { data, error } = await usePostApi('/get-candles',
         {
           id,
-          // exchange: this.tabs[id].form.routes[0].exchange,
-          exchange: this.tabs[id].form.routes[0].exchange,
+          exchange: this.tabs[id].form.exchange,
           symbol: this.tabs[id].form.routes[0].symbol,
           timeframe: this.tabs[id].form.routes[0].timeframe
         }, true)

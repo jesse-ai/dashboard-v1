@@ -31,8 +31,8 @@ const pageId = computed(() => useRoute().params.id as string)
 const loading = ref(true)
 
 const props = defineProps<{
-  form: FormLiveTab
-  results: ResultsLiveTab
+  form: LiveForm
+  results: LiveResults
 }>()
 
 const chartContainer = ref()
