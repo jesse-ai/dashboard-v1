@@ -12,6 +12,7 @@ export const useOptimizationStore = defineStore('optimization', {
       debug_mode: false,
       export_csv: false,
       export_json: false,
+      exchange: '',
       routes: [] as OptimizationRoute[],
       data_routes: [] as DataRoute[],
       optimal_total: 50,
@@ -69,19 +70,9 @@ export const useOptimizationStore = defineStore('optimization', {
 
       const mainStore = useMainStore()
 
-      // make sure symbols are uppercase
-      this.form.routes = this.form.routes.map((route) => {
-        route.symbol = route.symbol.toUpperCase()
-        return route
-      })
-      // also for data_routes
-      this.form.data_routes = this.form.data_routes.map((route) => {
-        route.symbol = route.symbol.toUpperCase()
-        return route
-      })
-
       const params = {
         id: 'optimization',
+        exchange: this.form.exchange,
         routes: this.form.routes,
         data_routes: this.form.data_routes,
         config: mainStore.settings.optimization,
