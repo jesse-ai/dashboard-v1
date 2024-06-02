@@ -35,10 +35,12 @@
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <div class="flex-shrink-0">
-            <!-- light -->
-            <img class="h-9 w-auto dark:hidden" src="@/assets/imgs/logo-light.png" alt="Jesse Logo">
-            <!-- dark -->
-            <img class="hidden dark:block h-10 w-auto" src="@/assets/imgs/logo-dark.svg" alt="Jesse Logo">
+            <NuxtLink to="/">
+              <!-- light -->
+              <img class="h-9 w-auto dark:hidden" src="@/assets/imgs/logo-light.png" alt="Jesse Logo">
+              <!-- dark -->
+              <img class="hidden dark:block h-10 w-auto" src="@/assets/imgs/logo-dark.svg" alt="Jesse Logo">
+            </NuxtLink>
           </div>
           <div class="hidden lg:block lg:ml-6">
             <div class="flex space-x-4">
