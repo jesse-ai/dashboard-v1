@@ -63,14 +63,23 @@ function getTitle(tab: CandleTab) {
     return `Error`
   }
 
-  if (tab.results.executing) {
-    return `${tab.form.symbol.toUpperCase()} • ${tab.form.start_date} | ${tab.results.progressbar.current}%`
+  let k = ''
+  if (tab.form.exchange) {
+    k += `${tab.form.exchange} • `
   }
-
   if (tab.form.symbol) {
-    return `${tab.form.symbol.toUpperCase()} • ${tab.form.start_date}`
+    k += `${tab.form.symbol.toUpperCase()} • `
+  }
+  if (tab.form.start_date) {
+    k += `${tab.form.start_date}`
+  }
+  // Remove trailing ' • ' if exists
+  k = k.endsWith(' • ') ? k.slice(0, -3) : k
+
+  if (tab.results.executing) {
+    return `${k} | ${tab.results.progressbar.current}%`
   }
 
-  return `${tab.form.start_date}`
+  return k
 }
 </script>

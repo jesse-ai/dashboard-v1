@@ -69,7 +69,21 @@ function getTitle(tab: LiveTab) {
   }
 
   const firstRoute = tab.form.routes[0]
-  const k = `${tab.form.exchange} • ${firstRoute.strategy} • ${firstRoute.symbol} • ${firstRoute.timeframe}`
+  let k = ''
+  if (tab.form.exchange) {
+    k += `${tab.form.exchange} • `
+  }
+  if (firstRoute.strategy) {
+    k += `${firstRoute.strategy} • `
+  }
+  if (firstRoute.symbol) {
+    k += `${firstRoute.symbol} • `
+  }
+  if (firstRoute.timeframe) {
+    k += `${firstRoute.timeframe}`
+  }
+  // Remove trailing ' • ' if exists
+  k = k.endsWith(' • ') ? k.slice(0, -3) : k
 
   if (tab.results.monitoring && !tab.results.finished) {
     return `🟢 ${k}`

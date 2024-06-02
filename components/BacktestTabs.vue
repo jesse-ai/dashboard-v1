@@ -68,7 +68,19 @@ function getTitle(tab: BacktestTab) {
   }
 
   const firstRoute = tab.form.routes[0]
-  const k = `${firstRoute.strategy} • ${firstRoute.symbol} • ${firstRoute.timeframe}`
+  let k = ''
+  if (firstRoute.strategy) {
+    k += `${firstRoute.strategy} • `
+  }
+  if (firstRoute.symbol) {
+    k += `${firstRoute.symbol} • `
+  }
+  if (firstRoute.timeframe) {
+    k += `${firstRoute.timeframe}`
+  }
+  // Remove trailing ' • ' if exists
+  k = k.endsWith(' • ') ? k.slice(0, -3) : k
+
   if (tab.results.executing) {
     return `${k} | ${tab.results.progressbar.current}%`
   }
