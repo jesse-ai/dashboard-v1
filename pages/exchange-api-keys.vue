@@ -140,7 +140,7 @@ import { useMainStore } from '~/stores/mainStore'
 import SmallContainer from '~/components/SmallContainer.vue'
 import ExchangeApiKey from '~/components/ExchangeApiKey.vue'
 
-useSeoMeta({ title: 'API Keys' })
+useSeoMeta({ title: 'Exchange API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()

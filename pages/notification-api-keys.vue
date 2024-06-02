@@ -87,7 +87,7 @@
 import { useMainStore } from '~/stores/mainStore'
 import SmallContainer from '~/components/SmallContainer.vue'
 
-useSeoMeta({ title: 'API Keys' })
+useSeoMeta({ title: 'Notification API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
