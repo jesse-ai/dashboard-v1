@@ -345,6 +345,7 @@ interface BacktestForm {
   export_full_reports: boolean
   export_csv: boolean
   export_json: boolean
+  fast_mode: boolean
   exchange: string
   routes: Route[]
   data_routes: DataRoute[]

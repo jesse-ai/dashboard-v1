@@ -15,6 +15,7 @@ function newTab(): BacktestTab {
       export_full_reports: false,
       export_csv: false,
       export_json: false,
+      fast_mode: false,
       exchange: '',
       routes: [] as Route[],
       data_routes: [] as DataRoute[]
@@ -92,6 +93,13 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[id].results.exception.error = ''
       this.tabs[id].results.alert.message = ''
 
+      // validate that in case the fast mode is enabled the number of trading routes is not more than one
+      if (this.tabs[id].form.fast_mode && this.tabs[id].form.routes.length > 1) {
+        showNotification('error', 'For the moment, the fast mode can only be used with one trading route')
+        this.tabs[id].results.executing = false
+        return
+      }
+
       const { data, error } = await usePostApi('/backtest', {
         id,
         exchange: this.tabs[id].form.exchange,
@@ -105,7 +113,8 @@ export const useBacktestStore = defineStore('backtest', {
         export_chart: this.tabs[id].form.export_chart,
         export_tradingview: this.tabs[id].form.export_tradingview,
         export_full_reports: this.tabs[id].form.export_full_reports,
-        export_json: this.tabs[id].form.export_json
+        export_json: this.tabs[id].form.export_json,
+        fast_mode: this.tabs[id].form.fast_mode
       }, true)
 
       if (error.value && error.value.statusCode !== 200) {

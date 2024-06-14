@@ -130,6 +130,11 @@
           <ToggleButton
             v-model="form.export_json" title="Export JSON"
             description="Exports executed trades in a JSON format" />
+
+          <!-- fast mode -->
+          <ToggleButton
+            v-model="form.fast_mode" title="Fast Mode"
+            description="Runs the backtest faster by using an improved algorithm. This is supposed to yield the same results; however, it's currently experimental, which is why it's an option." />
         </div>
       </div>
 
