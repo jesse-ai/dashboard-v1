@@ -173,5 +173,6 @@ function resetForm() {
   form.chat_id = ''
   form.bot_token = ''
   form.webhook = ''
+  form.name = ''
 }
 </script>

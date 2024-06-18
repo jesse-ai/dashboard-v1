@@ -34,9 +34,9 @@
         <template #default>
           <USelectMenu
             v-model="form.general_notifications_id"
-            :disabled="!notifications_items.length"
+            :disabled="!notificationsItems.length"
             placeholder="Select a notification driver"
-            :options="notifications_items"
+            :options="notificationsItems"
             value-attribute="value" />
         </template>
       </UFormGroup>
@@ -56,9 +56,9 @@
         <template #default>
           <USelectMenu
             v-model="form.error_notifications_id"
-            :disabled="!notifications_items.length"
+            :disabled="!notificationsItems.length"
             placeholder="Select a notification driver"
-            :options="notifications_items"
+            :options="notificationsItems"
             value-attribute="value" />
         </template>
       </UFormGroup>
@@ -144,7 +144,7 @@ useSeoMeta({ title: 'Exchange API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
-const notifications_items = computed(() => {
+const notificationsItems = computed(() => {
   return mainStore.notificationApiKeys.map(n => ({
     label: `${n.name} - ${n.driver}`,
     value: n.id,
