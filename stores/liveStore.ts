@@ -109,17 +109,6 @@ export const useLiveStore = defineStore('Live', {
 
       const mainStore = useMainStore()
 
-      // make sure symbols are uppercase
-      this.tabs[id].form.routes = this.tabs[id].form.routes.map((route: Route) => {
-        route.symbol = route.symbol.toUpperCase()
-        return route
-      })
-      // also for data_routes
-      this.tabs[id].form.data_routes = this.tabs[id].form.data_routes.map((route: DataRoute) => {
-        route.symbol = route.symbol.toUpperCase()
-        return route
-      })
-
       const exchange_api_key_id = this.tabs[id].form.paper_mode ? '' : this.tabs[id].form.exchange_api_key.id
       const exchange = this.tabs[id].form.paper_mode ? this.tabs[id].form.exchange : this.tabs[id].form.exchange_api_key.exchange
 
