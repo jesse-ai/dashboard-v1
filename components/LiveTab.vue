@@ -97,9 +97,9 @@
           v-model="form.exchange_api_key"
           placeholder="Select an exchange..."
           searchable
+          value-attribute="value"
           :options="exchangeItems"
-          size="lg" class="mt-2 mb-16"
-          @change="updateExchange" />
+          size="lg" class="mt-2 mb-16" />
 
         <Routes
           :total-routes-error="totalRoutesError" :form="form"
@@ -136,7 +136,7 @@
 
         <!-- tables -->
         <Divider class="mb-4" title="Routes" />
-        <MultipleValuesTable :data="results.routes" :header-items="['Exchange', 'Symbol', 'Timeframe', 'Strategy']" header />
+        <MultipleValuesTable :data="results.routes" :header-items="['Symbol', 'Timeframe', 'Strategy']" header />
 
         <Divider class="mt-12 mb-4" title="Positions" />
         <MultipleValuesTable :data="results.positions" :header-items="['Symbol', 'QTY', 'Entry', 'Price', 'Liq Price', 'PNL']" header />
@@ -340,6 +340,17 @@ const exchangeItems = computed(() => {
   }))
 })
 
+onMounted(() => {
+  if (exchangeItems.value.length == 1) {
+    if (props.form.paper_mode) {
+      props.form.exchange = exchangeItems.value[0]
+    }
+    else {
+      props.form.exchange_api_key = exchangeItems.value[0].value
+    }
+  }
+})
+
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {
     return 'Please wait...'
@@ -385,15 +396,17 @@ const timeframeItems = computed(() => {
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
 
-function updateExchange(value: { label: string, value: ExchangeApiKey }) {
-  props.form.exchange = value.value.exchange
-}
-
 function start(id: string) {
   if (totalRoutesError.value.length) {
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       showNotification('error', totalRoutesError.value[i])
     }
+    return
+  }
+
+  if ((props.form.paper_mode && !props.form.exchange) || (!props.form.paper_mode && props.form.exchange_api_key.id === '')) {
+    console.log(props.form.paper_mode, props.form.exchange, props.form.exchange_api_key.exchange)
+    showNotification('error', 'Please select an exchange')
     return
   }
 
