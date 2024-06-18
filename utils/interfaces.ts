@@ -474,6 +474,10 @@ interface LiveGeneralInfoEvent {
   count_winning_trades: number
   count_losing_trades: number
   routes: Route[] // Replace 'any' with the actual type of the items in the 'routes' array if known
+  exchange: string
+  leverage: number
+  leverage_type: string
+  available_margin: number
 }
 
 interface positionsEvent {
