@@ -1,11 +1,11 @@
 <template>
   <!-- orders modal -->
-  <SlideOver v-model="ordersModal" width="max-w-5xl" title="Orders">
+  <SlideOver v-model="ordersModal" size="ultra" title="Orders">
     <LiveOrders :orders="results.orders" />
   </SlideOver>
 
   <!-- report without exception -->
-  <SlideOver v-model="reportWithoutExceptionModal" width="max-w-3xl" title="Report">
+  <SlideOver v-model="reportWithoutExceptionModal" size="small" title="Report">
     <ReportLiveSession :session-id="results.generalInfo.session_id" @close="reportWithoutExceptionModal = false" />
   </SlideOver>
 
@@ -212,50 +212,50 @@
 
       <!-- general info table -->
       <dl v-if="results.monitoring" class="grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6 select-none">
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Current Time:</div>
+        <div v-for="i in sidebarInfo" :key="i.label" class="flex justify-between items-center">
+          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{{ i.label }}:</div>
           <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {{ helpers.timestampToTime(results.generalInfo.current_time) }}
+            {{ i.value }}
           </div>
         </div>
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {{ helpers.timestampToTime(results.generalInfo.started_at) }}
-          </div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
+        <!--            {{ helpers.timestampToTime(results.generalInfo.started_at) }} -->
+        <!--          </div> -->
+        <!--        </div> -->
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started/Current Balance:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {{ `${results.generalInfo.started_balance} /${results.generalInfo.current_balance}` }}
-          </div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started/Current Balance:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
+        <!--            {{ `${results.generalInfo.started_balance} /${results.generalInfo.current_balance}` }} -->
+        <!--          </div> -->
+        <!--        </div> -->
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Debug Mode:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.debug_mode }}</div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Debug Mode:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.debug_mode }}</div> -->
+        <!--        </div> -->
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Paper Trade:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.paper_mode }}</div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Paper Trade:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.paper_mode }}</div> -->
+        <!--        </div> -->
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">PNL:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {{ `${results.generalInfo.pnl} (${results.generalInfo.pnl_perc}%)` }}
-          </div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">PNL:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
+        <!--            {{ `${results.generalInfo.pnl} (${results.generalInfo.pnl_perc}%)` }} -->
+        <!--          </div> -->
+        <!--        </div> -->
 
-        <div class="flex justify-between items-center">
-          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Trades:</div>
-          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {{ results.generalInfo.count_trades }}
-          </div>
-        </div>
+        <!--        <div class="flex justify-between items-center"> -->
+        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Trades:</div> -->
+        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
+        <!--            {{ results.generalInfo.count_trades }} -->
+        <!--          </div> -->
+        <!--        </div> -->
 
         <div class="flex justify-between items-center">
           <div class="flex justify-start items-center">
@@ -327,6 +327,18 @@ const liveStore = useLiveStore()
 
 const planInfo = computed(() => mainStore.planInfo)
 
+const sidebarInfo = computed(() => {
+  return [
+    { label: 'Current Time', value: helpers.timestampToTime(props.results.generalInfo.current_time) },
+    { label: 'Started', value: helpers.timestampToTime(props.results.generalInfo.started_at) },
+    { label: 'Started/Current Balance', value: `${props.results.generalInfo.started_balance} / ${props.results.generalInfo.current_balance}` },
+    { label: 'Debug Mode', value: props.results.generalInfo.debug_mode },
+    { label: 'Paper Trade', value: props.results.generalInfo.paper_mode },
+    { label: 'PNL', value: `${props.results.generalInfo.pnl} (${props.results.generalInfo.pnl_perc}%)` },
+    { label: 'Trades', value: props.results.generalInfo.count_trades },
+  ]
+})
+
 const exchangeItems = computed(() => {
   // if paper mode
   if (props.form.paper_mode) {
@@ -341,14 +353,14 @@ const exchangeItems = computed(() => {
 })
 
 onMounted(() => {
-  if (exchangeItems.value.length == 1) {
-    if (props.form.paper_mode) {
-      props.form.exchange = exchangeItems.value[0]
-    }
-    else {
-      props.form.exchange_api_key = exchangeItems.value[0].value
-    }
-  }
+  // if (exchangeItems.value.length == 1) {
+  //   if (props.form.paper_mode) {
+  //     props.form.exchange = exchangeItems.value[0]
+  //   }
+  //   else {
+  //     props.form.exchange_api_key = exchangeItems.value[0].value
+  //   }
+  // }
 })
 
 const remainingTimeText = computed(() => {

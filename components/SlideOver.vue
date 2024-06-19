@@ -1,69 +1,48 @@
 <template>
-  <TransitionRoot as="template" :show="(model as boolean)">
-    <Dialog
-      as="div" static
-      class="fixed inset-0 overflow-hidden z-40" :open="(model as boolean)"
-      @close="model = false">
-      <div class="absolute inset-0 overflow-hidden">
-        <TransitionChild
-          as="template" enter="ease-in-out duration-400"
-          enter-from="opacity-0" enter-to="opacity-100"
-          leave="ease-in-out duration-400" leave-from="opacity-100"
-          leave-to="opacity-0">
-          <DialogOverlay class="absolute inset-0 bg-gray-500 bg-opacity-95 transition-opacity" />
-        </TransitionChild>
+  <USlideover
+    v-model="open" :ui="{ width: 'w-screen ' + width }">
+    <UCard
+      class="flex flex-col flex-1 overflow-auto"
+      :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl font-semibold leading-6 text-gray-900 dark:text-white">
+            {{ title }}
+          </h3>
 
-        <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
-          <TransitionChild
-            as="template" enter="transform transition ease-in-out duration-400 sm:duration-400"
-            enter-from="translate-x-full" enter-to="translate-x-0"
-            leave="transform transition ease-in-out duration-400 sm:duration-400" leave-from="translate-x-0"
-            leave-to="translate-x-full">
-            <div class="w-screen" :class="width">
-              <div class="h-full flex flex-col py-6 bg-white dark:bg-backdrop-dark shadow-xl overflow-y-scroll">
-                <div class="px-4 sm:px-6 border-b-2 dark:border-gray-800 pb-6">
-                  <div class="flex items-start justify-between">
-                    <DialogTitle class="text-lg font-medium text-gray-900 dark:text-gray-100 select-none" v-text="title" />
+          <div>
+            <slot name="buttons" />
 
-                    <div class="ml-3 h-7 flex items-center">
-                      <slot name="buttons" />
-
-                      <button id="slideover-close-button" class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none" @click="model = false">
-                        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="mt-6 relative flex-1 px-4 sm:px-6">
-                  <slot>
-                    <div class="absolute inset-0 px-4 sm:px-6">
-                      <div class="h-full border-2 border-dashed border-gray-200" aria-hidden="true" />
-                    </div>
-                  </slot>
-                </div>
-              </div>
-            </div>
-          </TransitionChild>
+            <button
+              class="ml-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+              @click="open = false">
+              <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+            </button>
+          </div>
         </div>
-      </div>
-    </Dialog>
-  </TransitionRoot>
+      </template>
+
+      <slot />
+    </UCard>
+  </USlideover>
 </template>
 
 <script setup lang="ts">
-import { Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const model = defineModel()
+const open = defineModel({
+  default: false,
+})
 
-defineProps({
-  title: {
-    type: String,
-    default: ''
-  },
-  width: {
-    type: String,
-    default: 'max-w-4xl'
-  }
+const props = defineProps({
+  title: String,
+  size: { type: String, default: 'medium' }
+})
+
+const width = computed(() => {
+  if (props.size === 'small') return 'max-w-2xl'
+  if (props.size === 'big') return 'max-w-4xl'
+  if (props.size === 'ultra') return 'max-w-6xl'
+  return 'max-w-3xl'
 })
 </script>

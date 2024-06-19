@@ -13,12 +13,12 @@
   </SlideOver>
 
   <!-- Make strategy -->
-  <SlideOver v-model="makeStrategy" title="Make a new strategy" width="max-w-lg">
+  <SlideOver v-model="makeStrategy" title="Make a new strategy" size="small">
     <MakeStrategy v-model="makeStrategy" />
   </SlideOver>
 
   <!-- About -->
-  <SlideOver v-model="about" title="About" width="max-w-lg">
+  <SlideOver v-model="about" title="About" size="small">
     <About v-model="about" />
   </SlideOver>
 
