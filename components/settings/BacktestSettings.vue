@@ -23,13 +23,8 @@
     <Card>
       <Heading>Data</Heading>
       <div>
-        <UFormGroup label="Warmup Candles">
-          <template #description>
-            Number of warmup candles that is loaded before starting each session
-          </template>
-          <template #default>
-            <UInput v-model="settings.backtest.warm_up_candles" type="number" placeholder="ex: 210" />
-          </template>
+        <UFormGroup label="Warmup Candles" help="Number of warmup candles that is loaded before starting each session">
+          <UInput v-model="settings.backtest.warm_up_candles" type="number" placeholder="ex: 210" />
         </UFormGroup>
       </div>
     </Card>

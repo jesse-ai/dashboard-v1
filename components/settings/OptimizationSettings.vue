@@ -6,7 +6,7 @@
       <div>
         <UFormGroup
           :label="`CPU cores to use for optimization(${settings.optimization.cpu_cores} / ${systemInfo.cpu_cores})`"
-          description="How many CPU cores of your machine would you like to be used for optimization?`"
+          help="How many CPU cores of your machine would you like to be used for optimization?`"
         >
           <UInput v-model="settings.optimization.cpu_cores" type="number" placeholder="ex: 4" />
         </UFormGroup>
@@ -23,13 +23,8 @@
     <Card>
       <Heading>Data</Heading>
       <div>
-        <UFormGroup label="Warmup Candles" name="Warmup Candles">
-          <template #description>
-            Number of warmup candles that is loaded before starting each session
-          </template>
-          <template #default>
-            <UInput v-model="settings.optimization.warm_up_candles" typ="number" placeholder="ex: 210" />
-          </template>
+        <UFormGroup label="Warmup Candles" name="Warmup Candles" help="Number of warmup candles that is loaded before starting each session">
+          <UInput v-model="settings.optimization.warm_up_candles" typ="number" placeholder="ex: 210" />
         </UFormGroup>
       </div>
     </Card>

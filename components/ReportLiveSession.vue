@@ -8,7 +8,7 @@
   <br>
 
   <UForm :state="form" class="space-y-4" @submit="report">
-    <UFormGroup label="Email (optional)" description="Enter your email address for us to know who sent the email and possibly reply back to you.">
+    <UFormGroup label="Email (optional)" help="Enter your email address for us to know who sent the email and possibly reply back to you.">
       <UInput v-model="form.email" placeholder="Email address..." type="email" />
     </UFormGroup>
 

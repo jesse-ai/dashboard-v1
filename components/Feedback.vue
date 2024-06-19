@@ -14,7 +14,7 @@
 
       <UFormGroup
         label="Email (must be registered with on Jesse.Trade)"
-        description="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade"
+        help="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade"
         required>
         <UInput v-model="form.email" placeholder="Email address..." type="email" />
       </UFormGroup>
@@ -48,7 +48,7 @@ const form = reactive({
 
 const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled)
 
-async function submit () {
+async function submit() {
   loadingBtn.value = true
   const { data, error } = await usePostApi('/feedback', {
     description: form.description,
@@ -71,7 +71,7 @@ async function submit () {
   }
 }
 
-function close () {
+function close() {
   feedback.value = false
 }
 </script>

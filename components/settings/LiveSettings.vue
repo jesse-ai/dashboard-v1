@@ -60,7 +60,7 @@
     <Card>
       <Heading>Data</Heading>
       <div>
-        <UFormGroup label="Warmup Candles" description="Number of warmup candles that is loaded before starting each session">
+        <UFormGroup label="Warmup Candles" help="Number of warmup candles that is loaded before starting each session">
           <UInput v-model="settings.live['warm_up_candles']" type="number" min="1" placeholder="ex: 210" />
         </UFormGroup>
       </div>

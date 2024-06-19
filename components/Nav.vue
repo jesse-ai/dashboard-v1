@@ -3,7 +3,7 @@
   <UpdateBanner />
 
   <!-- Settings -->
-  <SlideOver v-model="settings" title="Settings">
+  <SlideOver v-model="settings" title="Settings" size="ultra">
     <Settings />
   </SlideOver>
 

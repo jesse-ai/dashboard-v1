@@ -26,7 +26,7 @@
 
       <UFormGroup
         v-if="!hasLivePluginInstalled" label="Email (must be registered with on Jesse.Trade)"
-        description="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade"
+        help="Enter your email address for us to know who sent the feedback and possibly reply back to you. It must be the email address of your account on Jesse.Trade"
         required>
         <UInput v-model="form.email" placeholder="Email address..." type="email" />
       </UFormGroup>
@@ -35,7 +35,7 @@
       <ToggleButton
         v-if="showLogToggle" v-model="form.attachLogs"
         title="Attach Debugging Logs"
-        description="Attach the log file of this session along with this report which helps Jesse's team" />
+        help="Attach the log file of this session along with this report which helps Jesse's team" />
 
       <div class="flex justify-end">
         <UButton
