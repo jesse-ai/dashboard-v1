@@ -427,7 +427,7 @@ interface LiveResults {
   routes_info: RouteInfo[][]
   routes: any[]
   metrics: any[]
-  generalInfo: any
+  generalInfo: LiveGeneralInfoEvent
   positions: multiplesTablesValue[][]
   orders: ordersEvent[]
   watchlist: [string, string][]
@@ -478,6 +478,7 @@ interface LiveGeneralInfoEvent {
   leverage: number
   leverage_type: string
   available_margin: number
+  paper_mode: boolean
 }
 
 interface positionsEvent {

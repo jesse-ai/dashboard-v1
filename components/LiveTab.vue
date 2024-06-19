@@ -219,44 +219,6 @@
           </div>
         </div>
 
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
-        <!--            {{ helpers.timestampToTime(results.generalInfo.started_at) }} -->
-        <!--          </div> -->
-        <!--        </div> -->
-
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Started/Current Balance:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
-        <!--            {{ `${results.generalInfo.started_balance} /${results.generalInfo.current_balance}` }} -->
-        <!--          </div> -->
-        <!--        </div> -->
-
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Debug Mode:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.debug_mode }}</div> -->
-        <!--        </div> -->
-
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Paper Trade:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ results.generalInfo.paper_mode }}</div> -->
-        <!--        </div> -->
-
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">PNL:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
-        <!--            {{ `${results.generalInfo.pnl} (${results.generalInfo.pnl_perc}%)` }} -->
-        <!--          </div> -->
-        <!--        </div> -->
-
-        <!--        <div class="flex justify-between items-center"> -->
-        <!--          <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Trades:</div> -->
-        <!--          <div class="text-sm font-semibold text-gray-900 dark:text-gray-100"> -->
-        <!--            {{ results.generalInfo.count_trades }} -->
-        <!--          </div> -->
-        <!--        </div> -->
-
         <div class="flex justify-between items-center">
           <div class="flex justify-start items-center">
             <button class="text-sm font-medium text-gray-500 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 truncate flex items-center hover:underline cursor-pointer focus:outline-none" @click="infoLogsModal = true">
@@ -329,13 +291,15 @@ const planInfo = computed(() => mainStore.planInfo)
 
 const sidebarInfo = computed(() => {
   return [
+    { label: 'Exchange', value: props.results.generalInfo.exchange },
     { label: 'Current Time', value: helpers.timestampToTime(props.results.generalInfo.current_time) },
     { label: 'Started', value: helpers.timestampToTime(props.results.generalInfo.started_at) },
     { label: 'Started/Current Balance', value: `${props.results.generalInfo.started_balance} / ${props.results.generalInfo.current_balance}` },
+    { label: 'Available Margin', value: props.results.generalInfo.available_margin },
     { label: 'Debug Mode', value: props.results.generalInfo.debug_mode },
     { label: 'Paper Trade', value: props.results.generalInfo.paper_mode },
     { label: 'PNL', value: `${props.results.generalInfo.pnl} (${props.results.generalInfo.pnl_perc}%)` },
-    { label: 'Trades', value: props.results.generalInfo.count_trades },
+    { label: 'Leverage', value: `${props.results.generalInfo.leverage}x (${props.results.generalInfo.leverage_type})` },
   ]
 })
 
