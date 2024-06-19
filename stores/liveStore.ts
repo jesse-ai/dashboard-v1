@@ -27,7 +27,7 @@ function newTab(id = '') {
       routes_info: [],
       routes: [],
       metrics: [],
-      generalInfo: {},
+      generalInfo: {} as LiveGeneralInfoEvent,
       positions: [],
       orders: [],
       watchlist: [],
@@ -97,7 +97,7 @@ export const useLiveStore = defineStore('Live', {
       this.tabs[id].results.exception.error = ''
       this.tabs[id].results.routes_info = []
       this.tabs[id].results.metrics = []
-      this.tabs[id].results.generalInfo = {}
+      this.tabs[id].results.generalInfo = {} as LiveGeneralInfoEvent
       this.tabs[id].results.positions = []
       this.tabs[id].results.orders = []
       this.tabs[id].results.candles = []
@@ -265,7 +265,6 @@ export const useLiveStore = defineStore('Live', {
       // info logs
       const { data, error } = await usePostApi('/get-logs', {
         id,
-        session_id: this.tabs[id].results.generalInfo.session_id,
         type: 'info'
       }, true)
 
@@ -286,7 +285,7 @@ export const useLiveStore = defineStore('Live', {
       })
 
       // error logs
-      const { data: dataLog, error: errorLog } = await usePostApi('/get-logs', { id, session_id: this.tabs[id].results.generalInfo.session_id, type: 'error' }, true)
+      const { data: dataLog, error: errorLog } = await usePostApi('/get-logs', { id, type: 'error' }, true)
 
       if (errorLog.value && errorLog.value.statusCode !== 200) {
         showNotification('error', errorLog.value.data.message)
