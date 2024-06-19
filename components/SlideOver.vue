@@ -3,7 +3,7 @@
     v-model="open" :ui="{ width: 'w-screen ' + width }">
     <UCard
       class="flex flex-col flex-1 overflow-auto"
-      :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
+      :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-200 dark:divide-gray-700' }">
       <template #header>
         <div class="flex items-center justify-between">
           <h3 class="text-xl font-semibold leading-6 text-gray-900 dark:text-white">
