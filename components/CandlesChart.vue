@@ -58,7 +58,8 @@ watch(currentCandles, (newValue, oldValue) => {
   if (series === null) return
 
   const firstRoute = props.form.routes[0]
-  const key = `${firstRoute.exchange}-${firstRoute.symbol}-${firstRoute.timeframe}`
+  const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
+  const key = `${exchange}-${firstRoute.symbol}-${firstRoute.timeframe}`
   updateCurrentCandle(newValue[key])
 })
 
