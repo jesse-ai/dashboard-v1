@@ -40,10 +40,6 @@
 const emit = defineEmits(['close'])
 const loadingBtn = ref(false)
 
-const props = defineProps<{
-  sessionId: string
-}>()
-
 const form = ref({
   description: '',
   email: ''

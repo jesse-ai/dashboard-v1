@@ -412,6 +412,7 @@ interface LiveForm {
   debug_mode: boolean
   paper_mode: boolean
   exchange_api_key: ExchangeApiKey
+  notification_api_key_id: string
   exchange: string
   routes: Route[]
   data_routes: DataRoute[]

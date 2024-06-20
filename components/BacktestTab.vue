@@ -52,7 +52,7 @@
       <Exception
         v-model="exceptionReport" :title="results.exception.error"
         :content="results.exception.traceback" mode="backtest"
-        :debug-mode="form.debug_mode" :session-id="String(results.generalInfo.session_id)" />
+        :debug-mode="form.debug_mode" />
     </div>
   </div>
 

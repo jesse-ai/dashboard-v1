@@ -15,18 +15,6 @@
     <p class="text-sm text-gray-500 dark:text-gray-400">{{ useTimeAgo(apiKey.created_at).value }}</p>
 
     <div class="mt-4">
-      <div v-if="apiKey.general_notifications" class="flex justify-between">
-        <span class="font-medium">General Notifications:</span>
-        <span>
-          {{ apiKey.general_notifications.name }} • {{ apiKey.general_notifications.driver }}
-        </span>
-      </div>
-      <div v-if="apiKey.error_notifications" class="flex justify-between">
-        <span class="font-medium">Error Notifications:</span>
-        <span>
-          {{ apiKey.error_notifications.name }} • {{ apiKey.error_notifications.driver }}
-        </span>
-      </div>
       <div class="flex justify-between">
         <span class="font-medium">API Key:</span>
         <span>{{ apiKey.api_key }}</span>

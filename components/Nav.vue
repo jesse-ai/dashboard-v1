@@ -107,6 +107,24 @@
 
                   <div class="py-1">
                     <MenuItem v-slot="{ active }">
+                      <button
+                        :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
+                        @click="$router.push('/exchange-api-keys')">
+                        <KeyIcon class="w-5 h-5 mr-2" />
+                        Exchange API keys
+                      </button>
+                    </MenuItem>
+
+                    <MenuItem v-slot="{ active }">
+                      <button
+                        :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
+                        @click="$router.push('/notification-api-keys')">
+                        <BellAlertIcon class="w-5 h-5 mr-2" />
+                        Notification API keys
+                      </button>
+                    </MenuItem>
+
+                    <MenuItem v-slot="{ active }">
                       <button :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']" @click="openFeedback">
                         <ChatBubbleLeftIcon class="w-5 h-5 mr-2" />
                         Feedback
@@ -194,6 +212,24 @@
       <!-- docs, help and strategies links -->
       <div class="px-2 py-2 space-y-1 border-t border-gray-200 dark:border-gray-900">
         <div class="w-full" @click="close">
+          <NuxtLink
+            to="/exchange-api-keys"
+            class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
+            <KeyIcon class="w-5 h-5 mr-2" />
+            Exchange API keys
+          </NuxtLink>
+        </div>
+
+        <div class="w-full" @click="close">
+          <NuxtLink
+            to="/notification-api-keys"
+            class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
+            <BellAlertIcon class="w-5 h-5 mr-2" />
+            Notification API keys
+          </NuxtLink>
+        </div>
+
+        <div class="w-full" @click="close">
           <a href="https://docs.jesse.trade/" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank">
             <CircleStackIcon class="w-5 h-5 mr-2" />
             Documentation
@@ -266,7 +302,9 @@ import {
   IdentificationIcon,
   QuestionMarkCircleIcon,
   SparklesIcon,
-  XMarkIcon
+  XMarkIcon,
+  KeyIcon,
+  BellAlertIcon
 } from '@heroicons/vue/24/outline'
 import { useMainStore } from '~/stores/mainStore'
 

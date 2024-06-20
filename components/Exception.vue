@@ -104,14 +104,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  sessionId: {
-    type: String,
-    default: ''
-  }
 })
 
-const exceptionReport = defineModel()
-
+const exceptionReport = defineModel({ type: Boolean, default: false })
+const sessionId = computed(() => useRoute().params.id as string)
 const store = useMainStore()
 const form = reactive({
   description: '',
@@ -152,7 +148,7 @@ const report = async () => {
     traceback: props.content,
     mode: props.mode as string,
     attach_logs: form.attachLogs,
-    session_id: props.sessionId
+    session_id: sessionId
   }, true)
   loadingBtn.value = false
   if (error.value && error.value.statusCode !== 200) {

@@ -19,50 +19,6 @@
           :options="mainStore.liveTradingExchangeNames" />
       </UFormGroup>
 
-      <UFormGroup
-        label="General Notifications:"
-        help="Select a notification driver to receive general (all) notifications"
-      >
-        <template #hint>
-          <UButton
-            to="/notification-api-keys"
-            icon="i-heroicons-information-circle"
-            variant="link" size="xs">
-            Notification API Keys
-          </UButton>
-        </template>
-        <template #default>
-          <USelectMenu
-            v-model="form.general_notifications_id"
-            :disabled="!notificationsItems.length"
-            placeholder="Select a notification driver"
-            :options="notificationsItems"
-            value-attribute="value" />
-        </template>
-      </UFormGroup>
-
-      <UFormGroup
-        label="Error Notifications:"
-        help="Select a notification driver to receive error notifications only"
-      >
-        <template #hint>
-          <UButton
-            to="/notification-api-keys"
-            icon="i-heroicons-information-circle"
-            variant="link" size="xs">
-            Notification API Keys
-          </UButton>
-        </template>
-        <template #default>
-          <USelectMenu
-            v-model="form.error_notifications_id"
-            :disabled="!notificationsItems.length"
-            placeholder="Select a notification driver"
-            :options="notificationsItems"
-            value-attribute="value" />
-        </template>
-      </UFormGroup>
-
       <UFormGroup label="Name:" required>
         <UInput
           v-model="form.name" type="text"
@@ -144,18 +100,10 @@ useSeoMeta({ title: 'Exchange API Keys' })
 
 const submitLoading = ref(false)
 const mainStore = useMainStore()
-const notificationsItems = computed(() => {
-  return mainStore.notificationApiKeys.map(n => ({
-    label: `${n.name} - ${n.driver}`,
-    value: n.id,
-  }))
-})
 
 type FormData = {
   name: string
   exchange: string
-  general_notifications_id: string | null
-  error_notifications_id: string | null
   api_key: string
   api_secret: string
   additional_fields?: {
@@ -168,8 +116,6 @@ type FormData = {
 const form = reactive({
   exchange: mainStore.liveTradingExchangeNames[0],
   name: '',
-  general_notifications_id: '',
-  error_notifications_id: '',
   apiKey: '',
   apiSecret: '',
   apiPassphrase: '',
@@ -195,8 +141,6 @@ async function submit() {
 
   const formData: FormData = {
     name: form.name,
-    general_notifications_id: form.general_notifications_id,
-    error_notifications_id: form.error_notifications_id,
     exchange: form.exchange,
     api_key: form.apiKey,
     api_secret: form.apiSecret,
@@ -233,8 +177,6 @@ async function submit() {
 function resetForm() {
   form.exchange = mainStore.liveTradingExchangeNames[0]
   form.name = ''
-  form.general_notifications_id = ''
-  form.error_notifications_id = ''
   form.apiKey = ''
   form.apiSecret = ''
   form.apiPassphrase = ''

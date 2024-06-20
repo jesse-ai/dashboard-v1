@@ -30,9 +30,7 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
-const open = defineModel({
-  default: false,
-})
+const open = defineModel({ type: Boolean, default: false })
 
 const props = defineProps({
   title: String,

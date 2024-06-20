@@ -10,6 +10,7 @@ function newTab(id = '') {
       debug_mode: true,
       paper_mode: true,
       exchange_api_key: {} as ExchangeApiKey,
+      notification_api_key_id: '',
       exchange: '',
       routes: [] as Route[],
       data_routes: [] as DataRoute[]
@@ -116,6 +117,7 @@ export const useLiveStore = defineStore('Live', {
         id,
         exchange: exchange,
         exchange_api_key_id: exchange_api_key_id,
+        notification_api_key_id: this.tabs[id].form.notification_api_key_id,
         routes: this.tabs[id].form.routes,
         data_routes: this.tabs[id].form.data_routes,
         config: mainStore.settings.live,

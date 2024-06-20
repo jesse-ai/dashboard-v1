@@ -6,7 +6,7 @@
 
   <!-- report without exception -->
   <SlideOver v-model="reportWithoutExceptionModal" size="small" title="Report">
-    <ReportLiveSession :session-id="results.generalInfo.session_id" @close="reportWithoutExceptionModal = false" />
+    <ReportLiveSession @close="reportWithoutExceptionModal = false" />
   </SlideOver>
 
   <!-- general logs modal -->
@@ -74,7 +74,7 @@
       <Exception
         v-model="exceptionReport" :title="results.exception.error"
         :content="results.exception.traceback" mode="live"
-        :debug-mode="form.debug_mode" :session-id="results.generalInfo.session_id" />
+        :debug-mode="form.debug_mode" />
     </div>
   </div>
 
@@ -99,7 +99,21 @@
           searchable
           value-attribute="value"
           :options="exchangeItems"
-          size="lg" class="mt-2 mb-16" />
+          size="lg" class="mt-2 mb-16">
+          <template #empty>
+            <div class="flex justify-between items-center">
+              <span>
+                No exchange API keys found. Please add at least one:
+              </span>
+              <UButton
+                to="/exchange-api-keys"
+                icon="i-heroicons-plus"
+                type="link"
+                variant="solid" size="sm"
+                label="Add Exchange API Key" />
+            </div>
+          </template>
+        </USelectMenu>
 
         <Routes
           :total-routes-error="totalRoutesError" :form="form"
@@ -118,6 +132,33 @@
             v-model="form.paper_mode"
             title="Paper Trade" :disabled="planInfo.plan !== 'premium'"
             :disabled-guide="planInfo.plan !== 'premium' ? 'Premium plan required' : ''" description="Trade in real-time using actual exchange data with PAPER money." />
+
+          <UFormGroup
+            label="Notifications:"
+            help="Select a notification driver to receive notifications"
+          >
+            <template #default>
+              <USelectMenu
+                v-model="form.notification_api_key_id"
+                placeholder="Select a notification driver"
+                :options="notificationsItems"
+                value-attribute="value">
+                <template #empty>
+                  <div class="flex justify-between items-center">
+                    <span>
+                      No notification API keys found. Please add at least one:
+                    </span>
+                    <UButton
+                      to="/notification-api-keys"
+                      icon="i-heroicons-plus"
+                      type="link"
+                      variant="solid" size="sm"
+                      label="Add Notification API Key" />
+                  </div>
+                </template>
+              </USelectMenu>
+            </template>
+          </UFormGroup>
         </div>
       </div>
 
@@ -127,8 +168,7 @@
         <div v-if="results.exception.error" class="mb-8">
           <Exception
             :title="results.exception.error" :content="results.exception.traceback"
-            mode="live" :debug-mode="form.debug_mode"
-            :session-id="results.generalInfo.session_id" />
+            mode="live" :debug-mode="form.debug_mode" />
         </div>
 
         <!-- Candlesticks chart -->
@@ -183,28 +223,6 @@
             size="xl" variant="solid"
             label="Start" :trailing="false"
             @click="start($route.params.id as string)" />
-
-          <UButton
-            class="w-full flex justify-center mt-4"
-            variant="link"
-            color="gray"
-            size="xl"
-            :trailing="false"
-            to="/exchange-api-keys"
-          >
-            Manage Exchange API Keys
-          </UButton>
-
-          <UButton
-            class="w-full flex justify-center mt-4"
-            variant="link"
-            color="gray"
-            size="xl"
-            :trailing="false"
-            to="/notification-api-keys"
-          >
-            Manage Notifications
-          </UButton>
         </div>
       </div>
 
@@ -301,6 +319,13 @@ const sidebarInfo = computed(() => {
     { label: 'PNL', value: `${props.results.generalInfo.pnl} (${props.results.generalInfo.pnl_perc}%)` },
     { label: 'Leverage', value: `${props.results.generalInfo.leverage}x (${props.results.generalInfo.leverage_type})` },
   ]
+})
+
+const notificationsItems = computed(() => {
+  return mainStore.notificationApiKeys.map(n => ({
+    label: `${n.name} - ${n.driver}`,
+    value: n.id,
+  }))
 })
 
 const exchangeItems = computed(() => {
