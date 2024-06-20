@@ -33,7 +33,7 @@ function newTab(id = '') {
       orders: [],
       watchlist: [],
       candles: [],
-      currentCandles: {},
+      currentCandles: {} as CurrentCandlesObject,
       infoLogs: '',
       errorLogs: '',
       exception: {

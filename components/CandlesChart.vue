@@ -10,6 +10,11 @@
       <USkeleton class="h-4 w-full mb-4" />
       <USkeleton class="h-4 w-full" />
     </div>
+
+    <!--    <div> -->
+    <!--      {{ selectedChartRoute.symbol }} • {{ selectedChartRoute.timeframe }} • {{ lastCandle.close }} -->
+    <!--    </div> -->
+
     <div ref="chartContainer" :class="{ 'rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600': !loading }" />
   </div>
 </template>
@@ -44,6 +49,10 @@ const lines = {
 }
 
 const theme = computed(() => colorMode.value)
+// select the first trading route by default
+const selectedChartRoute = ref(props.form.routes[0] as Route)
+const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
+const candleKey = `${exchange}-${selectedChartRoute.value.symbol}-${selectedChartRoute.value.timeframe}`
 const currentCandles = computed(() => props.results.currentCandles)
 const positionEntry = computed(() => props.results.positions[0][2].value)
 const positionType = computed(() => {
@@ -51,16 +60,16 @@ const positionType = computed(() => {
   if (Number(props.results.positions[0][1].value) < 0) return 'short'
   return 'close'
 })
+const lastCandle = computed(() => {
+  return props.results.candles[props.results.candles.length - 1]
+})
 
 const firstPosition = computed(() => props.results.positions[0])
 
 watch(currentCandles, (newValue, oldValue) => {
   if (series === null) return
 
-  const firstRoute = props.form.routes[0]
-  const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
-  const key = `${exchange}-${firstRoute.symbol}-${firstRoute.timeframe}`
-  updateCurrentCandle(newValue[key])
+  updateCurrentCandle(newValue[candleKey])
 })
 
 watch(theme, (newVal) => {
@@ -76,7 +85,7 @@ watch(positionEntry, (newValue, oldValue) => {
   }
 })
 
-watch(() => props.results.orders, (newValue, oldValue) => {
+watch(() => props.results.orders, () => {
   if (series === null) return
 
   updateOrderEntries()
@@ -97,17 +106,17 @@ async function init() {
 
   chart = createChart(chartContainer.value, settings)
 
-  // // add watermark
-  // chart.applyOptions({
-  //   watermark: {
-  //     visible: true,
-  //     fontSize: 24,
-  //     horzAlign: 'left',
-  //     vertAlign: 'bottom',
-  //     color: '#888',
-  //     text: 'BTC-USD - 1m',
-  //   },
-  // })
+  // add watermark
+  chart.applyOptions({
+    watermark: {
+      visible: true,
+      fontSize: 16,
+      horzAlign: 'left',
+      vertAlign: 'bottom',
+      color: '#888',
+      text: `${selectedChartRoute.value.symbol} • ${selectedChartRoute.value.timeframe}`,
+    },
+  })
 
   series = chart.addCandlestickSeries()
   series!.setData(props.results.candles)

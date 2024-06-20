@@ -172,7 +172,12 @@
         </div>
 
         <!-- Candlesticks chart -->
-        <CandlesChart v-if="results.monitoring && !results.finished && !results.exception.error" :results="results" :form="form" />
+        <CandlesChart
+          v-if="results.monitoring && !results.finished && !results.exception.error"
+          :results="results"
+          :form="form"
+          :exchange="form.paper_mode ? form.exchange : form.exchange_api_key.exchange"
+        />
 
         <!-- tables -->
         <Divider class="mb-4" title="Routes" />

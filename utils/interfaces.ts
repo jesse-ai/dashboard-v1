@@ -510,11 +510,6 @@ interface GetLogsEvent {
   data: LogsData[]
 }
 
-interface KeyValueObject {
-  key: string
-  value: string | number
-}
-
 interface LiveCandleData {
   time: number
   open: number
