@@ -66,7 +66,7 @@ const lines = {
 
 const theme = computed(() => colorMode.value)
 const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
-const candleKey = `${exchange}-${props.results.selectedRoute.symbol}-${props.results.selectedRoute.timeframe}`
+const candleKey = computed(() => `${exchange}-${props.results.selectedRoute.symbol}-${props.results.selectedRoute.timeframe}`)
 const currentCandles = computed(() => props.results.currentCandles)
 const position = computed(() => {
   // search for the proper timeframe and symbol using props.results.selectedRoute
@@ -88,8 +88,7 @@ const positionType = computed(() => {
 
 watch(currentCandles, (newValue, oldValue) => {
   if (series === null) return
-
-  updateCurrentCandle(newValue[candleKey])
+  updateCurrentCandle(newValue[candleKey.value])
 })
 
 watch(theme, (newVal) => {
