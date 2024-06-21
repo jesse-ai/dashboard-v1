@@ -298,9 +298,6 @@ interface ExchangeApiKey {
   api_passphrase?: string
   wallet_address?: string
   stark_private_key?: string
-
-  general_notifications: NotificationApiKey
-  error_notifications: NotificationApiKey
 }
 
 interface NotificationApiKey {
@@ -440,6 +437,7 @@ interface LiveResults {
   charts: {
     equity_curve: EquityCurve[]
   }
+  selectedRoute: Route
   info: (string | number)[][]
 }
 

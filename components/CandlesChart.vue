@@ -11,11 +11,27 @@
       <USkeleton class="h-4 w-full" />
     </div>
 
-    <!--    <div> -->
-    <!--      {{ selectedChartRoute.symbol }} • {{ selectedChartRoute.timeframe }} • {{ lastCandle.close }} -->
+    <!--    <div -->
+    <!--      class="border-2 border-b-0 px-1 py-1 text-sm rounded-t border-gray-100 dark:border-gray-600 flex justify-between items-center"> -->
+    <!--      <div> -->
+    <!--        <span class="font-bold">{{ selectedChartRoute.symbol }}</span> • {{ selectedChartRoute.timeframe }} -->
+    <!--      </div> -->
+    <!--      <div> -->
+    <!--        open: {{ lastCandle.open }} • close: {{ lastCandle.close }} • high: {{ lastCandle.high }} • low: {{ lastCandle.low }} -->
+    <!--      </div> -->
     <!--    </div> -->
 
     <div ref="chartContainer" :class="{ 'rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600': !loading }" />
+
+    <UButton
+      v-for="route in props.form.routes" :key="route.symbol"
+      variant="soft"
+      color="gray"
+      :disabled="results.selectedRoute.symbol === route.symbol && results.selectedRoute.timeframe === route.timeframe"
+      class="mt-2 mr-2"
+      @click="changeRoute(route)">
+      {{ route.symbol }} • {{ route.timeframe }}
+    </UButton>
   </div>
 </template>
 
@@ -49,10 +65,8 @@ const lines = {
 }
 
 const theme = computed(() => colorMode.value)
-// select the first trading route by default
-const selectedChartRoute = ref(props.form.routes[0] as Route)
 const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
-const candleKey = `${exchange}-${selectedChartRoute.value.symbol}-${selectedChartRoute.value.timeframe}`
+const candleKey = `${exchange}-${props.results.selectedRoute.symbol}-${props.results.selectedRoute.timeframe}`
 const currentCandles = computed(() => props.results.currentCandles)
 const positionEntry = computed(() => props.results.positions[0][2].value)
 const positionType = computed(() => {
@@ -60,9 +74,9 @@ const positionType = computed(() => {
   if (Number(props.results.positions[0][1].value) < 0) return 'short'
   return 'close'
 })
-const lastCandle = computed(() => {
-  return props.results.candles[props.results.candles.length - 1]
-})
+// const lastCandle = computed(() => {
+//   return props.results.currentCandles[candleKey]
+// })
 
 const firstPosition = computed(() => props.results.positions[0])
 
@@ -114,7 +128,7 @@ async function init() {
       horzAlign: 'left',
       vertAlign: 'bottom',
       color: '#888',
-      text: `${selectedChartRoute.value.symbol} • ${selectedChartRoute.value.timeframe}`,
+      text: `${props.results.selectedRoute.symbol} • ${props.results.selectedRoute.timeframe}`,
     },
   })
 
@@ -214,5 +228,11 @@ function setTheme(val: string) {
   chart.applyOptions(
     val === 'light' ? lightTheme.chart : darkTheme.chart
   )
+}
+
+function changeRoute(route: Route) {
+  props.results.selectedRoute = route
+  flush()
+  init()
 }
 </script>
