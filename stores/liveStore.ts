@@ -113,6 +113,7 @@ export const useLiveStore = defineStore('Live', {
 
       const exchange_api_key_id = this.tabs[id].form.paper_mode ? '' : this.tabs[id].form.exchange_api_key.id
       const exchange = this.tabs[id].form.paper_mode ? this.tabs[id].form.exchange : this.tabs[id].form.exchange_api_key.exchange
+      const notification_api_key_id = this.tabs[id].form.notification_api_key_id ? this.tabs[id].form.notification_api_key_id : ''
 
       this.tabs[id].results.selectedRoute = this.tabs[id].form.routes[0]
 
@@ -120,7 +121,7 @@ export const useLiveStore = defineStore('Live', {
         id,
         exchange: exchange,
         exchange_api_key_id: exchange_api_key_id,
-        notification_api_key_id: this.tabs[id].form.notification_api_key_id,
+        notification_api_key_id: notification_api_key_id,
         routes: this.tabs[id].form.routes,
         data_routes: this.tabs[id].form.data_routes,
         config: mainStore.settings.live,
