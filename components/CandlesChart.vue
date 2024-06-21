@@ -68,17 +68,23 @@ const theme = computed(() => colorMode.value)
 const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
 const candleKey = `${exchange}-${props.results.selectedRoute.symbol}-${props.results.selectedRoute.timeframe}`
 const currentCandles = computed(() => props.results.currentCandles)
-const positionEntry = computed(() => props.results.positions[0][2].value)
+const position = computed(() => {
+  // search for the proper timeframe and symbol using props.results.selectedRoute
+  const p = props.results.positions.find((p) => {
+    return p[0].value === props.results.selectedRoute.symbol
+  })
+  if (p === undefined) return []
+  return p
+})
+const positionEntry = computed(() => position.value[2].value)
 const positionType = computed(() => {
-  if (Number(props.results.positions[0][1].value) > 0) return 'long'
-  if (Number(props.results.positions[0][1].value) < 0) return 'short'
+  if (Number(position.value[1].value) > 0) return 'long'
+  if (Number(position.value[1].value) < 0) return 'short'
   return 'close'
 })
 // const lastCandle = computed(() => {
 //   return props.results.currentCandles[candleKey]
 // })
-
-const firstPosition = computed(() => props.results.positions[0])
 
 watch(currentCandles, (newValue, oldValue) => {
   if (series === null) return
@@ -179,7 +185,7 @@ function updatePositionEntry() {
 }
 
 function updateOrderEntries() {
-  const PositionSymbol = firstPosition.value[0].value
+  const PositionSymbol = position.value[0].value
 
   for (const key in lines.orderEntries) {
     series!.removePriceLine(lines.orderEntries[key])
