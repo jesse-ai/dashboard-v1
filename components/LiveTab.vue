@@ -313,17 +313,23 @@ const liveStore = useLiveStore()
 const planInfo = computed(() => mainStore.planInfo)
 
 const sidebarInfo = computed(() => {
-  return [
+  const arr = [
     { label: 'Exchange', value: props.results.generalInfo.exchange },
     { label: 'Current Time', value: helpers.timestampToTime(props.results.generalInfo.current_time) },
-    { label: 'Started', value: helpers.timestampToTime(props.results.generalInfo.started_at) },
-    { label: 'Started/Current Balance', value: `${props.results.generalInfo.started_balance} / ${props.results.generalInfo.current_balance}` },
-    { label: 'Available Margin', value: props.results.generalInfo.available_margin },
     { label: 'Debug Mode', value: props.results.generalInfo.debug_mode },
     { label: 'Paper Trade', value: props.results.generalInfo.paper_mode },
     { label: 'PNL', value: `${props.results.generalInfo.pnl} (${props.results.generalInfo.pnl_perc}%)` },
-    { label: 'Leverage', value: `${props.results.generalInfo.leverage}x (${props.results.generalInfo.leverage_type})` },
+    { label: 'Started', value: helpers.timestampToTime(props.results.generalInfo.started_at) },
+    { label: 'Started/Current Balance', value: `${props.results.generalInfo.started_balance} / ${props.results.generalInfo.current_balance}` },
   ]
+
+  // for futures only
+  if (props.results.generalInfo.leverage_type !== 'spot') {
+    arr.push({ label: 'Available Margin', value: props.results.generalInfo.available_margin })
+    arr.push({ label: 'Leverage', value: `${props.results.generalInfo.leverage}x (${props.results.generalInfo.leverage_type})` })
+  }
+
+  return arr
 })
 
 const notificationsItems = computed(() => {
