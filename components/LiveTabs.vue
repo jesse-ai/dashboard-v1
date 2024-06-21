@@ -90,7 +90,7 @@ function getTitle(tab: LiveTab) {
     return `🟢 ${k}`
   }
 
-  if (tab.results.exception.error) {
+  if (tab.results.exception.error && tab.results.monitoring) {
     return `🔴 ${k}`
   }
 
