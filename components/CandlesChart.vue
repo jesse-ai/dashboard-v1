@@ -11,27 +11,20 @@
       <USkeleton class="h-4 w-full" />
     </div>
 
-    <!--    <div -->
-    <!--      class="border-2 border-b-0 px-1 py-1 text-sm rounded-t border-gray-100 dark:border-gray-600 flex justify-between items-center"> -->
-    <!--      <div> -->
-    <!--        <span class="font-bold">{{ selectedChartRoute.symbol }}</span> • {{ selectedChartRoute.timeframe }} -->
-    <!--      </div> -->
-    <!--      <div> -->
-    <!--        open: {{ lastCandle.open }} • close: {{ lastCandle.close }} • high: {{ lastCandle.high }} • low: {{ lastCandle.low }} -->
-    <!--      </div> -->
-    <!--    </div> -->
-
     <div ref="chartContainer" :class="{ 'rounded overflow-hidden border-2 border-gray-100 dark:border-gray-600': !loading }" />
 
-    <UButton
-      v-for="route in props.form.routes" :key="route.symbol"
-      variant="soft"
-      color="gray"
-      :disabled="results.selectedRoute.symbol === route.symbol && results.selectedRoute.timeframe === route.timeframe"
-      class="mt-2 mr-2"
-      @click="changeRoute(route)">
-      {{ route.symbol }} • {{ route.timeframe }}
-    </UButton>
+    <div v-if="props.form.routes.length > 1">
+      <UButton
+        v-for="route in props.form.routes"
+        :key="route.symbol"
+        variant="soft"
+        color="gray"
+        :disabled="results.selectedRoute.symbol === route.symbol && results.selectedRoute.timeframe === route.timeframe"
+        class="mt-2 mr-2"
+        @click="changeRoute(route)">
+        {{ route.symbol }} • {{ route.timeframe }}
+      </UButton>
+    </div>
   </div>
 </template>
 
