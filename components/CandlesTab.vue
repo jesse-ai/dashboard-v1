@@ -48,14 +48,20 @@
           searchable
           placeholder="Select an exchange..."
           :options="backtestingExchangeNames" size="lg"
-          class="mt-2" />
+          class="mt-2"
+          @change="updateSupportedSymbols" />
 
         <!-- symbol -->
         <Divider title="Symbol" class="mt-16" />
-        <UInput
+        <USelectMenu
           v-model="form.symbol"
           placeholder="ex: BTC-USDT"
-          size="lg" class="mt-2" />
+          searchable
+          :options="supportedSymbols"
+          :loading="loadingSymbols"
+          size="lg"
+          class="mt-2"
+        />
 
         <Divider title="Start Date" class="mt-16" />
         <UInput v-model="form.start_date" type="date" size="lg" class="mt-2" />
@@ -108,6 +114,8 @@ const props = defineProps<{
 const candlesStore = useCandlesStore()
 const mainStore = useMainStore()
 const backtestState = useBacktestStore()
+const supportedSymbols = ref<string[]>([])
+const loadingSymbols = ref(false)
 
 props.results.alert.message = ''
 const exceptionReport = ref(false)
@@ -160,5 +168,11 @@ function validate() {
   }
 
   return true
+}
+
+async function updateSupportedSymbols() {
+  loadingSymbols.value = true
+  supportedSymbols.value = await mainStore.getExchangeSupportedSymbols(props.form.exchange)
+  loadingSymbols.value = false
 }
 </script>
