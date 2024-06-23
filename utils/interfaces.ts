@@ -113,6 +113,17 @@ interface ActiveWorkersResponse {
   data: string[]
 }
 
+interface ExchangeSupportedSymbols {
+  [key: string]: {
+    updated_at: Date
+    data: string[]
+  }
+}
+
+interface ExchangeSupportedSymbolsResponse {
+  data: string[]
+}
+
 interface ConfigExchange {
   name: string
   type?: string

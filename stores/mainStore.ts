@@ -81,7 +81,8 @@ export const useMainStore = defineStore('main', {
     } as Settings,
     strategies: [] as string[],
     exchangeInfo: {} as { [key: string]: Exchange },
-    jesseSupportedTimeframes: [],
+    jesseSupportedTimeframes: [] as string[],
+    exchangeSupportedSymbols: {} as ExchangeSupportedSymbols,
     skippedJesseVersions: [] as string[],
     skippedLivePluginVersions: [] as string[],
     activeWorkers: new Set<string>(),
@@ -232,5 +233,44 @@ export const useMainStore = defineStore('main', {
     setAuthToken(token: string) {
       this.authToken = token
     },
+
+    async updateSupportedSymbols(exchange: string) {
+      const { data, error } = await usePostApi('/exchange-supported-symbols', {
+        exchange: exchange,
+      }, true)
+
+      if (error.value && error.value.statusCode !== 200) {
+        showNotification('error', `[${error.value.statusCode}]: ${error.value.message}`)
+        return
+      }
+
+      const res = data.value as ExchangeSupportedSymbolsResponse
+      this.exchangeSupportedSymbols[exchange] = {
+        data: res.data,
+        updated_at: new Date(),
+      }
+    },
+
+    async getExchangeSupportedSymbols(exchange: string) {
+      // If it doesn't exist, first fetch it and then return it. If it does exist, check its updated add to see how long it's been. If it's been more than a day, again fetch it and then return it.
+      if (!this.exchangeSupportedSymbols[exchange]) {
+        await this.updateSupportedSymbols(exchange)
+        return this.exchangeSupportedSymbols[exchange].data
+      }
+
+      const updatedAt = new Date(this.exchangeSupportedSymbols[exchange].updated_at)
+      const now = new Date()
+      const diff = now.getTime() - updatedAt.getTime()
+      const diffDays = Math.ceil(diff / (1000 * 3600 * 24))
+
+      if (diffDays > 1) {
+        await this.updateSupportedSymbols(exchange)
+        console.log('updated')
+      }
+
+      console.log('not updated')
+
+      return this.exchangeSupportedSymbols[exchange].data
+    }
   }
 })
