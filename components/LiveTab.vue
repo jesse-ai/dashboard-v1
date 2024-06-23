@@ -90,7 +90,8 @@
           placeholder="Select an exchange..."
           searchable
           :options="exchangeItems"
-          size="lg" class="mt-2 mb-16"
+          size="lg"
+          class="mt-2 mb-16" @change="updateSupportedSymbols"
         />
         <USelectMenu
           v-else
@@ -99,7 +100,8 @@
           searchable
           value-attribute="value"
           :options="exchangeItems"
-          size="lg" class="mt-2 mb-16">
+          size="lg"
+          class="mt-2 mb-16" @change="updateSupportedSymbols">
           <template #empty>
             <div class="flex justify-between items-center">
               <span>
@@ -118,6 +120,7 @@
         <Routes
           :total-routes-error="totalRoutesError" :form="form"
           :results="results" mode="live"
+          :symbols="supportedSymbols"
           :timeframes="timeframeItems" />
 
         <!-- options -->
@@ -310,6 +313,11 @@ const terminationConfirmModal = ref(false)
 const mainStore = useMainStore()
 const liveStore = useLiveStore()
 
+const supportedSymbols = ref<string[]>([])
+async function updateSupportedSymbols() {
+  supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
+}
+
 const planInfo = computed(() => mainStore.planInfo)
 
 const sidebarInfo = computed(() => {
@@ -325,7 +333,7 @@ const sidebarInfo = computed(() => {
 
   // for futures only
   if (props.results.generalInfo.leverage_type !== 'spot') {
-    arr.push({ label: 'Available Margin', value: props.results.generalInfo.available_margin })
+    arr.push({ label: 'Available Margin', value: `${props.results.generalInfo.available_margin}` })
     arr.push({ label: 'Leverage', value: `${props.results.generalInfo.leverage}x (${props.results.generalInfo.leverage_type})` })
   }
 

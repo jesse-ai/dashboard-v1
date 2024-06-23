@@ -58,7 +58,6 @@
           placeholder="ex: BTC-USDT"
           searchable
           :options="supportedSymbols"
-          :loading="loadingSymbols"
           size="lg"
           class="mt-2"
         />
@@ -115,7 +114,9 @@ const candlesStore = useCandlesStore()
 const mainStore = useMainStore()
 const backtestState = useBacktestStore()
 const supportedSymbols = ref<string[]>([])
-const loadingSymbols = ref(false)
+async function updateSupportedSymbols() {
+  supportedSymbols.value = await mainStore.getExchangeSupportedSymbols(props.form.exchange)
+}
 
 props.results.alert.message = ''
 const exceptionReport = ref(false)
@@ -168,11 +169,5 @@ function validate() {
   }
 
   return true
-}
-
-async function updateSupportedSymbols() {
-  loadingSymbols.value = true
-  supportedSymbols.value = await mainStore.getExchangeSupportedSymbols(props.form.exchange)
-  loadingSymbols.value = false
 }
 </script>

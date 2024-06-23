@@ -36,7 +36,7 @@
         searchable
         searchable-placeholder="Search symbols..."
         size="lg"
-        :options="['BTC-USDT', 'ETH-USDT']"
+        :options="symbols"
         placeholder="Select a symbol..." />
 
       <!-- timeframe -->
@@ -174,23 +174,16 @@
 
 <script setup lang="ts">
 import {
-  ArrowDownCircleIcon,
-  ArrowUpCircleIcon,
-  DocumentDuplicateIcon,
-  EllipsisVerticalIcon,
   PlusIcon,
-  TrashIcon
 } from '@heroicons/vue/24/solid'
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { computed, ref, watchEffect } from 'vue'
-import { useRoute } from 'vue-router'
 import { useMainStore } from '~/stores/mainStore'
 
-const route = useRoute()
 
 const props = defineProps<{
   mode: string
   timeframes: string[]
+  symbols: string[]
   form: BacktestForm | OptimizationForm | LiveForm
   results: BacktestResults | OptimizationResults | LiveResults
   totalRoutesError: string[]

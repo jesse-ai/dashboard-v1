@@ -61,11 +61,13 @@
           :options="useMainStore().backtestingExchangeNames"
           size="lg"
           class="mt-2 mb-16"
+          @change="updateSupportedSymbols"
         />
 
         <Routes
           :total-routes-error="totalRoutesError" :form="form"
           :results="results" mode="optimization"
+          :symbols="supportedSymbols"
           :timeframes="useMainStore().jesseSupportedTimeframes" />
 
         <Divider class="mt-16 mb-4" title="Duration" />
@@ -175,6 +177,7 @@
 import { CheckIcon, ClipboardIcon } from '@heroicons/vue/24/solid'
 import { computed } from 'vue'
 import { useOptimizationStore } from '~/stores/optimizationStore'
+import { useMainStore } from '~/stores/mainStore'
 
 useSeoMeta({ title: 'Optimization - Jesse' })
 
@@ -186,6 +189,11 @@ const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
+
+const supportedSymbols = ref<string[]>([])
+async function updateSupportedSymbols() {
+  supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(form.value.exchange)
+}
 
 const authKey = computed(() => useMainStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(results.value.progressbar.estimated_remaining_seconds))

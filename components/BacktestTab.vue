@@ -79,11 +79,13 @@
           :options="useMainStore().backtestingExchangeNames"
           size="lg"
           class="mt-2 mb-16"
+          @change="updateSupportedSymbols"
         />
 
         <Routes
           :total-routes-error="totalRoutesError" :timeframes="useMainStore().jesseSupportedTimeframes"
           :form="form" :results="results"
+          :symbols="supportedSymbols"
           mode="backtest" />
 
         <Divider class="mt-16" title="Duration" />
@@ -284,6 +286,10 @@ const auth_key = useMainStore().authToken
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 
 const backtestStore = useBacktestStore()
+const supportedSymbols = ref<string[]>([])
+async function updateSupportedSymbols() {
+  supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
+}
 
 const { cancel, rerun, newBacktest } = backtestStore
 
