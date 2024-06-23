@@ -55,4 +55,9 @@ watch(initiated, (newValue) => {
 watch(settings, () => {
   useMainStore().updateConfig()
 }, { deep: true })
+
+onMounted(() => {
+  document.documentElement.classList.add('h-full', 'bg-gray-50')
+  document.body.classList.add('h-full')
+})
 </script>
