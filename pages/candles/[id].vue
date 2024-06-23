@@ -25,6 +25,9 @@ const currentTab = computed(() => {
       useRouter().push(`/candles/${firstTab.id}`)
       return firstTab
     }
+    else {
+      useCandlesStore().addTab()
+    }
   }
   return tabs.value[pageId.value]
 })
