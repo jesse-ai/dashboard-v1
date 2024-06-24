@@ -10,7 +10,7 @@
           @click.middle="emit('close', tab.id)">
           <NuxtLink
             :to="`/backtest/${tab.id}`"
-            :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-xs bg-white dark:bg-backdrop-dark']">
+            :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-xs bg-gray-50 dark:bg-backdrop-dark']">
 
             <span>{{ getTitle(tab) }}</span>
 
@@ -31,7 +31,7 @@
 
         <!-- New Tab Button -->
         <div
-          class="select-none cursor-pointer text-gray-400 dark:text-gray-100 hover:text-gray-600 focus:outline-none group relative w-14 overflow-hidden bg-white dark:bg-backdrop-dark py-3 px-4 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-center "
+          class="select-none cursor-pointer text-gray-400 dark:text-gray-100 hover:text-gray-600 focus:outline-none group relative w-14 overflow-hidden bg-gray-50 dark:bg-backdrop-dark py-3 px-4 font-medium hover:bg-white dark:hover:bg-gray-800 flex items-center justify-center "
           @click="useBacktestStore().addTab()">
           <button class="absolute right-[1em] focus:outline-none ">
             <PlusIcon class="h-6 w-6 rounded-full" aria-hidden="true" />
