@@ -207,11 +207,16 @@ const logsUrl = computed(() => {
 
 const { cancel } = useOptimizationStore()
 
-const start = () => {
+function start() {
   if (totalRoutesError.value.length) {
     for (let i = 0; i < totalRoutesError.value.length; i++) {
       showNotification('error', totalRoutesError.value[i])
     }
+    return
+  }
+
+  if (form.value.routes.length > 1) {
+    showNotification('error', 'Optimization mode does not support multiple routes at the moment.')
     return
   }
 
