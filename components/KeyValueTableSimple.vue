@@ -1,5 +1,5 @@
 <template>
-  <dl class="bg-white grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6">
+  <dl class="dark:bg-gray-700 bg-white grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6">
     <div v-for="(item, index) in data" :key="index" class="flex justify-between items-center">
       <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
         {{ item[0] }}

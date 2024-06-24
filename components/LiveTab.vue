@@ -237,7 +237,7 @@
       <hr v-if="results.monitoring" class="my-8 border-2 dark:border-gray-600 rounded-full">
 
       <!-- general info table -->
-      <dl v-if="results.monitoring" class="bg-white grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6 select-none">
+      <dl v-if="results.monitoring" class="bg-white dark:bg-gray-700 grid grid-cols-1 gap-6 border dark:border-gray-600 rounded py-4 px-6 select-none">
         <div v-for="i in sidebarInfo" :key="i.label" class="flex justify-between items-center">
           <div class="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{{ i.label }}:</div>
           <div class="text-sm font-semibold text-gray-900 dark:text-gray-100">
