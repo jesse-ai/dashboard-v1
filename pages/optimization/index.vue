@@ -194,6 +194,8 @@ const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(form.value.exchange)
 }
+form.value.exchange = form.value.exchange || useMainStore().backtestingExchangeNames[0]
+updateSupportedSymbols()
 
 const authKey = computed(() => useMainStore().authToken)
 const remainingTimeText = computed(() => helpers.remainingTimeText(results.value.progressbar.estimated_remaining_seconds))

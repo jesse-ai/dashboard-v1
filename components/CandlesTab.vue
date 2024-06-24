@@ -122,6 +122,8 @@ props.results.alert.message = ''
 const exceptionReport = ref(false)
 
 const backtestingExchangeNames = computed(() => mainStore.backtestingExchangeNames)
+props.form.exchange = props.form.exchange || backtestingExchangeNames.value[0]
+updateSupportedSymbols()
 const remainingTimeText = computed(() => helpers.remainingTimeText(props.results.progressbar.estimated_remaining_seconds))
 
 const start = (id: string) => {

@@ -290,6 +290,8 @@ const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
 }
+props.form.exchange = props.form.exchange || useMainStore().backtestingExchangeNames[0]
+updateSupportedSymbols()
 
 const { cancel, rerun, newBacktest } = backtestStore
 
