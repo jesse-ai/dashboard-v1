@@ -265,10 +265,7 @@ export const useMainStore = defineStore('main', {
 
       if (diffDays > 1) {
         await this.updateSupportedSymbols(exchange)
-        console.log('updated')
       }
-
-      console.log('not updated')
 
       return this.exchangeSupportedSymbols[exchange].data
     }
