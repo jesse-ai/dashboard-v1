@@ -144,6 +144,7 @@
               <USelectMenu
                 v-model="form.notification_api_key_id"
                 placeholder="Select a notification driver"
+                size="lg"
                 :options="notificationsItems"
                 value-attribute="value">
                 <template #empty>
@@ -360,16 +361,26 @@ const exchangeItems = computed(() => {
   }))
 })
 
-onMounted(() => {
-  // if (exchangeItems.value.length == 1) {
-  //   if (props.form.paper_mode) {
-  //     props.form.exchange = exchangeItems.value[0]
-  //   }
-  //   else {
-  //     props.form.exchange_api_key = exchangeItems.value[0].value
-  //   }
-  // }
-})
+// onMounted(() => {
+//   setTimeout(async () => {
+//   // if paper mode
+//     if (props.form.paper_mode) {
+//       props.form.exchange = props.form.exchange || mainStore.liveTradingExchangeNames[0]
+//     }
+//     else { // live
+//       console.log('loading')
+//       props.form.exchange = props.form.exchange || mainStore.exchangeApiKeys[0].exchange
+//       props.form.exchange_api_key = props.form.exchange_api_key || mainStore.exchangeApiKeys[0]
+//     }
+//     updateSupportedSymbols()
+//   }, 200)
+// })
+
+// watch(props.form.paper_mode, (newValue, oldValue) => {
+//   if (newValue !== oldValue) {
+//     updateSupportedSymbols()
+//   }
+// })
 
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {
@@ -425,7 +436,6 @@ function start(id: string) {
   }
 
   if ((props.form.paper_mode && !props.form.exchange) || (!props.form.paper_mode && props.form.exchange_api_key.id === '')) {
-    console.log(props.form.paper_mode, props.form.exchange, props.form.exchange_api_key.exchange)
     showNotification('error', 'Please select an exchange')
     return
   }
