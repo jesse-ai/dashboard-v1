@@ -89,19 +89,21 @@
           v-model="form.exchange"
           placeholder="Select an exchange..."
           searchable
-          :options="exchangeItems"
+          :options="supportedPaperTradingExchanges"
           size="lg"
-          class="mt-2 mb-16" @change="updateSupportedSymbols"
+          class="mt-2 mb-16"
+          @change="updateSupportedSymbols"
         />
         <USelectMenu
           v-else
-          v-model="form.exchange_api_key"
+          v-model="form.exchange_api_key_id"
           placeholder="Select an exchange..."
           searchable
           value-attribute="value"
-          :options="exchangeItems"
+          :options="supportedLiveExchanges"
           size="lg"
-          class="mt-2 mb-16" @change="updateSupportedSymbols">
+          class="mt-2 mb-16"
+          @change="updateSupportedSymbols">
           <template #empty>
             <div class="flex justify-between items-center">
               <span>
@@ -316,6 +318,14 @@ const liveStore = useLiveStore()
 
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
+  // if live we need to update exchange
+  if (!props.form.paper_mode) {
+    const exchange = mainStore.exchangeApiKeys.find(n => n.id === props.form.exchange_api_key_id)
+    if (exchange) {
+      props.form.exchange = exchange.exchange
+    }
+  }
+
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
 }
 
@@ -348,18 +358,12 @@ const notificationsItems = computed(() => {
   }))
 })
 
-const exchangeItems = computed(() => {
-  // if paper mode
-  if (props.form.paper_mode) {
-    return mainStore.liveTradingExchangeNames
-  }
+const supportedPaperTradingExchanges = computed(() => mainStore.liveTradingExchangeNames)
+const supportedLiveExchanges = computed(() => mainStore.exchangeApiKeys.map(n => ({
+  label: `${n.exchange} - ${n.name}`,
+  value: n.id,
+})))
 
-  // if live mode
-  return mainStore.exchangeApiKeys.map(n => ({
-    label: `${n.exchange} - ${n.name}`,
-    value: n,
-  }))
-})
 
 // onMounted(() => {
 //   setTimeout(async () => {
@@ -435,7 +439,7 @@ function start(id: string) {
     return
   }
 
-  if ((props.form.paper_mode && !props.form.exchange) || (!props.form.paper_mode && props.form.exchange_api_key.id === '')) {
+  if ((props.form.paper_mode && !props.form.exchange) || (!props.form.paper_mode && props.form.exchange_api_key_id === '')) {
     showNotification('error', 'Please select an exchange')
     return
   }

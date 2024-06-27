@@ -9,7 +9,7 @@ function newTab(id = '') {
     form: {
       debug_mode: true,
       paper_mode: true,
-      exchange_api_key: {} as ExchangeApiKey,
+      exchange_api_key_id: '',
       notification_api_key_id: '',
       exchange: '',
       routes: [] as Route[],
@@ -111,8 +111,8 @@ export const useLiveStore = defineStore('Live', {
 
       const mainStore = useMainStore()
 
-      const exchange_api_key_id = this.tabs[id].form.paper_mode ? '' : this.tabs[id].form.exchange_api_key.id
-      const exchange = this.tabs[id].form.paper_mode ? this.tabs[id].form.exchange : this.tabs[id].form.exchange_api_key.exchange
+      const exchange_api_key_id = this.tabs[id].form.paper_mode ? '' : this.tabs[id].form.exchange_api_key_id
+      const exchange = this.tabs[id].form.exchange
       const notification_api_key_id = this.tabs[id].form.notification_api_key_id ? this.tabs[id].form.notification_api_key_id : ''
 
       this.tabs[id].results.selectedRoute = this.tabs[id].form.routes[0]

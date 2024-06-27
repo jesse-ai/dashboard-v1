@@ -70,7 +70,7 @@ function getTitle(tab: LiveTab) {
 
   const firstRoute = tab.form.routes[0]
   let k = ''
-  const exchange = tab.form.paper_mode ? tab.form.exchange : tab.form.exchange_api_key.exchange
+  const exchange = tab.form.exchange
   if (exchange) {
     k += `${exchange} • `
   }

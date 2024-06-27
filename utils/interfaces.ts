@@ -419,7 +419,7 @@ interface LiveTab {
 interface LiveForm {
   debug_mode: boolean
   paper_mode: boolean
-  exchange_api_key: ExchangeApiKey
+  exchange_api_key_id: string
   notification_api_key_id: string
   exchange: string
   routes: Route[]
