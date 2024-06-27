@@ -282,16 +282,8 @@ function checkRoutes() {
 }
 
 function CheckRoutesSymbol(item: Route | DataRoute) {
-  if (!props.totalRoutesError.includes(ERRORS.emptyParameter) && (item.symbol.length == 0 || item.timeframe.length == 0))
+  if (!props.totalRoutesError.includes(ERRORS.emptyParameter) && (item.symbol.length == 0 || item.timeframe.length == 0)) {
     props.totalRoutesError.push(ERRORS.emptyParameter)
-  else if (!props.totalRoutesError.includes(ERRORS.emptyParameter)) {
-    if (!props.totalRoutesError.includes(ERRORS.invalidSymbol) && item.symbol.length < 4)
-      props.totalRoutesError.push(ERRORS.invalidSymbol)
-    else if (!props.totalRoutesError.includes(ERRORS.mustContainDashErrorMessage) && !item.symbol.includes('-'))
-      props.totalRoutesError.push(ERRORS.mustContainDashErrorMessage)
-
-    if (!props.totalRoutesError.includes(ERRORS.maxSymbolLengthErrorMessage) && item.symbol.length > 9)
-      props.totalRoutesError.push(ERRORS.maxSymbolLengthErrorMessage)
   }
 }
 
