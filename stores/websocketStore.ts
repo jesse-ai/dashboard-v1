@@ -10,33 +10,66 @@ export const useSocketStore = defineStore('socket', {
     reconnectAttempts: 0
   }),
   actions: {
+    handleError(errorMessage: string, error: any) {
+      console.error(errorMessage, error)
+      showNotification('error', errorMessage)
+    },
     initiate() {
-      this.socket = new WebSocket(`${useRuntimeConfig().public.wsUrl}?token=${useMainStore().authToken}`)
+      try {
+        this.socket = new WebSocket(`${useRuntimeConfig().public.wsUrl}?token=${useMainStore().authToken}`)
 
-      this.socket.addEventListener('open', () => {
-        this.isConnected = true
-        this.reconnectAttempts = 0
-        this.socket?.addEventListener('message', this.handleMessage)
-      })
+        this.socket.addEventListener('open', () => {
+          this.isConnected = true
+          if (this.reconnectAttempts > 0) {
+            showNotification('success', 'Reconnected to the websocket server')
+          }
+          else {
+            showNotification('success', 'Connected to the websocket server')
+          }
+          this.reconnectAttempts = 0
+          this.socket?.addEventListener('message', this.handleMessage)
+        })
 
-      this.socket.addEventListener('close', () => {
-        this.disconnect()
-        this.reconnect()
-      })
+        this.socket.addEventListener('close', () => {
+          this.handleError('Websocket connection closed. Trying to reconnect...', null)
+          this.disconnect()
+          this.reconnect()
+        })
 
-      this.socket.addEventListener('error', this.handleError)
+        if (this.reconnectAttempts === 0) {
+          this.socket.addEventListener('error', (event) => {
+            this.handleError('An error occurred with the websocket', event)
+          })
+        }
+      }
+      catch (error) {
+        this.handleError('An error occurred while initiating the websocket connection', error)
+      }
     },
     disconnect() {
-      this.socket?.close()
-      this.isConnected = false
-      this.reconnectAttempts = 0
+      try {
+        this.socket?.close()
+        this.isConnected = false
+        this.reconnectAttempts = 0
+      }
+      catch (error) {
+        this.handleError('An error occurred while disconnecting the websocket connection', error)
+      }
     },
     reconnect() {
-      if (this.reconnectAttempts < 10) { // limit the number of reconnection attempts
-        setTimeout(() => {
-          this.reconnectAttempts++
-          this.initiate()
-        }, this.reconnectInterval)
+      try {
+        if (this.reconnectAttempts < 10) { // limit the number of reconnection attempts
+          setTimeout(() => {
+            this.reconnectAttempts++
+            this.initiate()
+          }, this.reconnectInterval)
+        }
+        else {
+          this.handleError('Failed to reconnect to the websocket server', null)
+        }
+      }
+      catch (error) {
+        this.handleError('An error occurred while reconnecting the websocket connection', error)
       }
     },
     handleMessage(message: MessageEvent) {
@@ -51,14 +84,8 @@ export const useSocketStore = defineStore('socket', {
         }
       }
       catch (error) {
-        console.error('Error parsing websocket message data:', error)
-        showNotification('error', 'Error parsing websocket message data')
+        this.handleError('Error parsing websocket message data:', error)
       }
-    },
-    handleError(error: Event) {
-      showNotification('error', 'An error occurred with the websocket connection')
-      console.error('[Websocket ERROR]:', error)
-      this.reconnect()
     }
   }
 })
