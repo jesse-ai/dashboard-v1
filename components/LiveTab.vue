@@ -182,7 +182,7 @@
           v-if="results.monitoring && !results.finished && !results.exception.error"
           :results="results"
           :form="form"
-          :exchange="form.paper_mode ? form.exchange : form.exchange_api_key.exchange"
+          :exchange="form.exchange"
         />
 
         <!-- tables -->

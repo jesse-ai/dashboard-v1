@@ -58,7 +58,7 @@ const lines = {
 }
 
 const theme = computed(() => colorMode.value)
-const exchange = props.form.paper_mode ? props.form.exchange : props.form.exchange_api_key.exchange
+const exchange = props.form.exchange
 const candleKey = computed(() => `${exchange}-${props.results.selectedRoute.symbol}-${props.results.selectedRoute.timeframe}`)
 const currentCandles = computed(() => props.results.currentCandles)
 const position = computed(() => {
