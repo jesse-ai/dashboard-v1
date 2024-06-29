@@ -16,6 +16,7 @@ function newTab(): BacktestTab {
       export_csv: false,
       export_json: false,
       fast_mode: false,
+      benchmark: true,
       exchange: '',
       routes: [] as Route[],
       data_routes: [] as DataRoute[]
@@ -114,7 +115,8 @@ export const useBacktestStore = defineStore('backtest', {
         export_tradingview: this.tabs[id].form.export_tradingview,
         export_full_reports: this.tabs[id].form.export_full_reports,
         export_json: this.tabs[id].form.export_json,
-        fast_mode: this.tabs[id].form.fast_mode
+        fast_mode: this.tabs[id].form.fast_mode,
+        benchmark: this.tabs[id].form.benchmark
       }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -225,17 +227,8 @@ export const useBacktestStore = defineStore('backtest', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    equityCurveEvent(id: string, data: EquityCurveEvent[]) {
-      this.tabs[id].results.charts.equity_curve = []
-
-      if (data !== null) {
-        data.forEach((item: { balance: number, timestamp: number }) => {
-          this.tabs[id].results.charts.equity_curve.push({
-            value: item.balance,
-            time: item.timestamp
-          })
-        })
-      }
+    equityCurveEvent(id: string, data: EquityCurve[]) {
+      this.tabs[id].results.charts.equity_curve = data
 
       // backtest is finished, time to show charts:
       this.tabs[id].results.executing = false

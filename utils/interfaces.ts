@@ -78,7 +78,7 @@ interface Notifications {
 interface Backtest {
   logging: Logging
   warm_up_candles: number
-  exchanges: { [key: string]: ConfigExchange } // Replace with actual type
+  exchanges: { [key: string]: ConfigExchange }
 }
 
 interface Live {
@@ -190,8 +190,12 @@ interface Exception {
 }
 
 interface EquityCurve {
-  time: number
-  value: number
+  name: string
+  color: string
+  data: {
+    timestamp: number
+    balance: number
+  }[]
 }
 
 interface RoutesInfoEvent {
@@ -203,11 +207,6 @@ interface RoutesInfoEvent {
 interface RouteInfo {
   value: string
   style: string
-}
-
-interface EquityCurveEvent {
-  timestamp: number
-  balance: number
 }
 
 interface MetricsEvent {
@@ -354,6 +353,7 @@ interface BacktestForm {
   export_csv: boolean
   export_json: boolean
   fast_mode: boolean
+  benchmark: boolean
   exchange: string
   routes: Route[]
   data_routes: DataRoute[]

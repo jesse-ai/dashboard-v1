@@ -137,6 +137,11 @@
           <ToggleButton
             v-model="form.fast_mode" title="Fast Mode"
             description="Runs the backtest faster by using an improved algorithm. This is supposed to yield the same results; however, it's currently experimental, which is why it's an option." />
+
+          <!-- market benchmark -->
+          <ToggleButton
+            v-model="form.benchmark" title="Benchmark"
+            description="If enabled, the backtest will compare the performance of the strategy against the buy and hold strategy of the market." />
         </div>
       </div>
 
@@ -152,7 +157,7 @@
           <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
 
           <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Equity Curve" />
-          <EquityCurve v-if="hasExecutedTrades" :equity-curve="results.charts.equity_curve" />
+          <EquityCurve v-if="hasExecutedTrades" :data="results.charts.equity_curve" />
 
           <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Performance" />
           <KeyValueTable v-if="hasExecutedTrades" :data="results.metrics" />

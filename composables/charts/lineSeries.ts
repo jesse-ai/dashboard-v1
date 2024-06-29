@@ -20,11 +20,11 @@ export const lightTheme = {
     grid: {
       vertLines: {
         color: '#f1f1f1',
-        visible: false,
+        visible: true,
       },
       horzLines: {
         color: '#f1f1f1',
-        visible: false,
+        visible: true,
       }
     },
     priceScale: {
@@ -36,9 +36,9 @@ export const lightTheme = {
       secondsVisible: false
     }
   },
-  series: {
-    color: '#4f46e5'
-  }
+  // series: {
+  //   color: '#4f46e5'
+  // }
 }
 
 export const darkTheme = {
@@ -50,11 +50,11 @@ export const darkTheme = {
     grid: {
       vertLines: {
         color: '#525252',
-        visible: false
+        visible: true
       },
       horzLines: {
         color: '#525252',
-        visible: false
+        visible: true
       }
     },
     priceScale: {
@@ -66,7 +66,7 @@ export const darkTheme = {
       secondsVisible: false
     }
   },
-  series: {
-    color: '#818CF8'
-  }
+  // series: {
+  //   color: '#818CF8'
+  // }
 }
