@@ -144,7 +144,6 @@ const startInNewTab = (id: string) => {
 
 function validate() {
   const ERRORS = {
-    maxSymbolLengthErrorMessage: 'Maximum symbol length is exceeded!',
     mustContainDashErrorMessage: 'Symbol parameter must contain "-" character!',
     emptySymbolErrorMessage: 'Symbol parameter cannot be empty',
   }
@@ -159,10 +158,6 @@ function validate() {
   }
   if (!props.form.symbol.includes('-')) {
     showNotification('error', ERRORS.mustContainDashErrorMessage)
-    return false
-  }
-  if (props.form.symbol.length > 13) {
-    showNotification('error', ERRORS.maxSymbolLengthErrorMessage)
     return false
   }
   if (!props.form.start_date) {
