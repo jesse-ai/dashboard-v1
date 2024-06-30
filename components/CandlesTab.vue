@@ -116,6 +116,7 @@ const backtestState = useBacktestStore()
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await mainStore.getExchangeSupportedSymbols(props.form.exchange)
+  props.form.symbol = supportedSymbols.value[0]
 }
 
 const exceptionReport = ref(false)
