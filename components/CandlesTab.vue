@@ -118,7 +118,6 @@ async function updateSupportedSymbols() {
   supportedSymbols.value = await mainStore.getExchangeSupportedSymbols(props.form.exchange)
 }
 
-props.results.alert.message = ''
 const exceptionReport = ref(false)
 
 const backtestingExchangeNames = computed(() => mainStore.backtestingExchangeNames)
