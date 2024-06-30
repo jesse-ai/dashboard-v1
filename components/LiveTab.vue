@@ -340,6 +340,7 @@ const sidebarInfo = computed(() => {
     { label: 'PNL', value: `${props.results.generalInfo.pnl} (${props.results.generalInfo.pnl_perc}%)` },
     { label: 'Started', value: helpers.timestampToTime(props.results.generalInfo.started_at) },
     { label: 'Started/Current Balance', value: `${props.results.generalInfo.started_balance} / ${props.results.generalInfo.current_balance}` },
+    { label: 'Trades', value: `${props.results.generalInfo.count_trades}` },
   ]
 
   // for futures only
