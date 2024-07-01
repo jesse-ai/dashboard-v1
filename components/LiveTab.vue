@@ -329,7 +329,9 @@ async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
 }
 
-updateSupportedSymbols()
+if (props.form.exchange) {
+  updateSupportedSymbols()
+}
 const planInfo = computed(() => mainStore.planInfo)
 
 const sidebarInfo = computed(() => {
