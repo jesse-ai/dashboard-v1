@@ -119,8 +119,8 @@
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
         size="lg"
-        :options="['BTC-USDT', 'ETH-USDT']"
-        placeholder="ex: BTC-USDT" />
+        :options="symbols"
+        placeholder="Select a symbol..." />
 
       <!-- timeframe -->
       <USelectMenu
