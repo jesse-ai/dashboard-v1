@@ -271,7 +271,8 @@ export const useLiveStore = defineStore('Live', {
       // info logs
       const { data, error } = await usePostApi('/get-logs', {
         id,
-        type: 'info'
+        type: 'info',
+        start_time: this.tabs[id].results.generalInfo.started_at
       }, true)
 
       if (error.value && error.value.statusCode !== 200) {
@@ -291,7 +292,11 @@ export const useLiveStore = defineStore('Live', {
       })
 
       // error logs
-      const { data: dataLog, error: errorLog } = await usePostApi('/get-logs', { id, type: 'error' }, true)
+      const { data: dataLog, error: errorLog } = await usePostApi('/get-logs', {
+        id,
+        type: 'error',
+        start_time: this.tabs[id].results.generalInfo.started_at
+      }, true)
 
       if (errorLog.value && errorLog.value.statusCode !== 200) {
         showNotification('error', errorLog.value.data.message)
@@ -381,21 +386,9 @@ export const useLiveStore = defineStore('Live', {
         ['Total Losing Trades', data.total_losing_trades]
       ]
     },
-    equityCurveEvent(id: string, data: EquityCurveEvent[]) {
-      if (this.tabs[id] === undefined) {
-        this.tabs[id] = newTab(id)
-      }
+    equityCurveEvent(id: string, data: EquityCurve[]) {
+      this.tabs[id].results.charts.equity_curve = data
 
-      this.tabs[id].results.charts.equity_curve = []
-      data.forEach((item: { balance: number, timestamp: number }) => {
-        this.tabs[id].results.charts.equity_curve.push({
-          value: item.balance,
-          time: item.timestamp
-        })
-      })
-
-      // live is finished, time to show charts:
-      this.tabs[id].results.booting = false
       this.tabs[id].results.showResults = true
     },
     unexpectedTerminationEvent(id: string) {
