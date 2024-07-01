@@ -61,7 +61,7 @@
         <div v-if="e.type === 'futures'">
           <RadioGroups v-model="e.futures_leverage_mode" title="Leverage Mode:" :options="['cross', 'isolated']" default="isolated" />
           <br>
-          <NumberInput v-if="e.type === 'futures'" v-model="e.futures_leverage" title="Leverage (x):" :default="1" />
+          <NumberInput v-if="e.type === 'futures'" v-model="e.futures_leverage" title="Leverage (x):" />
           <br>
         </div>
       </div>

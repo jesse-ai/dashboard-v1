@@ -133,8 +133,7 @@
 
         <NumberInput
           v-if="store.exchangeInfo[e.name].type === 'futures'" v-model="e.futures_leverage"
-          class="mb-4" title="Leverage (x):"
-          :default="1" />
+          class="mb-4" title="Leverage (x):" />
 
         <p>
           Balances and fees will be fetched from the exchange in live trading. But for <b>paper trading</b> you can

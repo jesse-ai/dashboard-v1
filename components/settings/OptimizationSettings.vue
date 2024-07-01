@@ -58,7 +58,7 @@
 
         <br>
 
-        <NumberInput v-model="settings.optimization.exchange.futures_leverage" title="Leverage (x):" :default="1" />
+        <NumberInput v-model="settings.optimization.exchange.futures_leverage" title="Leverage (x):" />
       </div>
     </Card>
   </div>
