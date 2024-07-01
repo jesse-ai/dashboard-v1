@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col select-none">
-    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-      <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+    <div class="-my-2 overflow-x-auto">
+      <div class="py-2 align-middle inline-block min-w-full">
         <div class="border dark:border-gray-600 overflow-hidden sm:rounded">
-          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600">
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-600 hide-scroll overflow-x-scroll">
             <thead v-if="header" class="bg-gray-100 dark:bg-gray-800 select-none">
               <tr>
                 <th v-for="item in headerItems" :key="item" scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400">
