@@ -11,9 +11,9 @@
           <NuxtLink
             :to="`/backtest/${tab.id}`"
             :class="[tab.id === pageId ? 'text-gray-900 dark:text-gray-100 font-bold ' : 'text-gray-500 dark:text-gray-300 hover:text-gray-700 font-medium ', 'py-3 px-4 inline-block select-none cursor-pointer focus:outline-none w-full text-xs bg-gray-50 dark:bg-backdrop-dark']">
-
-            <span>{{ getTitle(tab) }}</span>
-
+            <span>
+              {{ getTitle(tab) }}
+            </span>
             <span
               aria-hidden="true"
               :class="[tab.id === pageId && (Object.keys(tabs).length > 1) ? 'bg-indigo-400' : 'bg-transparent dark:bg-gray-600', 'absolute inset-x-0 bottom-0 h-0.5']" />

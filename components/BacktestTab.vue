@@ -36,15 +36,17 @@
           @click="cancel($route.params.id as string)" />
       </div>
 
-      <a
-        v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl"
-        class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
-        <UButton
-          icon="i-heroicons-document-arrow-down" label="Debugging Logs"
-          color="gray" size="xl"
-          variant="solid" :trailing="false"
-          class="w-64 flex justify-center" />
-      </a>
+      <div class="mt-4">
+        <a
+          v-if="form.debug_mode && results.exception.error && results.progressbar.current !== 0" :href="logsUrl"
+          class="flex justify-center items-center btn-secondary text-center mb-4 w-full">
+          <UButton
+            icon="i-heroicons-document-arrow-down" label="Debugging Logs"
+            color="gray" size="xl"
+            variant="solid" :trailing="false"
+            class="w-64 flex justify-center" />
+        </a>
+      </div>
     </div>
 
     <!-- exception  -->
@@ -391,7 +393,7 @@ watch(() => props.form.start_date, (val) => {
 })
 
 watch(() => props.form.finish_date, (val) => {
-  if (props.form.start_date > val) {
+  if (props.form.finish_date && props.form.start_date > val) {
     props.form.start_date = val
   }
 })
