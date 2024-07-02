@@ -31,13 +31,16 @@
       <!-- symbol -->
       <USelectMenu
         v-model="r.symbol"
+        v-model:query="typedSymbol"
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
         searchable-placeholder="Search symbols..."
         size="lg"
-        :options="symbols"
-        placeholder="Select a symbol..." />
+        :options="displayedSymbols"
+        placeholder="Select a symbol...">
+        <template #empty>Start typing...</template>
+      </USelectMenu>
 
       <!-- timeframe -->
       <USelectMenu
@@ -115,12 +118,15 @@
       <!-- symbol -->
       <USelectMenu
         v-model="r.symbol"
+        v-model:query="typedSymbol"
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
         size="lg"
-        :options="symbols"
-        placeholder="Select a symbol..." />
+        :options="displayedSymbols"
+        placeholder="Select a symbol...">
+        <template #empty>Start typing...</template>
+      </USelectMenu>
 
       <!-- timeframe -->
       <USelectMenu
@@ -188,7 +194,8 @@ const props = defineProps<{
   results: BacktestResults | OptimizationResults | LiveResults
   totalRoutesError: string[]
 }>()
-
+const displayedSymbols = ref<string[]>([])
+const typedSymbol = ref('')
 const mainStore = useMainStore()
 const copiedDataRoutes = ref({ data_routes: props.form.data_routes })
 const copiedRoutes = ref({ routes: props.form.routes })
@@ -366,4 +373,22 @@ function moveDownDataRoutes(item: DataRoute) {
     props.form.data_routes[itemIndex + 1] = item
   }
 }
+
+watch(() => typedSymbol.value, (val) => {
+  if (val.length == 0) {
+    displayedSymbols.value = []
+    return
+  }
+
+  const temp = []
+  for (const symbol of props.symbols) {
+    if (temp.length > 50) break
+
+    if (symbol.toLowerCase().startsWith(val.toLowerCase())) {
+      temp.push(symbol)
+    }
+  }
+
+  displayedSymbols.value = temp
+})
 </script>

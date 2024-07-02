@@ -55,12 +55,15 @@
         <Divider title="Symbol" class="mt-16" />
         <USelectMenu
           v-model="form.symbol"
-          placeholder="ex: BTC-USDT"
+          v-model:query="typedSymbol"
+          class="w-full"
+          :ui="{ rounded: 'rounded-none rounded-l' }"
           searchable
-          :options="supportedSymbols"
           size="lg"
-          class="mt-2"
-        />
+          :options="displayedSymbols"
+          placeholder="Select a symbol...">
+          <template #empty>Start typing...</template>
+        </USelectMenu>
 
         <Divider title="Start Date" class="mt-16" />
         <UInput v-model="form.start_date" type="date" size="lg" class="mt-2" />
@@ -109,7 +112,8 @@ const props = defineProps<{
   form: CandleTabForm
   results: CandleTabResults
 }>()
-
+const displayedSymbols = ref<string[]>([])
+const typedSymbol = ref('')
 const candlesStore = useCandlesStore()
 const mainStore = useMainStore()
 const backtestState = useBacktestStore()
@@ -167,4 +171,22 @@ function validate() {
 
   return true
 }
+
+watch(() => typedSymbol.value, (val) => {
+  if (val.length == 0) {
+    displayedSymbols.value = []
+    return
+  }
+
+  const temp = []
+  for (const symbol of supportedSymbols.value) {
+    if (temp.length > 50) break
+
+    if (symbol.toLowerCase().startsWith(val.toLowerCase())) {
+      temp.push(symbol)
+    }
+  }
+
+  displayedSymbols.value = temp
+})
 </script>
