@@ -296,6 +296,15 @@ const backtestStore = useBacktestStore()
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)
+
+  for (let i = 0; i < props.form.routes.length; i++) {
+    props.form.routes[i].symbol = supportedSymbols.value[0]
+  }
+  if (props.form.data_routes.length > 0) {
+    for (let i = 0; i < props.form.data_routes.length; i++) {
+      props.form.data_routes[i].symbol = supportedSymbols.value[0]
+    }
+  }
 }
 props.form.exchange = props.form.exchange || useMainStore().backtestingExchangeNames[0]
 updateSupportedSymbols()
