@@ -16,6 +16,7 @@ export const useOptimizationStore = defineStore('optimization', {
       routes: [] as OptimizationRoute[],
       data_routes: [] as DataRoute[],
       optimal_total: 50,
+      fast_mode: false
     },
     results: {
       showResults: false,
@@ -82,6 +83,7 @@ export const useOptimizationStore = defineStore('optimization', {
         debug_mode: this.form.debug_mode,
         export_csv: this.form.export_csv,
         export_json: this.form.export_json,
+        fast_mode: this.form.fast_mode
       }
 
       const { data, error } = await usePostApi(

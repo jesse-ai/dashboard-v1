@@ -559,6 +559,7 @@ interface OptimizationForm {
   optimal_total: number
   // add this because of the error
   symbol?: null
+  fast_mode: boolean
 }
 
 interface OptimizationResults {
