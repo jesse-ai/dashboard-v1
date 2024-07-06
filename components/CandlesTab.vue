@@ -192,6 +192,6 @@ watch(() => typedSymbol.value, (val) => {
 onMounted(() => {
   setTimeout(() => {
     updateSupportedSymbols()
-  }, 1000)
+  }, 100)
 })
 </script>
