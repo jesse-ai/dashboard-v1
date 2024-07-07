@@ -243,5 +243,8 @@ export const useBacktestStore = defineStore('backtest', {
     alertEvent(id: string, data: Alert) {
       this.tabs[id].results.alert = data
     },
+    notificationEvent(id: string, data: DashboardNotification) {
+      showNotification(data.type, data.message)
+    }
   }
 })

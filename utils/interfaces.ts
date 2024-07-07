@@ -180,6 +180,11 @@ interface Alert {
   type: string
 }
 
+interface DashboardNotification {
+  message: string
+  type: 'error' | 'success'
+}
+
 type ArrayItem = [string, number | string]
 
 interface ArrayItems extends Array<ArrayItem> { }
