@@ -32,13 +32,15 @@
       <USelectMenu
         v-model="r.symbol"
         v-model:query="typedSymbol"
+        clear-search-on-close
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
         searchable-placeholder="Search symbols..."
         size="lg"
         :options="displayedSymbols"
-        placeholder="Select a symbol...">
+        placeholder="Select a symbol..."
+        @change="typedSymbol = ''">
         <template #empty>Start typing...</template>
       </USelectMenu>
 
@@ -119,12 +121,14 @@
       <USelectMenu
         v-model="r.symbol"
         v-model:query="typedSymbol"
+        clear-search-on-close
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-l' }"
         searchable
         size="lg"
         :options="displayedSymbols"
-        placeholder="Select a symbol...">
+        placeholder="Select a symbol..."
+        @change="typedSymbol = ''">
         <template #empty>Start typing...</template>
       </USelectMenu>
 
