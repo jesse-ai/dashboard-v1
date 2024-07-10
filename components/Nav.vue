@@ -90,13 +90,6 @@
                   </div>
 
                   <div class="py-1">
-                    <MenuItem v-if="shouldShowUpgradeButton" v-slot="{ active }">
-                      <a href="https://jesse.trade/pricing" :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-start items-center w-full text-left px-4 py-2 text-sm text-yellow-500 dark:text-yellow-300']" target="_blank">
-                        <SparklesIcon class="w-5 h-5 mr-2" />
-                        Upgrade License
-                      </a>
-                    </MenuItem>
-
                     <MenuItem v-slot="{ active }">
                       <button :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-indigo-700 dark:text-indigo-300']" @click="makeStrategy = true">
                         <DocumentPlusIcon class="w-5 h-5 mr-2" />
@@ -106,6 +99,16 @@
                   </div>
 
                   <div class="py-1">
+                    <MenuItem v-if="shouldShowUpgradeButton" v-slot="{ active }">
+                      <a
+                        href="https://jesse.trade/pricing"
+                        :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
+                        target="_blank">
+                        <UserIcon class="w-5 h-5 mr-2" />
+                        Manage License
+                      </a>
+                    </MenuItem>
+
                     <MenuItem v-slot="{ active }">
                       <button
                         :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
@@ -198,11 +201,6 @@
       </div>
 
       <div class="px-2 py-2 space-y-1 border-t border-gray-200 dark:border-gray-900">
-        <a v-if="shouldShowUpgradeButton" href="https://jesse.trade/pricing" target="_blank" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
-          <DocumentPlusIcon class="w-5 h-5 mr-2" />
-          Upgrade License
-        </a>
-
         <button class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" @click="makeStrategy = true">
           <DocumentPlusIcon class="w-5 h-5 mr-2" />
           New Strategy
@@ -211,6 +209,13 @@
 
       <!-- docs, help and strategies links -->
       <div class="px-2 py-2 space-y-1 border-t border-gray-200 dark:border-gray-900">
+        <div class="w-full" @click="close">
+          <a v-if="shouldShowUpgradeButton" href="https://jesse.trade/pricing" target="_blank" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
+            <UserIcon class="w-5 h-5 mr-2" />
+            Manage License
+          </a>
+        </div>
+
         <div class="w-full" @click="close">
           <NuxtLink
             to="/exchange-api-keys"
@@ -301,7 +306,7 @@ import {
   HomeIcon,
   IdentificationIcon,
   QuestionMarkCircleIcon,
-  SparklesIcon,
+  UserIcon,
   XMarkIcon,
   KeyIcon,
   BellAlertIcon
