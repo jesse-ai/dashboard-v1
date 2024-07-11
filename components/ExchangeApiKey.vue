@@ -1,5 +1,5 @@
 <template>
-  <Card class="mb-4 p-4">
+  <Card class="mb-4 p-4 bg-white">
     <div class="flex justify-between items-center mb-2">
       <h2 class="text-xl font-bold">
         {{ apiKey.name }} • {{ apiKey.exchange }}
