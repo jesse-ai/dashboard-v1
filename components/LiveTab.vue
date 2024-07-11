@@ -135,8 +135,10 @@
 
           <ToggleButton
             v-model="form.paper_mode"
-            title="Paper Trade" :disabled="planInfo.plan !== 'premium'"
-            :disabled-guide="planInfo.plan !== 'premium' ? 'Premium plan required' : ''" description="Trade in real-time using actual exchange data with PAPER money." />
+            title="Paper Trade"
+            :disabled="!canPapertrade"
+            :disabled-guide="!canPapertrade ? 'Premium plan required' : ''"
+            description="Trade in real-time using actual exchange data with PAPER money." />
 
           <UFormGroup
             label="Notifications:"
@@ -488,4 +490,8 @@ function copyErrorLogs() {
     copiedErrorLogs.value = false
   }, 3000)
 }
+
+const canPapertrade = computed(() => {
+  return ['basic', 'pro', 'enterprise', 'lifetime'].includes(planInfo.value.plan)
+})
 </script>
