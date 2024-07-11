@@ -2,11 +2,12 @@
   <div>
     <div class="flex justify-between items-center">
       <div class="font-medium text-gray-700 dark:text-gray-200">
-        {{ title }}
+        {{ title }} <span v-if="disabled" class="opacity-70 text-sm">({{ disabledGuide }})</span>
       </div>
 
-      <UToggle v-model="(btnModel as boolean)" />
+      <UToggle v-model="(btnModel as boolean)" :disabled="disabled" />
     </div>
+
     <div class="text-sm text-gray-500 dark:text-gray-400 mt-2" @if="description">
       {{ description }}
     </div>
@@ -14,10 +15,12 @@
 </template>
 
 <script setup lang="ts">
-const btnModel = defineModel()
+const btnModel = defineModel({ type: Boolean, default: false })
 
 defineProps<{
   title: string
   description?: string
+  disabled?: boolean
+  disabledGuide?: string
 }>()
 </script>
