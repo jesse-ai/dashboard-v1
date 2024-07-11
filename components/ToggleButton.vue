@@ -17,10 +17,14 @@
 <script setup lang="ts">
 const btnModel = defineModel({ type: Boolean, default: false })
 
-defineProps<{
+const props = defineProps<{
   title: string
   description?: string
   disabled?: boolean
   disabledGuide?: string
 }>()
+
+if (props.disabled) {
+  btnModel.value = false
+}
 </script>
