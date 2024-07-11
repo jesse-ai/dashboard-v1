@@ -74,7 +74,7 @@ else {
 sortExchanges()
 removeInactiveLiveExchanges()
 
-function sortExchanges () {
+function sortExchanges() {
   const sortBacktestKeys = Object.keys(settings.value.backtest.exchanges).sort()
   const sortLiveKeys = Object.keys(settings.value.live.exchanges).sort()
   const backtestExchange = {} as { [key: string]: ConfigExchange }
@@ -91,7 +91,7 @@ function sortExchanges () {
   settings.value.live.exchanges = liveExchange
 }
 
-function removeInactiveLiveExchanges () {
+function removeInactiveLiveExchanges() {
   // loop through this.settings.value.live.exchanges, if the
   // allowedToTradeIn(exchange.name) is false, remove
   // that item from this.settings.value.live.exchanges
@@ -102,7 +102,7 @@ function removeInactiveLiveExchanges () {
   }
 }
 
-function allowedToTradeIn (exchangeName: string) {
+function allowedToTradeIn(exchangeName: string) {
   if (!isLive.value) return true
   if (planInfo.value.plan === 'premium') {
     return true
