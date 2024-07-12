@@ -15,7 +15,8 @@ export const useMainStore = defineStore('main', {
     hasLivePluginInstalled: false,
     systemInfo: {} as SystemInfo,
     updateInfo: {} as UpdateInfo,
-    planInfo: {} as PlanInfo,
+    plan: '',
+    planLimits: {} as PlanLimits,
     settings: {
       backtest: {
         logging: {
@@ -132,7 +133,8 @@ export const useMainStore = defineStore('main', {
       this.exchangeInfo = res.exchanges
       this.jesseSupportedTimeframes = res.jesse_supported_timeframes
       this.hasLivePluginInstalled = res.has_live_plugin_installed
-      this.planInfo = res.plan_info
+      this.plan = res.plan
+      this.planLimits = res.limits
       // create the list of exchanges by setting the default values (further down we
       // will override the default values with the user's settings fetched from the database)
       // loop through the this.exchangeInfo object

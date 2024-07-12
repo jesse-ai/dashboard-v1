@@ -1,15 +1,21 @@
-
-
-
 // ==================== general info ====================
 interface GeneralInfoResponse {
   exchanges: { [key: string]: Exchange }
   has_live_plugin_installed: boolean
-  jesse_supported_timeframes: never[]
-  plan_info: PlanInfo
-  strategies: never[]
+  jesse_supported_timeframes: string[]
+  plan: string
+  limits: PlanLimits
+  strategies: string[]
   system_info: SystemInfo
   update_info: UpdateInfo
+}
+
+interface PlanLimits {
+  ip_limit: number
+  trading_routes: number
+  data_routes: number
+  timeframes: string[]
+  exchanges: string[]
 }
 
 interface SystemInfo {
@@ -19,10 +25,6 @@ interface SystemInfo {
   operating_system: string
   python_version: string
   live_plugin_version?: string
-}
-
-interface PlanInfo {
-  plan: string
 }
 
 interface UpdateInfo {
@@ -102,6 +104,7 @@ interface Settings {
   live: Live
   optimization: Optimization
 }
+
 // ==================== get config ====================
 interface GetConfigResponse {
   data: {
@@ -132,10 +135,12 @@ interface ConfigExchange {
   futures_leverage_mode?: string
   futures_leverage?: number
 }
+
 // ==================== auth Response ====================
 interface AuthResponse {
   auth_token: string
 }
+
 // ==================== FAQ Response ====================
 interface FAQ {
   id: number
@@ -148,6 +153,7 @@ interface FAQ {
   updated_at: Date
   views: number
 }
+
 // ==================== API Responses ====================
 interface MakeStrategyResponse {
   message: string
@@ -187,7 +193,8 @@ interface DashboardNotification {
 
 type ArrayItem = [string, number | string]
 
-interface ArrayItems extends Array<ArrayItem> { }
+interface ArrayItems extends Array<ArrayItem> {
+}
 
 interface Exception {
   error: string
@@ -549,8 +556,6 @@ interface WebSocketData {
 }
 
 // ==================== Optimization ====================
-
-
 
 
 interface OptimizationForm {

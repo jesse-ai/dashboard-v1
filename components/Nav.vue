@@ -83,12 +83,11 @@
                 <MenuItems class="bg-white dark:bg-gray-700 origin-top-right absolute right-0 mt-2 w-64 rounded-md border-gray-200 dark:border-gray-900 shadow-lg py-1 ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 dark:divide-gray-900">
                   <div class="px-4 py-3 select-text">
                     <p class="text-sm text-gray-500 dark:text-gray-300">
-                      Active License: <span class="truncate text-sm font-medium text-gray-800 dark:text-gray-200 opacity-100 uppercase">{{
-                        planInfo.plan
-                      }}</span>
+                      Active License: <span class="truncate text-sm font-medium text-gray-800 dark:text-gray-200 opacity-100 uppercase">
+                        {{ store.plan }}
+                      </span>
                     </p>
                   </div>
-
                   <div class="py-1">
                     <MenuItem v-slot="{ active }">
                       <button :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-indigo-700 dark:text-indigo-300']" @click="makeStrategy = true">
@@ -99,7 +98,7 @@
                   </div>
 
                   <div class="py-1">
-                    <MenuItem v-if="shouldShowUpgradeButton" v-slot="{ active }">
+                    <MenuItem v-slot="{ active }">
                       <a
                         href="https://jesse.trade/pricing"
                         :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
@@ -210,7 +209,7 @@
       <!-- docs, help and strategies links -->
       <div class="px-2 py-2 space-y-1 border-t border-gray-200 dark:border-gray-900">
         <div class="w-full" @click="close">
-          <a v-if="shouldShowUpgradeButton" href="https://jesse.trade/pricing" target="_blank" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
+          <a href="https://jesse.trade/pricing" target="_blank" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
             <UserIcon class="w-5 h-5 mr-2" />
             Manage License
           </a>
@@ -256,7 +255,9 @@
         </div>
 
         <div class="w-full" @click="close">
-          <button href="https://jesse.trade/strategies" class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md" target="_blank" @click="about = true">
+          <button
+            class="flex justify-start items-start w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md"
+            @click="about = true">
             <IdentificationIcon class="w-5 h-5 mr-2" />
             About
           </button>
@@ -321,9 +322,6 @@ const makeStrategy = ref(false)
 const about = ref(false)
 
 const hasLivePluginInstalled = computed(() => store.hasLivePluginInstalled)
-const planInfo = computed(() => store.planInfo)
-
-const shouldShowUpgradeButton = computed(() => planInfo.value && planInfo.value.plan !== 'premium')
 
 const navigation = computed(() => {
   const arr = [
