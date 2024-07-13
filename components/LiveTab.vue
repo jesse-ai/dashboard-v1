@@ -90,6 +90,7 @@
           placeholder="Select an exchange..."
           searchable
           :options="supportedPaperTradingExchanges"
+          value-attribute="value"
           size="lg"
           class="mt-2 mb-16"
           @change="updateSupportedSymbols"
@@ -99,8 +100,8 @@
           v-model="form.exchange_api_key_id"
           placeholder="Select an exchange..."
           searchable
-          value-attribute="value"
           :options="supportedLiveExchanges"
+          value-attribute="value"
           size="lg"
           class="mt-2 mb-16"
           @change="updateSupportedSymbols">
@@ -372,12 +373,6 @@ const notificationsItems = computed(() => {
   }))
 })
 
-const supportedPaperTradingExchanges = computed(() => mainStore.liveTradingExchangeNames)
-const supportedLiveExchanges = computed(() => mainStore.exchangeApiKeys.map(n => ({
-  label: `${n.exchange} - ${n.name}`,
-  value: n.id,
-})))
-
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {
     return 'Please wait...'
@@ -443,6 +438,31 @@ const timeframeItems = computed(() => {
     })
   }
   return arr
+})
+const supportedPaperTradingExchanges = computed(() => {
+  return mainStore.liveTradingExchangeNames.map((exchange) => {
+    // Assuming there's a method to check if an exchange is available for paper trading
+    const isAvailableForPaperTrading = mainStore.planLimits.exchanges.includes(exchange)
+    if (isAvailableForPaperTrading) {
+      return { label: exchange, value: exchange, disabled: false }
+    }
+    else {
+      return { label: `${exchange} (Upgrade required)`, value: exchange, disabled: true }
+    }
+  })
+})
+
+const supportedLiveExchanges = computed(() => {
+  return mainStore.exchangeApiKeys.map((apiKey) => {
+    // Assuming there's a method to check if an exchange API key is valid under the user's plan
+    const isValidUnderPlan = mainStore.planLimits.exchanges.includes(apiKey.exchange)
+    if (isValidUnderPlan) {
+      return { label: `${apiKey.exchange} - ${apiKey.name}`, value: apiKey.id, disabled: false }
+    }
+    else {
+      return { label: `${apiKey.exchange} - ${apiKey.name} (Upgrade required)`, value: apiKey.id, disabled: true }
+    }
+  })
 })
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
