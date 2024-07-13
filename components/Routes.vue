@@ -20,10 +20,10 @@
     </DividerWithButtons>
 
     <!--
-   ================================
-    Trading Routes
-   ================================
-  -->
+     ================================
+      Trading Routes
+     ================================
+    -->
     <div
       v-for="(r, i) in form.routes" :key="r.symbol + i"
       class="flex mt-4"
