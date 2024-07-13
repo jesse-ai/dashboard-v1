@@ -343,7 +343,6 @@ async function updateSupportedSymbols() {
 if (props.form.exchange) {
   updateSupportedSymbols()
 }
-const planInfo = computed(() => mainStore.planInfo)
 
 const sidebarInfo = computed(() => {
   const arr = [
@@ -378,28 +377,6 @@ const supportedLiveExchanges = computed(() => mainStore.exchangeApiKeys.map(n =>
   label: `${n.exchange} - ${n.name}`,
   value: n.id,
 })))
-
-
-// onMounted(() => {
-//   setTimeout(async () => {
-//   // if paper mode
-//     if (props.form.paper_mode) {
-//       props.form.exchange = props.form.exchange || mainStore.liveTradingExchangeNames[0]
-//     }
-//     else { // live
-//       console.log('loading')
-//       props.form.exchange = props.form.exchange || mainStore.exchangeApiKeys[0].exchange
-//       props.form.exchange_api_key = props.form.exchange_api_key || mainStore.exchangeApiKeys[0]
-//     }
-//     updateSupportedSymbols()
-//   }, 200)
-// })
-
-// watch(props.form.paper_mode, (newValue, oldValue) => {
-//   if (newValue !== oldValue) {
-//     updateSupportedSymbols()
-//   }
-// })
 
 const remainingTimeText = computed(() => {
   if (Math.round(props.results.progressbar.estimated_remaining_seconds) === 0) {
@@ -437,12 +414,36 @@ const orders = computed(() => {
 })
 
 const timeframeItems = computed(() => {
-  if (mainStore.settings.live.generate_candles_from_1m || !props.form.exchange) {
-    return mainStore.jesseSupportedTimeframes
-  }
-  return mainStore.exchangeInfo[props.form.exchange].supported_timeframes
-})
+  let arr = []
+  const timeframes = mainStore.jesseSupportedTimeframes // Assuming this is the list of all possible timeframes
 
+  if (mainStore.settings.live.generate_candles_from_1m || !props.form.exchange) {
+    arr = timeframes.map((tf) => {
+      // Check if the timeframe is included in the planLimits.timeframes
+      if (mainStore.planLimits.timeframes.includes(tf)) {
+        return { label: tf, value: tf, disabled: false }
+      }
+      else {
+        // Mark as premium only if not included
+        return { label: `${tf} (Upgrade required)`, value: tf, disabled: true }
+      }
+    })
+  }
+  else {
+    const supportedTimeframes = mainStore.exchangeInfo[props.form.exchange].supported_timeframes
+    arr = supportedTimeframes.map((tf) => {
+      // Check if the timeframe is included in the planLimits.timeframes
+      if (mainStore.planLimits.timeframes.includes(tf)) {
+        return { label: tf, value: tf, disabled: false }
+      }
+      else {
+        // Mark as premium only if not included
+        return { label: `${tf} (Upgrade required)`, value: tf, disabled: true }
+      }
+    })
+  }
+  return arr
+})
 const cancel = liveStore.cancel
 const newLive = liveStore.newLive
 
@@ -492,6 +493,6 @@ function copyErrorLogs() {
 }
 
 const canPapertrade = computed(() => {
-  return ['basic', 'pro', 'enterprise', 'lifetime'].includes(planInfo.value.plan)
+  return ['basic', 'pro', 'enterprise', 'lifetime'].includes(mainStore.plan)
 })
 </script>

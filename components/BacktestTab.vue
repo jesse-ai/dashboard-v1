@@ -85,7 +85,8 @@
         />
 
         <Routes
-          :total-routes-error="totalRoutesError" :timeframes="useMainStore().jesseSupportedTimeframes"
+          :total-routes-error="totalRoutesError"
+          :timeframes="timeframeItems"
           :form="form" :results="results"
           :symbols="supportedSymbols"
           mode="backtest" />
@@ -293,6 +294,12 @@ const auth_key = useMainStore().authToken
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 
 const backtestStore = useBacktestStore()
+const timeframeItems = computed(() => {
+  return useMainStore().jesseSupportedTimeframes.map(timeframe => ({
+    label: timeframe,
+    value: timeframe,
+  }))
+})
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(props.form.exchange)

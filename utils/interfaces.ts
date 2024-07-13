@@ -10,6 +10,12 @@ interface GeneralInfoResponse {
   update_info: UpdateInfo
 }
 
+interface SupportedTimeframe {
+  label: string
+  value: string
+  disabled?: boolean
+}
+
 interface PlanLimits {
   ip_limit: number
   trading_routes: number

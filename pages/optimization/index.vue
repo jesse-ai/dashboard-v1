@@ -68,7 +68,7 @@
           :total-routes-error="totalRoutesError" :form="form"
           :results="results" mode="optimization"
           :symbols="supportedSymbols"
-          :timeframes="useMainStore().jesseSupportedTimeframes" />
+          :timeframes="timeframeItems" />
 
         <Divider class="mt-16 mb-4" title="Duration" />
         <div class="flex items-center select-none flex-1 mb-4">
@@ -194,6 +194,13 @@ const exceptionReport = ref(false)
 const copiedLogsInfo = ref(false)
 const baseURL = ref(useRuntimeConfig().public.apiBaseUrl)
 const totalRoutesError = ref<string[]>([])
+
+const timeframeItems = computed(() => {
+  return useMainStore().jesseSupportedTimeframes.map(timeframe => ({
+    label: timeframe,
+    value: timeframe,
+  }))
+})
 
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {

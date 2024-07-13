@@ -50,6 +50,7 @@
         class="w-full"
         :ui="{ rounded: 'rounded-none' }"
         size="lg"
+        value-attribute="value"
         :options="timeframes"
       />
 
@@ -192,7 +193,7 @@ import { useMainStore } from '~/stores/mainStore'
 
 const props = defineProps<{
   mode: string
-  timeframes: string[]
+  timeframes: SupportedTimeframe[]
   symbols: string[]
   form: BacktestForm | OptimizationForm | LiveForm
   results: BacktestResults | OptimizationResults | LiveResults
