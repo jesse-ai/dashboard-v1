@@ -229,7 +229,7 @@ function initiate() {
   }
   props.form.routes.push({
     symbol: '',
-    timeframe: mainStore.jesseSupportedTimeframes[0],
+    timeframe: mainStore.jesseSupportedTimeframes.includes('4h') ? '4h' : mainStore.jesseSupportedTimeframes[mainStore.jesseSupportedTimeframes.length - 1],
     strategy: mainStore.strategies[0],
   })
 }
@@ -302,7 +302,7 @@ function CheckRoutesSymbol(item: Route | DataRoute) {
 function addRoute() {
   props.form.routes.push({
     symbol: '',
-    timeframe: mainStore.jesseSupportedTimeframes[0],
+    timeframe: mainStore.jesseSupportedTimeframes.includes('4h') ? '4h' : mainStore.jesseSupportedTimeframes[mainStore.jesseSupportedTimeframes.length - 1],
     strategy: mainStore.strategies[0],
   })
 }
@@ -310,7 +310,7 @@ function addRoute() {
 function addDataRoute() {
   props.form.data_routes.push({
     symbol: '',
-    timeframe: mainStore.jesseSupportedTimeframes[0],
+    timeframe: mainStore.jesseSupportedTimeframes.includes('4h') ? '4h' : mainStore.jesseSupportedTimeframes[mainStore.jesseSupportedTimeframes.length - 1],
   })
 }
 
