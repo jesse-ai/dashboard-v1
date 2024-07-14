@@ -18,6 +18,7 @@ interface SupportedTimeframe {
 
 interface PlanLimits {
   ip_limit: number
+  live_trading_tabs: number
   trading_routes: number
   data_routes: number
   timeframes: string[]

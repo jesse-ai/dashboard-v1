@@ -33,7 +33,7 @@
         <!-- New Tab Button -->
         <div
           class="select-none cursor-pointer text-gray-400 dark:text-gray-100 hover:text-gray-600 focus:outline-none group relative w-14 overflow-hidden bg-gray-50 dark:bg-backdrop-dark py-3 px-4 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center justify-center "
-          @click="useLiveStore().addTab()">
+          @click="addTab">
           <button class="absolute right-[1em] focus:outline-none ">
             <PlusIcon class="h-6 w-6 rounded-full" aria-hidden="true" />
           </button>
@@ -57,6 +57,15 @@ const emit = defineEmits(['close'])
 defineProps<{
   tabs: LiveTabs
 }>()
+
+function addTab() {
+  if (Object.keys(useLiveStore().tabs).length >= useMainStore().planLimits.live_trading_tabs) {
+    showNotification('error', `You have reached the limit of "${useMainStore().planLimits.live_trading_tabs}" tabs for your "${useMainStore().plan}" plan. Please upgrade your plan to add more tabs.`)
+    return
+  }
+
+  useLiveStore().addTab()
+}
 
 function getTitle(tab: LiveTab) {
   if (!tab.form.routes.length) {
