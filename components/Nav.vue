@@ -104,11 +104,11 @@
                         :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
                         target="_blank">
                         <UserIcon class="w-5 h-5 mr-2" />
-                        Manage License
+                        {{ hasLivePluginInstalled ? 'Manage License' : 'Upgrade Account' }}
                       </a>
                     </MenuItem>
 
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem v-if="hasLivePluginInstalled" v-slot="{ active }">
                       <button
                         :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
                         @click="$router.push('/exchange-api-keys')">
@@ -117,7 +117,7 @@
                       </button>
                     </MenuItem>
 
-                    <MenuItem v-slot="{ active }">
+                    <MenuItem v-if="hasLivePluginInstalled" v-slot="{ active }">
                       <button
                         :class="[active ? 'bg-gray-100 dark:bg-gray-800' : '', 'flex justify-left items-center w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300']"
                         @click="$router.push('/notification-api-keys')">
@@ -211,11 +211,11 @@
         <div class="w-full" @click="close">
           <a href="https://jesse.trade/pricing" target="_blank" class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
             <UserIcon class="w-5 h-5 mr-2" />
-            Manage License
+            {{ hasLivePluginInstalled ? 'Manage License' : 'Upgrade Account' }}
           </a>
         </div>
 
-        <div class="w-full" @click="close">
+        <div v-if="hasLivePluginInstalled" class="w-full" @click="close">
           <NuxtLink
             to="/exchange-api-keys"
             class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
@@ -224,7 +224,7 @@
           </NuxtLink>
         </div>
 
-        <div class="w-full" @click="close">
+        <div v-if="hasLivePluginInstalled" class="w-full" @click="close">
           <NuxtLink
             to="/notification-api-keys"
             class="flex justify-start items-center w-full text-left px-2 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-gray-200 rounded-md">
