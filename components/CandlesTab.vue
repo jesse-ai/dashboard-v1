@@ -58,7 +58,6 @@
           v-model:query="typedSymbol"
           clear-search-on-close
           class="w-full"
-          :ui="{ rounded: 'rounded-none rounded-l' }"
           searchable
           size="lg"
           :options="displayedSymbols"
