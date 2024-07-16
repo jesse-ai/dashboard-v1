@@ -16,7 +16,15 @@ export const useSocketStore = defineStore('socket', {
     },
     initiate() {
       try {
-        this.socket = new WebSocket(`${useRuntimeConfig().public.wsUrl}?token=${useMainStore().authToken}`)
+        let wsPath = ''
+        if (useRuntimeConfig().public.appEnv === 'production') {
+          wsPath = ((window.location.protocol === 'https:') ? 'wss://' : 'ws://') + window.location.host + '/ws'
+        }
+        else {
+          wsPath = `${useRuntimeConfig().public.wsUrl}`
+        }
+
+        this.socket = new WebSocket(`${wsPath}?token=${useMainStore().authToken}`)
 
         this.socket.addEventListener('open', () => {
           this.isConnected = true

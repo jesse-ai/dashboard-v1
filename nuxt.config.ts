@@ -1,20 +1,15 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-let wsPath = ''
-if (process.env.APP_ENV === 'production') {
-  wsPath = ((window.location.protocol === 'https:') ? 'wss://' : 'ws://') + window.location.host + '/ws'
-} else {
-  wsPath = `${process.env.VUE_APP_SOCKET_PATH}`
-}
 
 export default defineNuxtConfig({
   // environment variables
   runtimeConfig: {
     ssr: false,
     public: {
+      appEnv: process.env.APP_ENV,
       apiBaseUrl: process.env.APP_ENV === 'production' ? '/' : process.env.NUXT_API_BASE_URL1,
       appName: 'Jesse',
       appUrl: process.env.APP_URL,
-      wsUrl: wsPath,
+      wsUrl: process.env.VUE_APP_SOCKET_PATH,
     },
   },
   devtools: { enabled: true },
