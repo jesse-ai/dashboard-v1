@@ -57,7 +57,7 @@
           v-model="form.symbol"
           v-model:query="typedSymbol"
           clear-search-on-close
-          class="w-full"
+          class="mt-2"
           searchable
           size="lg"
           :options="displayedSymbols"
