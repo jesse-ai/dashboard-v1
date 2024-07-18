@@ -60,16 +60,6 @@
 
   <LayoutsSidebar else>
     <template #left>
-      <!-- alert -->
-      <div v-if="results.showResults && results.alert.message" class="mb-10">
-        <UAlert
-          color="teal" icon="i-heroicons-check-circle"
-          variant="soft"
-          :title="results.alert.message"
-          :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }"
-          @close="results.alert.message = ''" />
-      </div>
-
       <!-- Content -->
       <div v-if="!results.executing && !results.showResults">
         <!-- exchange -->
