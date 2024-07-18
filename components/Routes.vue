@@ -139,6 +139,7 @@
         class="w-full"
         :ui="{ rounded: 'rounded-none rounded-r' }"
         size="lg"
+        value-attribute="value"
         :options="timeframes"
       />
 

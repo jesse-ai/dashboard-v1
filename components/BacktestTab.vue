@@ -156,9 +156,6 @@
             :data="results.routes_info"
             :header-items="['Symbol', 'Timeframe', 'Strategy']" header />
 
-          <Divider v-if="results.hyperparameters.length" class="mt-16 mb-4" title="Hyperparameters" />
-          <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
-
           <Divider v-if="hasExecutedTrades" class="mt-16 mb-4" title="Equity Curve" />
           <EquityCurve v-if="hasExecutedTrades" :data="results.charts.equity_curve" />
 
@@ -256,6 +253,9 @@
           <hr class="my-8 border-2 dark:border-gray-600 rounded-full">
 
           <KeyValueTableSimple :data="results.info" />
+
+          <UDivider v-if="results.hyperparameters.length" class="mt-8 mb-4" size="lg" label="Hyperparameters" />
+          <KeyValueTable v-if="results.hyperparameters.length" :data="results.hyperparameters" />
         </div>
 
         <div v-else>
