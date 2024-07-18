@@ -245,8 +245,7 @@
               :trailing="false" />
           </a>
 
-          <hr class="my-8 border-2 dark:border-gray-600 rounded-full">
-
+          <UDivider class="mt-8 mb-4" size="lg" label="General Info" />
           <KeyValueTableSimple :data="results.info" />
 
           <UDivider class="mt-8 mb-4" size="lg" label="Routes" />
