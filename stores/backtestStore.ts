@@ -41,10 +41,6 @@ function newTab(): BacktestTab {
       charts: {
         equity_curve: []
       },
-      alert: {
-        message: '',
-        type: ''
-      },
       info: []
     }
   })
@@ -92,7 +88,6 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[id].results.infoLogs = ''
       this.tabs[id].results.exception.traceback = ''
       this.tabs[id].results.exception.error = ''
-      this.tabs[id].results.alert.message = ''
 
       // validate that in case the fast mode is enabled the number of trading routes is not more than one
       if (this.tabs[id].form.fast_mode && this.tabs[id].form.routes.length > 1) {
@@ -241,7 +236,7 @@ export const useBacktestStore = defineStore('backtest', {
       }
     },
     alertEvent(id: string, data: Alert) {
-      this.tabs[id].results.alert = data
+      showNotification(data.type, data.message)
     },
     notificationEvent(id: string, data: DashboardNotification) {
       showNotification(data.type, data.message)

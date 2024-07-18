@@ -190,7 +190,7 @@ interface ProgressBar {
 
 interface Alert {
   message: string
-  type: string
+  type: 'error' | 'success'
 }
 
 interface DashboardNotification {
@@ -358,7 +358,6 @@ interface BacktestResults {
   charts: {
     equity_curve: EquityCurve[]
   }
-  alert: Alert
   info: ArrayItems
 }
 
