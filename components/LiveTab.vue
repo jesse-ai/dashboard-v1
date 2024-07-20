@@ -342,6 +342,7 @@ async function updateSupportedSymbols() {
         props.form.data_routes[i].symbol = supportedSymbols.value[0]
       }
     }
+  }
 }
 
 if (props.form.exchange) {
