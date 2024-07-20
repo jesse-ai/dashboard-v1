@@ -32,7 +32,7 @@
         <!-- New Tab Button -->
         <div
           class="select-none cursor-pointer text-gray-400 dark:text-gray-100 hover:text-gray-600 focus:outline-none group relative w-14 overflow-hidden bg-gray-50 dark:bg-backdrop-dark py-3 px-4 font-medium hover:bg-white dark:hover:bg-gray-800 flex items-center justify-center "
-          @click="useBacktestStore().addTab()">
+          @click="useBacktestStore().addTab(currentTab)">
           <button class="absolute right-[1em] focus:outline-none ">
             <PlusIcon class="h-6 w-6 rounded-full" aria-hidden="true" />
           </button>
@@ -55,6 +55,7 @@ const emit = defineEmits(['close'])
 
 defineProps<{
   tabs: BacktestTabs
+  currentTab: string
 }>()
 
 function getTitle(tab: BacktestTab) {

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <BacktestTabs :tabs="tabs" mode="backtest" @close="backtestStore.closeTab" />
+    <BacktestTabs :current-tab="currentTab.id" :tabs="tabs" mode="backtest" @close="backtestStore.closeTab" />
   </div>
 
   <BacktestTab v-if="currentTab" :form="currentTab.form" :results="currentTab.results" />
@@ -27,6 +27,7 @@ const currentTab = computed(() => {
       return firstTab
     }
   }
+
   return tabs.value[pageId.value]
 })
 

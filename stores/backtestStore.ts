@@ -66,9 +66,13 @@ export const useBacktestStore = defineStore('backtest', {
         }
       }
     },
-    async addTab() {
+    async addTab(id?: string) {
       const tab = newTab()
       this.tabs[tab.id] = tab
+      if (id) {
+        const oldTab = this.tabs[id]
+        tab.form = oldTab.form
+      }
       await navigateTo(`/backtest/${tab.id}`)
     },
     closeTab(id: string) {
