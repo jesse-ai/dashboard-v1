@@ -205,6 +205,11 @@ const timeframeItems = computed(() => {
 const supportedSymbols = ref<string[]>([])
 async function updateSupportedSymbols() {
   supportedSymbols.value = await useMainStore().getExchangeSupportedSymbols(form.value.exchange)
+  for (let i = 0; i < form.value.routes.length; i++) {
+    if (!supportedSymbols.value.includes(form.value.routes[i].symbol)) {
+      form.value.routes[i].symbol = supportedSymbols.value[0]
+    }
+  }
 }
 form.value.exchange = form.value.exchange || useMainStore().backtestingExchangeNames[0]
 updateSupportedSymbols()
