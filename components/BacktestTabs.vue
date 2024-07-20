@@ -55,7 +55,7 @@ const emit = defineEmits(['close'])
 
 defineProps<{
   tabs: BacktestTabs
-  currentTab: string
+  currentTab: string | null
 }>()
 
 function getTitle(tab: BacktestTab) {

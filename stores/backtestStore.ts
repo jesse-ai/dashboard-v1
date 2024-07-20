@@ -66,7 +66,7 @@ export const useBacktestStore = defineStore('backtest', {
         }
       }
     },
-    async addTab(id?: string) {
+    async addTab(id?: string | null) {
       const tab = newTab()
       this.tabs[tab.id] = tab
       if (id) {
