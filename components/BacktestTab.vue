@@ -401,9 +401,9 @@ watch(() => props.form.start_date, (val) => {
   }
 })
 
-watch(() => props.form.finish_date, (val) => {
-  if (props.form.finish_date && props.form.start_date > val) {
-    props.form.start_date = val
-  }
-})
+// watch(() => props.form.finish_date, (val) => {
+//   if (props.form.finish_date && Number(val.split('-')[0]) > 2015 && props.form.start_date > val) {
+//     props.form.start_date = val
+//   }
+// })
 </script>
