@@ -71,7 +71,7 @@ export const useBacktestStore = defineStore('backtest', {
       this.tabs[tab.id] = tab
       if (id) {
         const oldTab = this.tabs[id]
-        tab.form = oldTab.form
+        tab.form = JSON.parse(JSON.stringify(oldTab.form))
       }
       await navigateTo(`/backtest/${tab.id}`)
     },
