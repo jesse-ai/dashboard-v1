@@ -5,11 +5,11 @@ import { handleError } from '~/composables/notifications'
 import { useCandlesStore } from '~/stores/candleStore'
 import { useBacktestStore } from '~/stores/backtestStore'
 import { useOptimizationStore } from '~/stores/optimizationStore'
+import { useTempStore } from '~/stores/tempStore'
 import { useLiveStore } from '~/stores/liveStore'
 
 export const useMainStore = defineStore('main', {
   state: () => ({
-    initiated: false,
     loadingVar: false,
     authToken: '',
     hasLivePluginInstalled: false,
@@ -189,7 +189,7 @@ export const useMainStore = defineStore('main', {
       await this.fetchExchangeApiKeys()
       await this.fetchNotificationApiKeys()
 
-      this.initiated = true
+      useTempStore().initiated = true
     },
 
     async syncOpenTabs() {

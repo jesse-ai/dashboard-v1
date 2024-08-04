@@ -17,16 +17,17 @@
 
 <script setup lang="ts">
 import { useMainStore } from '~/stores/mainStore'
+import { useTempStore } from '~/stores/tempStore'
 import { useSocketStore } from '~/stores/websocketStore'
 
 const showLogin = ref(false)
 const loading = ref(true)
 const settings = computed(() => useMainStore().settings)
 const authToken = computed(() => useMainStore().authToken)
-const initiated = computed(() => useMainStore().initiated)
+const initiated = computed(() => useTempStore().initiated)
 
 if (useMainStore().isAuthenticated) {
-  if (useMainStore().initiated) {
+  if (initiated.value) {
     loading.value = false
   }
 
@@ -37,7 +38,7 @@ if (useMainStore().isAuthenticated) {
 }
 else {
   showLogin.value = true
-  useMainStore().initiated = false
+  useTempStore().initiated = false
 }
 
 watch(authToken, (newValue, oldValue) => {
