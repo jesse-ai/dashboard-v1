@@ -34,5 +34,8 @@ export default defineNuxtConfig({
     config: {
       stylistic: true
     }
+  },
+  experimental: {
+    appManifest: false
   }
 })
