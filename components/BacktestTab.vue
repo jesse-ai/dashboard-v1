@@ -235,6 +235,16 @@
               :trailing="false" />
           </a>
 
+          <!-- alert -->
+          <div v-if="results.showResults && results.alert && results.alert.message" class="my-4">
+            <UAlert
+              color="teal" icon="i-heroicons-check-circle"
+              variant="soft"
+              :title="results.alert.message"
+              :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'white', variant: 'link' }"
+              @close="results.alert.message = ''" />
+          </div>
+
           <UDivider class="mt-8 mb-4" size="lg" label="General Info" />
           <KeyValueTableSimple :data="results.info" />
 
