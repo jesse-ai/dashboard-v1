@@ -212,8 +212,9 @@ interface EquityCurve {
   name: string
   color: string
   data: {
-    timestamp: number
-    balance: number
+    time: number
+    value: number
+    color: string
   }[]
 }
 
